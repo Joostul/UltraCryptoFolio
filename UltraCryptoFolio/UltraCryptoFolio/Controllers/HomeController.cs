@@ -3,14 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Controllers
 {
     public class HomeController : Controller
     {
+        private List<Transaction> _transactions = new List<Transaction>()
+            {
+                new Transaction()
+                {
+                    AmountReceived = 4000000000,
+                    AmountSpent = 1000000000,
+                    DateTime = DateTime.UtcNow,
+                    ExchangeRate = 1,
+                    Fee = 0,
+                    ReveicingCurrency = Currency.BitcoinCash,
+                    SpendingCurrency = Currency.Bitcoin
+                }
+            };
+
         public IActionResult Index()
         {
-            return View();
+            return View(_transactions);
+        }
+
+        //[HttpPost]
+        public IActionResult New(Transaction transaction)
+        {
+            return View("NewTransaction");
         }
 
         public IActionResult About()

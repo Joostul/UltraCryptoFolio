@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltraCryptoFolio", "UltraCryptoFolio\UltraCryptoFolio.csproj", "{3965D338-520C-440F-A1B3-75C724D8E8B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{BFB12182-B927-4DFA-BCD7-02506F7AB68F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFB12182-B927-4DFA-BCD7-02506F7AB68F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB12182-B927-4DFA-BCD7-02506F7AB68F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB12182-B927-4DFA-BCD7-02506F7AB68F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB12182-B927-4DFA-BCD7-02506F7AB68F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

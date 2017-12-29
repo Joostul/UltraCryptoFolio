@@ -9,11 +9,9 @@ namespace UltraCryptoFolio.Controllers
 {
     public class HomeController : Controller
     {
-        private Portfolio _transactions = new Portfolio
+        private List<Transaction> _transactions = new List<Transaction>()
         {
-            Transactions = new List<Transaction>()
-            {
-                new Transaction()
+            new Transaction()
                 {
                     AmountReceived = 4000000000,
                     AmountSpent = 1000000000,
@@ -23,7 +21,7 @@ namespace UltraCryptoFolio.Controllers
                     ReveicingCurrency = Currency.BitcoinCash,
                     SpendingCurrency = Currency.Bitcoin
                 },
-                new Transaction()
+            new Transaction()
                 {
                     AmountReceived = 3130000000,
                     AmountSpent = 1000,
@@ -33,13 +31,38 @@ namespace UltraCryptoFolio.Controllers
                     ReveicingCurrency = Currency.BitcoinCash,
                     SpendingCurrency = Currency.Euro
                 }
-            }
         };
+
+        private Portfolio _currencyPortfolio = new Portfolio();
 
         public IActionResult Index()
         {
+            foreach (var currency in Enum.GetValues(typeof(Currency)))
+            {
+                long totalAmountCurrency = 0;
 
-            return View(_transactions);
+                var positiveTransactions = _transactions.Where(
+                    t => t.ReveicingCurrency == (Currency)currency).ToList();
+                var negativeTransactions = _transactions.Where(
+                    t => t.SpendingCurrency == (Currency)currency).ToList();
+
+                foreach (var pTransaction in positiveTransactions)
+                {
+                    totalAmountCurrency += pTransaction.AmountReceived;
+                }
+
+                foreach (var nTransaction in negativeTransactions)
+                {
+                    totalAmountCurrency -= nTransaction.AmountReceived;
+                }
+
+                if (totalAmountCurrency != 0)
+                {
+                    _currencyPortfolio.PortfolioValues.Add((Currency)currency, totalAmountCurrency);
+                }
+            }
+
+            return View(_currencyPortfolio);
         }
     }
 }

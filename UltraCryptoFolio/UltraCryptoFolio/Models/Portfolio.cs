@@ -7,6 +7,11 @@ namespace UltraCryptoFolio.Models
 {
     public class Portfolio
     {
-        public List<Transaction> Transactions { get; set; }
+        public Portfolio()
+        {
+            PortfolioValues = new Dictionary<Currency, long>();
+        }
+
+        public Dictionary<Currency, long> PortfolioValues { get; set; }
     }
 }

@@ -16,13 +16,10 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Transactions) {
+        @foreach (var value in Model.PortfolioValues) {
         <tr>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+            <td>@value.Key.ToString()</td>
+            <td>@value.Value</td>
         </tr>
 }
     </tbody>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,11 +7,9 @@ using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Controllers
 {
-    public class HomeController : Controller
+    public class TransactionsController : Controller
     {
-        private Portfolio _transactions = new Portfolio
-        {
-            Transactions = new List<Transaction>()
+        private List<Transaction> _transactions = new List<Transaction>()
             {
                 new Transaction()
                 {
@@ -33,13 +31,36 @@ namespace UltraCryptoFolio.Controllers
                     ReveicingCurrency = Currency.BitcoinCash,
                     SpendingCurrency = Currency.Euro
                 }
-            }
-        };
+            };
 
         public IActionResult Index()
         {
-
             return View(_transactions);
+        }
+
+        //[HttpPost]
+        public IActionResult New(Transaction transaction)
+        {
+            return View("NewTransaction");
+        }
+
+        public IActionResult About()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            ViewData["Message"] = "Your contact page.";
+
+            return View();
+        }
+
+        public IActionResult Error()
+        {
+            return View();
         }
     }
 }

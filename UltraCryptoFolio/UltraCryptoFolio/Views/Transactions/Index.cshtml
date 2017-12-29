@@ -1,0 +1,32 @@
+﻿@model List<UltraCryptoFolio.Models.Transaction>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Transactions</h1>
+
+<div>
+    <a class="btn btn-primary" asp-action="New">Input new transaction</a>
+</div>
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Amount received</th>
+            <th>Amount spent</th>
+            <th>Receiving currency</th>
+            <th>Spending currency</th>
+        </tr>
+    </thead>
+    @foreach (var transaction in Model)
+    {
+        <tr>
+            <td>@transaction.DateTime.Date</td>
+            <td>@transaction.AmountReceived</td>
+            <td>@transaction.AmountSpent</td>
+            <td>@transaction.ReveicingCurrency</td>
+            <td>@transaction.SpendingCurrency</td>
+        </tr>
+    }
+</table>

@@ -37,25 +37,19 @@ namespace UltraCryptoFolio.Controllers
         {
             return View(_transactions);
         }
-
-        //[HttpPost]
-        public IActionResult New(Transaction transaction)
+        
+        public IActionResult New()
         {
             return View("NewTransaction");
         }
-
-        public IActionResult About()
+        
+        public IActionResult Save(Transaction transaction)
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            if(ModelState.IsValid)
+            {
+                _transactions.Add(transaction);
+            }
+            return View(_transactions);
         }
 
         public IActionResult Error()

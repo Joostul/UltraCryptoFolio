@@ -4,22 +4,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UltraCryptoFolio.Models
 {
-    public class Transaction
+    public abstract class Transaction
     {
-        [Required]
-        [Description("Amount received in satoshi or cents.")]
-        public long AmountReceived { get; set; }
-        [Required]
-        [Description("Amount spent in satoshi or cents.")]
-        public long AmountSpent { get; set; }
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateTime { get; set; }
-        [Required]
-        public Currency ReveicingCurrency { get;set; }
-        [Required]
-        public Currency SpendingCurrency { get; set; }
         public int? Fee { get; set; }
-        public int? ExchangeRate { get; set; }
+        public virtual TransactionType TransactionType { get; set; }
     }
 }

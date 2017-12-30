@@ -21,25 +21,20 @@ namespace UltraCryptoFolio.Helpers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<double> GetEuroPriceOfAsync(Currency currency)
+        public async Task<decimal> GetEuroPriceOfAsync(CryptoCurrency cryptoCurrency)
         {
             HttpResponseMessage response = new HttpResponseMessage();
 
-            switch (currency)
+            switch (cryptoCurrency)
             {
-                case Currency.Unknown:
-                case Currency.Dollar:
-                    return 0;
-                case Currency.Euro:
-                    return 1;
-                case Currency.BitcoinCash:
+                case CryptoCurrency.BitcoinCash:
                     response = await client.GetAsync("bitcoin-cash" + "/?convert=EUR");
                     break;
-                case Currency.Bitcoin:
-                case Currency.Etherium:
-                case Currency.Ripple:
-                case Currency.Monero:
-                    response = await client.GetAsync(currency.ToString().ToLower() + "/?convert=EUR");
+                case CryptoCurrency.Bitcoin:
+                case CryptoCurrency.Etherium:
+                case CryptoCurrency.Ripple:
+                case CryptoCurrency.Monero:
+                    response = await client.GetAsync(cryptoCurrency.ToString().ToLower() + "/?convert=EUR");
                     break;
                 default:
                     break;
@@ -54,38 +49,38 @@ namespace UltraCryptoFolio.Helpers
             return 0;
         }
 
-        public async Task<double> GetDollarPriceOfAsync(Currency currency)
-        {
-            HttpResponseMessage response = new HttpResponseMessage();
+        //public async Task<double> GetDollarPriceOfAsync(Currency currency)
+        //{
+        //    HttpResponseMessage response = new HttpResponseMessage();
 
-            switch (currency)
-            {
-                case Currency.Unknown:
-                case Currency.Dollar:
-                    return 0;
-                case Currency.Euro:
-                    return 1;
-                case Currency.BitcoinCash:
-                    response = await client.GetAsync("bitcoin-cash");
-                    break;
-                case Currency.Bitcoin:
-                case Currency.Etherium:
-                case Currency.Ripple:
-                case Currency.Monero:
-                    response = await client.GetAsync(currency.ToString().ToLower());
-                    break;
-                default:
-                    break;
-            }
-            if (response.IsSuccessStatusCode)
-            {
-                var jsonData = response.Content.ReadAsStringAsync().Result;
-                dynamic data = JArray.Parse(jsonData);
-                return data[0].price_eur;
-            }
+        //    switch (currency)
+        //    {
+        //        case Currency.Unknown:
+        //        case Currency.Dollar:
+        //            return 1;
+        //        case Currency.Euro:
+        //            return 0;
+        //        case Currency.BitcoinCash:
+        //            response = await client.GetAsync("bitcoin-cash");
+        //            break;
+        //        case Currency.Bitcoin:
+        //        case Currency.Etherium:
+        //        case Currency.Ripple:
+        //        case Currency.Monero:
+        //            response = await client.GetAsync(currency.ToString().ToLower());
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var jsonData = response.Content.ReadAsStringAsync().Result;
+        //        dynamic data = JArray.Parse(jsonData);
+        //        return data[0].price_usd;
+        //    }
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
         public void Dispose()
         {

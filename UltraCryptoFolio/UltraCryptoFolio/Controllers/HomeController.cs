@@ -10,34 +10,34 @@ namespace UltraCryptoFolio.Controllers
     {
         private List<Transaction> _transactions = new List<Transaction>()
         {
-            new Transaction()
+            new Investment()
                 {
                     AmountReceived = 110000000,
-                    AmountSpent = 100010,
+                    AmountSpent = 1000.10m,
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
-                    ReveicingCurrency = Currency.Bitcoin,
+                    ReveicingCurrency = CryptoCurrency.Bitcoin,
                     SpendingCurrency = Currency.Euro
                 },
-            new Transaction()
+            new Trade()
                 {
                     AmountReceived = 400000000,
                     AmountSpent = 100000000,
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
-                    ReveicingCurrency = Currency.BitcoinCash,
-                    SpendingCurrency = Currency.Bitcoin
+                    ReveicingCurrency = CryptoCurrency.BitcoinCash,
+                    SpendingCurrency = CryptoCurrency.Bitcoin
                 },
-            new Transaction()
+            new Investment()
                 {
                     AmountReceived = 313000000,
-                    AmountSpent = 100000,
+                    AmountSpent = 1000.00m,
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
-                    ReveicingCurrency = Currency.BitcoinCash,
+                    ReveicingCurrency = CryptoCurrency.BitcoinCash,
                     SpendingCurrency = Currency.Euro
                 }
         };

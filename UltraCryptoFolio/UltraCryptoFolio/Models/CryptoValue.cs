@@ -2,11 +2,10 @@
 
 namespace UltraCryptoFolio.Models
 {
-    public class Value
+    public class CryptoValue
     {
-        public Currency Currency { get; set; }
+        public CryptoCurrency CryptoCurrency { get; set; }
         public long Amount { get; set; }
-        [Description("Monetary value in MonetaryCurrency in cents.")]
-        public long MonetaryValue { get; set; }
+        public decimal MonetaryValue { get; set; }
     }
 }

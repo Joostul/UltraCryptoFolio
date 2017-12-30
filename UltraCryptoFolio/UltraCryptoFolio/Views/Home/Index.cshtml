@@ -15,29 +15,37 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var value in Model.PortfolioValues)
+        @foreach (var value in Model.CryptoValues)
         {
             <tr>
-                <td>@value.Currency</td>
-                @if (value.Currency == UltraCryptoFolio.Models.Currency.Euro)
-                {
-                    var a = ((double)value.Amount) / 100;
-                    var m = ((double)value.MonetaryValue) / 100;
-                    <td> @a</td>
-                    <td> @m</td>
-                }
-                else
-                {
-                    <td>@value.Amount</td>
-                    <td>@value.MonetaryValue</td>
-                }
+                <td>@value.CryptoCurrency</td>
+                <td>@value.Amount</td>
+                <td>@value.MonetaryValue</td>
             </tr>
-
         }
+
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Indicator</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
         <tr>
             <td>Total value:</td>
-            <td></td>
-            <td>@Model.PortfolioValues.Sum(v => v.MonetaryValue)</td>
+            <td>@Model.TotalCryptoValue</td>
+        </tr>
+        <tr>
+            <td>Total investment:</td>
+            <td>@Model.TotalMonetaryValue</td>
+        </tr>
+        <tr>
+            <td>Profit/loss:</td>
+            <td>@Model.TotalProfit</td>
         </tr>
     </tbody>
 </table>

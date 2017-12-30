@@ -50,32 +50,25 @@ namespace UltraCryptoFolio.Models
 
             using (var priceGetter = new PriceGetter())
             {
-                switch (MonetaryCurrency)
+                foreach (var value in PortfolioValues)
                 {
-                    case Currency.Euro:
-                        foreach (var value in PortfolioValues)
-                        {
-                            var valueOfOne = (long)priceGetter.GetEuroPriceOfAsync(value.Currency).Result;
+                    double valueOfOne = 0;
+                    if(MonetaryCurrency == Currency.Euro)
+                    {
+                        valueOfOne = priceGetter.GetEuroPriceOfAsync(value.Currency).Result;
+                    } if(MonetaryCurrency == Currency.Dollar)
+                    {
+                        valueOfOne = priceGetter.GetDollarPriceOfAsync(value.Currency).Result;
+                    }
 
-                            value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
-                        }
-                        break;
-                    case Currency.Dollar:
-                        foreach (var value in PortfolioValues)
-                        {
-                            var valueOfOne = (long)priceGetter.GetDollarPriceOfAsync(value.Currency).Result;
-
-                            value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
-                        }
-                        break;
-                    case Currency.Unknown:
-                    case Currency.Bitcoin:
-                    case Currency.BitcoinCash:
-                    case Currency.Etherium:
-                    case Currency.Ripple:
-                    case Currency.Monero:
-                    default:
-                        break;
+                    if (value.Currency == Currency.Bitcoin || value.Currency == Currency.BitcoinCash)
+                    {
+                        value.MonetaryValue = (long)((valueOfOne * value.Amount) / 100000000);
+                    }
+                    else
+                    {
+                        value.MonetaryValue = (long)(valueOfOne * value.Amount);
+                    }
                 }
             }
         }

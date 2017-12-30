@@ -10,7 +10,7 @@
     <thead>
         <tr>
             <th>Currency</th>
-            <th>Amount (in sathosi or monetary currency)</th>
+            <th>Amount (in sathosi)</th>
             <th>Value (@Model.MonetaryCurrency)</th>
         </tr>
     </thead>
@@ -19,9 +19,25 @@
         {
             <tr>
                 <td>@value.Currency</td>
-                <td>@value.Amount</td>
-                <td>@value.MonetaryValue</td>
+                @if (value.Currency == UltraCryptoFolio.Models.Currency.Euro)
+                {
+                    var a = ((double)value.Amount) / 100;
+                    var m = ((double)value.MonetaryValue) / 100;
+                    <td> @a</td>
+                    <td> @m</td>
+                }
+                else
+                {
+                    <td>@value.Amount</td>
+                    <td>@value.MonetaryValue</td>
+                }
             </tr>
+
         }
+        <tr>
+            <td>Total value:</td>
+            <td></td>
+            <td>@Model.PortfolioValues.Sum(v => v.MonetaryValue)</td>
+        </tr>
     </tbody>
 </table>

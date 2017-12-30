@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace UltraCryptoFolio.Models
+﻿namespace UltraCryptoFolio.Models
 {
     public class CryptoValue
     {

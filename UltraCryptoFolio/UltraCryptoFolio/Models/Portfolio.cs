@@ -104,17 +104,10 @@ namespace UltraCryptoFolio.Models
             }
         }
 
-        //public void AddTransactions(List<Transaction> transactions)
-        //{ 
-        //    foreach (var transaction in transactions)
-        //    {
-
-        //    }
-        //}
-
         public List<CryptoValue> CryptoValues { get; set; }
         public List<MonetaryValue> MonetaryValues { get; set; }
         public Currency MonetaryCurrency { get; set; }
+
         public decimal TotalCryptoValue
         {
             get
@@ -122,6 +115,7 @@ namespace UltraCryptoFolio.Models
                 return CryptoValues.Sum(v => v.MonetaryValue);
             }
         }
+
         public decimal TotalMonetaryValue
         {
             get

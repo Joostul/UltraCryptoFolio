@@ -12,8 +12,18 @@ namespace UltraCryptoFolio.Controllers
         {
             new Transaction()
                 {
-                    AmountReceived = 4000000000,
-                    AmountSpent = 1000000000,
+                    AmountReceived = 110000000,
+                    AmountSpent = 1000,
+                    DateTime = DateTime.UtcNow,
+                    ExchangeRate = 1,
+                    Fee = 0,
+                    ReveicingCurrency = Currency.Bitcoin,
+                    SpendingCurrency = Currency.Euro
+                },
+            new Transaction()
+                {
+                    AmountReceived = 400000000,
+                    AmountSpent = 100000000,
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
@@ -22,7 +32,7 @@ namespace UltraCryptoFolio.Controllers
                 },
             new Transaction()
                 {
-                    AmountReceived = 3130000000,
+                    AmountReceived = 313000000,
                     AmountSpent = 1000,
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,

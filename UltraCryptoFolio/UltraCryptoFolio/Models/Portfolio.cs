@@ -30,7 +30,7 @@ namespace UltraCryptoFolio.Models
 
                 foreach (var nTransaction in negativeTransactions)
                 {
-                    totalAmountCurrency -= nTransaction.AmountReceived;
+                    totalAmountCurrency -= nTransaction.AmountSpent;
                 }
 
                 if (totalAmountCurrency != 0)
@@ -57,7 +57,7 @@ namespace UltraCryptoFolio.Models
                         {
                             var valueOfOne = (long)priceGetter.GetEuroPriceOfAsync(value.Currency).Result;
 
-                            value.MonetaryValue = (valueOfOne * (value.Amount / 100000000));
+                            value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
                         }
                         break;
                     case Currency.Dollar:
@@ -65,7 +65,7 @@ namespace UltraCryptoFolio.Models
                         {
                             var valueOfOne = (long)priceGetter.GetDollarPriceOfAsync(value.Currency).Result;
 
-                            value.MonetaryValue = (valueOfOne * (value.Amount / 100000000));
+                            value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
                         }
                         break;
                     case Currency.Unknown:

@@ -9,15 +9,19 @@
 <table class="table">
     <thead>
         <tr>
-            <th></th>
+            <th>Currency</th>
+            <th>Amount</th>
+            <th>Value (@Model.MonetaryCurrency)</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var value in Model.PortfolioValues) {
-        <tr>
-            <td>@value.Key.ToString()</td>
-            <td>@value.Value</td>
-        </tr>
-}
+        @foreach (var value in Model.PortfolioValues)
+        {
+            <tr>
+                <td>@value.Currency</td>
+                <td>@value.Amount</td>
+                <td>@value.MonetaryValue</td>
+            </tr>
+        }
     </tbody>
 </table>

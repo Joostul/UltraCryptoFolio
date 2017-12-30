@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Models;
 
@@ -37,30 +36,8 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult Index()
         {
-            foreach (var currency in Enum.GetValues(typeof(Currency)))
-            {
-                long totalAmountCurrency = 0;
-
-                var positiveTransactions = _transactions.Where(
-                    t => t.ReveicingCurrency == (Currency)currency).ToList();
-                var negativeTransactions = _transactions.Where(
-                    t => t.SpendingCurrency == (Currency)currency).ToList();
-
-                foreach (var pTransaction in positiveTransactions)
-                {
-                    totalAmountCurrency += pTransaction.AmountReceived;
-                }
-
-                foreach (var nTransaction in negativeTransactions)
-                {
-                    totalAmountCurrency -= nTransaction.AmountReceived;
-                }
-
-                if (totalAmountCurrency != 0)
-                {
-                    _currencyPortfolio.PortfolioValues.Add((Currency)currency, totalAmountCurrency);
-                }
-            }
+            _currencyPortfolio.BuildPortfolioFromTransacions(_transactions);
+            _currencyPortfolio.CalculateMonetaryValue(Currency.Euro);
 
             return View(_currencyPortfolio);
         }

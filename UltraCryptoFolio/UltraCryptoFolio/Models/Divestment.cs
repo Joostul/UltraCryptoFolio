@@ -14,7 +14,7 @@ namespace UltraCryptoFolio.Models
         [Description("Amount received in satoshi or cents.")]
         public decimal AmountReceived { get; set; }
         [Required]
-        public Currency Receivingurrency { get; set; }
+        public Currency ReceivingCurrency { get; set; }
         public int? ExchangeRate { get; set; }
         public override TransactionType TransactionType => TransactionType.Divestment;
     }

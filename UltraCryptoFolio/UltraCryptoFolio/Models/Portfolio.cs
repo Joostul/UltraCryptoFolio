@@ -24,7 +24,7 @@ namespace UltraCryptoFolio.Models
                 var divestments = transactions.Where(
                     t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>().ToList();
 
-                totalAmountCurrency = (divestments.Where(d => d.Receivingurrency == (Currency)currency)
+                totalAmountCurrency = (divestments.Where(d => d.ReceivingCurrency == (Currency)currency)
                     .Sum(d => d.AmountReceived)) 
                     - (investments.Where(i=> i.SpendingCurrency == (Currency)currency)
                     .Sum(i => i.AmountSpent));

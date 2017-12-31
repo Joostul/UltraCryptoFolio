@@ -13,7 +13,7 @@ namespace UltraCryptoFolio.ViewModels
         [Required]
         public long AmountReceived { get; set; }
         [Required]
-        public CryptoCurrency Receivingurrency { get; set; }
+        public CryptoCurrency ReceivingCurrency { get; set; }
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

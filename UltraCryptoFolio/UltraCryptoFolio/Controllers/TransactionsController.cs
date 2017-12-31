@@ -47,7 +47,7 @@ namespace UltraCryptoFolio.Controllers
                     DateTime = divestmentViewModel.DateTime,
                     ExchangeRate = divestmentViewModel.ExchangeRate,
                     Fee = divestmentViewModel.Fee,
-                    Receivingurrency = divestmentViewModel.Receivingurrency,
+                    ReceivingCurrency = divestmentViewModel.Receivingurrency,
                     SpendingCurrency = divestmentViewModel.SpendingCurrency,
                     TransactionType = TransactionType.Divestment
                 };
@@ -66,7 +66,14 @@ namespace UltraCryptoFolio.Controllers
             {
                 Investment investment = new Investment()
                 {
-
+                    AmountReceived = investmentViewModel.AmountReceived,
+                    AmountSpent = investmentViewModel.AmountSpent,
+                    DateTime = investmentViewModel.DateTime,
+                    ExchangeRate = investmentViewModel.ExchangeRate,
+                    Fee = investmentViewModel.Fee,
+                    ReceivingCurrency = investmentViewModel.ReceivingCurrency,
+                    SpendingCurrency = investmentViewModel.SpendingCurrency,
+                    TransactionType = TransactionType.Investment
                 };
 
                 _transactions.Add(investment);
@@ -82,7 +89,14 @@ namespace UltraCryptoFolio.Controllers
             {
                 Trade trade = new Trade()
                 {
-
+                    AmountReceived = tradeViewModel.AmountReceived,
+                    AmountSpent = tradeViewModel.AmountSpent,
+                    DateTime = tradeViewModel.DateTime,
+                    ExchangeRate = tradeViewModel.ExchangeRate,
+                    Fee = tradeViewModel.Fee,
+                    ReceivingCurrency = tradeViewModel.ReceivingCurrency,
+                    SpendingCurrency = tradeViewModel.SpendingCurrency,
+                    TransactionType = TransactionType.Trade
                 };
 
                 _transactions.Add(trade);
@@ -98,7 +112,11 @@ namespace UltraCryptoFolio.Controllers
             {
                 Spend spend = new Spend()
                 {
-
+                    AmountSpent = spendViewModel.AmountSpent,
+                    DateTime = spendViewModel.DateTime,
+                    Fee = spendViewModel.Fee,
+                    SpendingCurrency = spendViewModel.SpendingCurrency,
+                    TransactionType = TransactionType.Spend
                 };
 
                 _transactions.Add(spend);

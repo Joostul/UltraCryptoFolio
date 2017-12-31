@@ -33,28 +33,28 @@
                     <td>@investment.SpendingCurrency</td>
                     <td>@investment.AmountSpent</td>
                     <td>@investment.ReveicingCurrency</td>
-                    <td>@investment.AmountReceived</td>
+                    <td>@investment.AmountReceived.ToString("N0")</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Divestment:
                     var divestment = (UltraCryptoFolio.Models.Divestment)transaction;
                     <td>@divestment.SpendingCurrency</td>
-                    <td>@divestment.AmountSpent</td>
+                    <td>@divestment.AmountSpent.ToString("N0")</td>
                     <td>@divestment.Receivingurrency</td>
                     <td>@divestment.AmountReceived</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Spend:
                     var spend = (UltraCryptoFolio.Models.Spend)transaction;
                     <td>@spend.SpendingCurrency</td>
-                    <td>@spend.AmountSpent</td>
+                    <td>@spend.AmountSpent.ToString("N0")</td>
                     <td>-</td>
                     <td>-</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Trade:
                     var trade = (UltraCryptoFolio.Models.Trade)transaction;
                     <td>@trade.SpendingCurrency</td>
-                    <td>@trade.AmountSpent</td>
+                    <td>@trade.AmountSpent.ToString("N0")</td>
                     <td>@trade.ReveicingCurrency</td>
-                    <td>@trade.AmountReceived</td>
+                    <td>@trade.AmountReceived.ToString("N0")</td>
                     break;
                 default:
                     break;

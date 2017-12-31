@@ -1,35 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using UltraCryptoFolio.Data;
 using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Controllers
 {
     public class TransactionsController : Controller
     {
-        private List<Transaction> _transactions = new List<Transaction>()
-            {
-                new Trade()
-                {
-                    AmountReceived = 4000000000,
-                    AmountSpent = 1000000000,
-                    DateTime = DateTime.UtcNow,
-                    ExchangeRate = 1,
-                    Fee = 0,
-                    ReveicingCurrency = CryptoCurrency.BitcoinCash,
-                    SpendingCurrency = CryptoCurrency.Bitcoin
-                },
-                new Investment()
-                {
-                    AmountReceived = 3130000000,
-                    AmountSpent = 1000,
-                    DateTime = DateTime.UtcNow,
-                    ExchangeRate = 1,
-                    Fee = 0,
-                    ReveicingCurrency = CryptoCurrency.BitcoinCash,
-                    SpendingCurrency = Currency.Euro
-                }
-            };
+        private List<Transaction> _transactions = ExampleTransactions.Transactions;
 
         public IActionResult Index()
         {

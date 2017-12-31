@@ -7,26 +7,58 @@
 <h1>Transactions</h1>
 
 <div>
-    <a class="btn btn-primary" asp-action="New">Input new transaction</a>
+    <a class="btn btn-primary" asp-action="New">Input new Investment</a>
+    <a class="btn btn-primary" asp-action="New">Input new Trade</a>
+    <a class="btn btn-primary" asp-action="New">Input new Spend</a>
+    <a class="btn btn-primary" asp-action="New">Input new Divestment</a>
 </div>
 <table class="table table-responsive">
     <thead>
         <tr>
             <th>Date</th>
-            <th>Amount received</th>
+            <th>Spending currency</th>
             <th>Amount spent</th>
             <th>Receiving currency</th>
-            <th>Spending currency</th>
+            <th>Amount received</th>
         </tr>
     </thead>
     @foreach (var transaction in Model)
     {
         <tr>
             <td>@transaction.DateTime.Date</td>
-            <td>@transaction.AmountReceived</td>
-            <td>@transaction.AmountSpent</td>
-            <td>@transaction.ReveicingCurrency</td>
-            <td>@transaction.SpendingCurrency</td>
+            @switch (transaction.TransactionType)
+            {
+                case UltraCryptoFolio.Models.TransactionType.Investment:
+                    var investment = (UltraCryptoFolio.Models.Investment)transaction;
+                    <td>@investment.SpendingCurrency</td>
+                    <td>@investment.AmountSpent</td>
+                    <td>@investment.ReveicingCurrency</td>
+                    <td>@investment.AmountReceived</td>
+                    break;
+                case UltraCryptoFolio.Models.TransactionType.Divestment:
+                    var divestment = (UltraCryptoFolio.Models.Divestment)transaction;
+                    <td>@divestment.SpendingCurrency</td>
+                    <td>@divestment.AmountSpent</td>
+                    <td>@divestment.Receivingurrency</td>
+                    <td>@divestment.AmountReceived</td>
+                    break;
+                case UltraCryptoFolio.Models.TransactionType.Spend:
+                    var spend = (UltraCryptoFolio.Models.Spend)transaction;
+                    <td>@spend.SpendingCurrency</td>
+                    <td>@spend.AmountSpent</td>
+                    <td>-</td>
+                    <td>-</td>
+                    break;
+                case UltraCryptoFolio.Models.TransactionType.Trade:
+                    var trade = (UltraCryptoFolio.Models.Trade)transaction;
+                    <td>@trade.SpendingCurrency</td>
+                    <td>@trade.AmountSpent</td>
+                    <td>@trade.ReveicingCurrency</td>
+                    <td>@trade.AmountReceived</td>
+                    break;
+                default:
+                    break;
+            }
         </tr>
     }
 </table>

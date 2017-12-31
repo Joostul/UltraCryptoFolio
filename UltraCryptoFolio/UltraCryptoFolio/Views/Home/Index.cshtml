@@ -31,7 +31,7 @@
     <thead>
         <tr>
             <th>Indicator</th>
-            <th>Value</th>
+            <th>Value (@Model.MonetaryCurrency)</th>
         </tr>
     </thead>
     <tbody>
@@ -45,7 +45,14 @@
         </tr>
         <tr>
             <td>Profit/loss:</td>
-            <td>@Model.TotalProfit</td>
+            @if (Model.TotalProfit > 0)
+            {
+                <td style="color:green">@Model.TotalProfit</td>
+            }
+            else
+            {
+                <td style="color:darkred">@Model.TotalProfit</td>
+            }
         </tr>
     </tbody>
 </table>

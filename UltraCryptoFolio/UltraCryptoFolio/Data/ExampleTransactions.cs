@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Data
@@ -17,7 +15,7 @@ namespace UltraCryptoFolio.Data
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
-                    ReveicingCurrency = CryptoCurrency.Bitcoin,
+                    ReceivingCurrency = CryptoCurrency.Bitcoin,
                     SpendingCurrency = Currency.Euro
                 },
             new Trade()
@@ -27,7 +25,7 @@ namespace UltraCryptoFolio.Data
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
-                    ReveicingCurrency = CryptoCurrency.BitcoinCash,
+                    ReceivingCurrency = CryptoCurrency.BitcoinCash,
                     SpendingCurrency = CryptoCurrency.Bitcoin
                 },
             new Investment()
@@ -37,7 +35,7 @@ namespace UltraCryptoFolio.Data
                     DateTime = DateTime.UtcNow,
                     ExchangeRate = 1,
                     Fee = 0,
-                    ReveicingCurrency = CryptoCurrency.BitcoinCash,
+                    ReceivingCurrency = CryptoCurrency.BitcoinCash,
                     SpendingCurrency = Currency.Euro
                 }
         };

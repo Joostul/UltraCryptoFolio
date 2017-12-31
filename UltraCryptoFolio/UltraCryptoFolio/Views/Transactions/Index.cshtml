@@ -32,7 +32,7 @@
                     var investment = (UltraCryptoFolio.Models.Investment)transaction;
                     <td>@investment.SpendingCurrency</td>
                     <td>@investment.AmountSpent</td>
-                    <td>@investment.ReveicingCurrency</td>
+                    <td>@investment.ReceivingCurrency</td>
                     <td>@investment.AmountReceived.ToString("N0")</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Divestment:
@@ -53,7 +53,7 @@
                     var trade = (UltraCryptoFolio.Models.Trade)transaction;
                     <td>@trade.SpendingCurrency</td>
                     <td>@trade.AmountSpent.ToString("N0")</td>
-                    <td>@trade.ReveicingCurrency</td>
+                    <td>@trade.ReceivingCurrency</td>
                     <td>@trade.AmountReceived.ToString("N0")</td>
                     break;
                 default:

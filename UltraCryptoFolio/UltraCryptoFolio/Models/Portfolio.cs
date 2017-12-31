@@ -52,11 +52,11 @@ namespace UltraCryptoFolio.Models
                 var spends = transactions.Where(
                     t => t.TransactionType == TransactionType.Spend).Cast<Spend>().ToList();
 
-                totalAmountCryptoCurrency = (investments.Where(i => i.ReveicingCurrency == (CryptoCurrency)cryptoCurrency)
+                totalAmountCryptoCurrency = (investments.Where(i => i.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(i => i.AmountReceived)
                     - divestments.Where(d => d.SpendingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(d => d.AmountSpent)
-                    + trades.Where(t => t.ReveicingCurrency == (CryptoCurrency)cryptoCurrency)
+                    + trades.Where(t => t.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(t => t.AmountReceived)
                     - trades.Where(t => t.SpendingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(t => t.AmountSpent)

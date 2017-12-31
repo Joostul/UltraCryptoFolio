@@ -1,4 +1,4 @@
-@model UltraCryptoFolio.Models.Divestment
+@model UltraCryptoFolio.ViewModels.DivestmentViewModel
 
 @{
     ViewData["Title"] = "NewDivestment";
@@ -8,7 +8,7 @@
 
 <form asp-action="NewDivestment">
     <div class="form-horizontal">
-        <h4>Divestment</h4>
+        <h4>DivestmentViewModel</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
@@ -21,7 +21,7 @@
         <div class="form-group">
             <label asp-for="SpendingCurrency" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="SpendingCurrency" class="form-control" />
+                <select asp-for="SpendingCurrency" class="form-control" asp-items="Html.GetEnumSelectList<UltraCryptoFolio.Models.CryptoCurrency>()"></select>
                 <span asp-validation-for="SpendingCurrency" class="text-danger"></span>
             </div>
         </div>
@@ -35,22 +35,8 @@
         <div class="form-group">
             <label asp-for="Receivingurrency" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Receivingurrency" class="form-control" />
+                <select asp-for="Receivingurrency" class="form-control" asp-items="Html.GetEnumSelectList<UltraCryptoFolio.Models.Currency>()"></select>
                 <span asp-validation-for="Receivingurrency" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ExchangeRate" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="ExchangeRate" class="form-control" />
-                <span asp-validation-for="ExchangeRate" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="TransactionType" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="TransactionType" class="form-control" />
-                <span asp-validation-for="TransactionType" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
@@ -65,6 +51,13 @@
             <div class="col-md-10">
                 <input asp-for="Fee" class="form-control" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ExchangeRate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ExchangeRate" class="form-control" />
+                <span asp-validation-for="ExchangeRate" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

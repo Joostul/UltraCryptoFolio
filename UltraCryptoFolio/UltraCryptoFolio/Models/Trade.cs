@@ -14,9 +14,8 @@ namespace UltraCryptoFolio.Models
         [Description("Amount received in satoshi or cents.")]
         public long AmountReceived { get; set; }
         [Required]
-        public CryptoCurrency ReveicingCurrency { get; set; }
-        [Required]
-        public int ExchangeRate { get; set; }
+        public CryptoCurrency ReceivingCurrency { get; set; }
+        public int? ExchangeRate { get; set; }
         public override TransactionType TransactionType => TransactionType.Trade;
     }
 }

@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Data;
 using UltraCryptoFolio.Models;
+using UltraCryptoFolio.ViewModels;
 
 namespace UltraCryptoFolio.Controllers
 {
@@ -14,7 +14,7 @@ namespace UltraCryptoFolio.Controllers
         {
             return View(_transactions);
         }
-        
+
         public IActionResult NewInvestment()
         {
             return View("NewInvestment");
@@ -35,40 +35,76 @@ namespace UltraCryptoFolio.Controllers
             return View("NewDivestment");
         }
 
-        public IActionResult Create(Investment investment)
-        {
-            if(ModelState.IsValid)
-            {
-                _transactions.Add(investment);
-            }
-            return View(_transactions);
-        }
-
-        public IActionResult Create(Divestment divestment)
+        [HttpPost]
+        public IActionResult NewDivestment(DivestmentViewModel divestmentViewModel)
         {
             if (ModelState.IsValid)
             {
+                Divestment divestment = new Divestment()
+                {
+                    AmountReceived = divestmentViewModel.AmountReceived,
+                    AmountSpent = divestmentViewModel.AmountSpent,
+                    DateTime = divestmentViewModel.DateTime,
+                    ExchangeRate = divestmentViewModel.ExchangeRate,
+                    Fee = divestmentViewModel.Fee,
+                    Receivingurrency = divestmentViewModel.Receivingurrency,
+                    SpendingCurrency = divestmentViewModel.SpendingCurrency,
+                    TransactionType = TransactionType.Divestment
+                };
+
                 _transactions.Add(divestment);
             }
-            return View(_transactions);
+
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Create(Trade trade)
+        [HttpPost]
+        public IActionResult NewInvestment(InvestmentViewModel investmentViewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Investment investment = new Investment()
+                {
+
+                };
+
+                _transactions.Add(investment);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult NewTrade(TradeViewModel tradeViewModel)
         {
             if (ModelState.IsValid)
             {
+                Trade trade = new Trade()
+                {
+
+                };
+
                 _transactions.Add(trade);
             }
-            return View(_transactions);
+
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Create(Spend spend)
+        [HttpPost]
+        public IActionResult NewSpend(SpendViewModel spendViewModel)
         {
             if (ModelState.IsValid)
             {
+                Spend spend = new Spend()
+                {
+
+                };
+
                 _transactions.Add(spend);
             }
-            return View(_transactions);
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult Error()

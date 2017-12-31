@@ -1,4 +1,4 @@
-@model UltraCryptoFolio.Models.Spend
+@model UltraCryptoFolio.ViewModels.SpendViewModel
 
 @{
     ViewData["Title"] = "NewSpend";
@@ -8,9 +8,16 @@
 
 <form asp-action="NewSpend">
     <div class="form-horizontal">
-        <h4>Spend</h4>
+        <h4>SpendViewModel</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="DateTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="AmountSpent" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -21,22 +28,8 @@
         <div class="form-group">
             <label asp-for="SpendingCurrency" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="SpendingCurrency" class="form-control" />
+                <select asp-for="SpendingCurrency" class="form-control" asp-items="Html.GetEnumSelectList<UltraCryptoFolio.Models.CryptoCurrency>()"></select>
                 <span asp-validation-for="SpendingCurrency" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="TransactionType" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="TransactionType" class="form-control" />
-                <span asp-validation-for="TransactionType" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="DateTime" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

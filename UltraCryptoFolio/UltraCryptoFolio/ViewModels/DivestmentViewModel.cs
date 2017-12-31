@@ -1,21 +1,24 @@
-﻿using System.ComponentModel;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
+using UltraCryptoFolio.Models;
 
-namespace UltraCryptoFolio.Models
+namespace UltraCryptoFolio.ViewModels
 {
-    public class Divestment : Transaction
+    public class DivestmentViewModel
     {
         [Required]
-        [Description("Amount spent in satoshi or cents.")]
         public long AmountSpent { get; set; }
         [Required]
         public CryptoCurrency SpendingCurrency { get; set; }
         [Required]
-        [Description("Amount received in satoshi or cents.")]
         public decimal AmountReceived { get; set; }
         [Required]
         public Currency Receivingurrency { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime DateTime { get; set; }
+        public int? Fee { get; set; }
         public int? ExchangeRate { get; set; }
-        public override TransactionType TransactionType => TransactionType.Divestment;
     }
 }

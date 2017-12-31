@@ -15,11 +15,26 @@ namespace UltraCryptoFolio.Controllers
             return View(_transactions);
         }
         
-        public IActionResult New()
+        public IActionResult NewInvestment()
         {
-            return View("NewTransaction");
+            return View("NewInvestment");
         }
-        
+
+        public IActionResult NewTrade()
+        {
+            return View("NewTrade");
+        }
+
+        public IActionResult NewSpend()
+        {
+            return View("NewSpend");
+        }
+
+        public IActionResult NewDivestment()
+        {
+            return View("NewDivestment");
+        }
+
         public IActionResult Save(Transaction transaction)
         {
             if(ModelState.IsValid)

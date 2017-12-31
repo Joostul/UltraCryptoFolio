@@ -124,6 +124,15 @@ namespace UltraCryptoFolio.Models
             }
         }
 
+        // TODO: Implement spends
+        public decimal TotalSpent
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
         public decimal TotalProfit
         {
             get

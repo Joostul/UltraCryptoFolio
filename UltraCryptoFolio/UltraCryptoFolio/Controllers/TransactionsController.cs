@@ -55,7 +55,7 @@ namespace UltraCryptoFolio.Controllers
                 _transactions.Add(divestment);
             }
 
-            return RedirectToAction("Index");
+            return View("Index", _transactions);
         }
 
         [HttpPost]
@@ -72,7 +72,7 @@ namespace UltraCryptoFolio.Controllers
                 _transactions.Add(investment);
             }
 
-            return RedirectToAction("Index");
+            return View("Index", _transactions);
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace UltraCryptoFolio.Controllers
                 _transactions.Add(trade);
             }
 
-            return RedirectToAction("Index");
+            return View("Index", _transactions);
         }
 
         [HttpPost]
@@ -104,7 +104,7 @@ namespace UltraCryptoFolio.Controllers
                 _transactions.Add(spend);
             }
 
-            return RedirectToAction("Index");
+            return View("Index", _transactions);
         }
 
         public IActionResult Error()

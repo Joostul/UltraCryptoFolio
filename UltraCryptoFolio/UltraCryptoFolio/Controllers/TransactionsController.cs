@@ -35,11 +35,38 @@ namespace UltraCryptoFolio.Controllers
             return View("NewDivestment");
         }
 
-        public IActionResult Save(Transaction transaction)
+        public IActionResult Create(Investment investment)
         {
             if(ModelState.IsValid)
             {
-                _transactions.Add(transaction);
+                _transactions.Add(investment);
+            }
+            return View(_transactions);
+        }
+
+        public IActionResult Create(Divestment divestment)
+        {
+            if (ModelState.IsValid)
+            {
+                _transactions.Add(divestment);
+            }
+            return View(_transactions);
+        }
+
+        public IActionResult Create(Trade trade)
+        {
+            if (ModelState.IsValid)
+            {
+                _transactions.Add(trade);
+            }
+            return View(_transactions);
+        }
+
+        public IActionResult Create(Spend spend)
+        {
+            if (ModelState.IsValid)
+            {
+                _transactions.Add(spend);
             }
             return View(_transactions);
         }

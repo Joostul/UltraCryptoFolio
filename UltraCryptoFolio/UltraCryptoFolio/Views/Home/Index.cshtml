@@ -12,6 +12,7 @@
             <th>Currency</th>
             <th>Amount (in sathosi)</th>
             <th>Value (@Model.MonetaryCurrency)</th>
+            <th>% holdings</th>
         </tr>
     </thead>
     <tbody>
@@ -21,6 +22,7 @@
                 <td>@value.CryptoCurrency</td>
                 <td>@value.Amount.ToString("N0")</td>
                 <td>@value.MonetaryValue</td>
+                <td>@Model.GetPercentHoldings(value.CryptoCurrency) %</td>
             </tr>
         }
     </tbody>

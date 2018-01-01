@@ -124,6 +124,19 @@ namespace UltraCryptoFolio.Models
             }
         }
 
+        public decimal GetCryptoValue(CryptoCurrency cryptoCurrency)
+        {
+            return CryptoValues.FirstOrDefault(c => c.CryptoCurrency == cryptoCurrency).MonetaryValue;
+        }
+
+        public decimal GetPercentHoldings(CryptoCurrency cryptoCurrency)
+        {
+            var cryptoValue = GetCryptoValue(cryptoCurrency);
+            var percentHoldings = Math.Round(((cryptoValue / TotalCryptoValue) * 100), 2);
+
+            return percentHoldings;
+        }
+
         // TODO: Implement spends
         public decimal TotalSpent
         {

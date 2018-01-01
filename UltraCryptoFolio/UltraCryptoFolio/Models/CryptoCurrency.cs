@@ -6,6 +6,10 @@
         BitcoinCash,
         Etherium,
         Ripple,
-        Monero
+        Monero,
+        IOTA,
+        NEO,
+        Stellar,
+        RaiBlocks
     }
 }

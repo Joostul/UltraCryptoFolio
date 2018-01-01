@@ -28,6 +28,13 @@ namespace UltraCryptoFolio.Helpers
                 case CryptoCurrency.BitcoinCash:
                     response = await client.GetAsync("bitcoin-cash" + "/?convert=EUR");
                     break;
+                case CryptoCurrency.BitcoinGold:
+                    response = await client.GetAsync("bitcoin-gold" + "/?convert=EUR");
+                    break;
+                case CryptoCurrency.NEO:
+                case CryptoCurrency.RaiBlocks:
+                case CryptoCurrency.Stellar:
+                case CryptoCurrency.IOTA:
                 case CryptoCurrency.Bitcoin:
                 case CryptoCurrency.Etherium:
                 case CryptoCurrency.Ripple:

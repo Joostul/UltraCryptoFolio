@@ -4,6 +4,7 @@
     {
         Bitcoin,
         BitcoinCash,
+        BitcoinGold,
         Etherium,
         Ripple,
         Monero,

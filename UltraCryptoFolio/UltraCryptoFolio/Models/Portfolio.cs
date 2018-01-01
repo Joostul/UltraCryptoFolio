@@ -136,15 +136,6 @@ namespace UltraCryptoFolio.Models
             return percentHoldings;
         }
 
-        // TODO: Implement spends
-        public decimal TotalSpent
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
         public decimal TotalProfit
         {
             get

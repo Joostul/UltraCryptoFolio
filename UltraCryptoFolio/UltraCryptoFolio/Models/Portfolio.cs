@@ -92,13 +92,12 @@ namespace UltraCryptoFolio.Models
                     //    valueOfOne = priceGetter.GetDollarPriceOfAsync(value.CryptoCurrency).Result;
                     //}
 
-                    //if (value.CryptoCurrency == CryptoCurrency.Bitcoin || value.CryptoCurrency == CryptoCurrency.BitcoinCash || value.CryptoCurrency == CryptoCurrency.Monero)
+                    if (value.CryptoCurrency == CryptoCurrency.Stellar)
                     {
-                        value.MonetaryValue = (long)((valueOfOne * value.Amount) / 100000000);
-                    }
-                    //else
+                        value.MonetaryValue = (valueOfOne * value.Amount);
+                    } else
                     {
-                       // value.MonetaryValue = (long)(valueOfOne * value.Amount);
+                        value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
                     }
                 }
             }

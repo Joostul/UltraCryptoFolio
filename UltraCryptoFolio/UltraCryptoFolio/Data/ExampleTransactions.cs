@@ -166,6 +166,14 @@ namespace UltraCryptoFolio.Data
                 ReceivingCurrency = CryptoCurrency.BitcoinGold,
                 SpendingCurrency = CryptoCurrency.Bitcoin
             },
+            new Divestment()
+            {
+                AmountReceived = 259.00m,
+                AmountSpent = 100000000,
+                DateTime = new DateTime(2017,8,21),
+                SpendingCurrency = CryptoCurrency.BitcoinCash,
+                ReceivingCurrency = Currency.Euro
+            },
             new Trade()
             {
                 AmountReceived = 414135088,
@@ -181,6 +189,38 @@ namespace UltraCryptoFolio.Data
                 DateTime = new DateTime(2017,12,20),
                 ReceivingCurrency = CryptoCurrency.Monero,
                 SpendingCurrency = CryptoCurrency.BitcoinGold
+            },
+            new Trade()
+            {
+                AmountReceived = 662,
+                AmountSpent = 9759681,
+                DateTime = new DateTime(2017,12,30),
+                ReceivingCurrency = CryptoCurrency.Stellar,
+                SpendingCurrency = CryptoCurrency.BitcoinCash
+            },
+            new Trade()
+            {
+                AmountReceived = 13100000000,
+                AmountSpent = 20000000,
+                DateTime = new DateTime(2017,1,1),
+                ReceivingCurrency = CryptoCurrency.IOTA,
+                SpendingCurrency = CryptoCurrency.BitcoinCash
+            },
+            new Trade()
+            {
+                AmountReceived = 619000000,
+                AmountSpent = 20000000,
+                DateTime = new DateTime(2017,1,1),
+                ReceivingCurrency = CryptoCurrency.NEO,
+                SpendingCurrency = CryptoCurrency.BitcoinCash
+            },
+            new Trade()
+            {
+                AmountReceived = 4739423057,
+                AmountSpent = 50000000,
+                DateTime = new DateTime(2017,1,1),
+                ReceivingCurrency = CryptoCurrency.RaiBlocks,
+                SpendingCurrency = CryptoCurrency.BitcoinCash
             }
         };
     }

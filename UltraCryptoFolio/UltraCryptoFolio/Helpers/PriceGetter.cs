@@ -25,7 +25,6 @@ namespace UltraCryptoFolio.Helpers
 
         public async Task<decimal> GetEuroPriceOfAsync(CryptoCurrency cryptoCurrency)
         {
-
             HttpResponseMessage response = new HttpResponseMessage();
 
             switch (cryptoCurrency)
@@ -76,42 +75,54 @@ namespace UltraCryptoFolio.Helpers
             return 0;
         }
 
-        //public async Task<double> GetDollarPriceOfAsync(Currency currency)
-        //{
-        //    HttpResponseMessage response = new HttpResponseMessage();
-
-        //    switch (currency)
-        //    {
-        //        case Currency.Unknown:
-        //        case Currency.Dollar:
-        //            return 1;
-        //        case Currency.Euro:
-        //            return 0;
-        //        case Currency.BitcoinCash:
-        //            response = await client.GetAsync("bitcoin-cash");
-        //            break;
-        //        case Currency.Bitcoin:
-        //        case Currency.Etherium:
-        //        case Currency.Ripple:
-        //        case Currency.Monero:
-        //            response = await client.GetAsync(currency.ToString().ToLower());
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var jsonData = response.Content.ReadAsStringAsync().Result;
-        //        dynamic data = JArray.Parse(jsonData);
-        //        return data[0].price_usd;
-        //    }
-
-        //    return 0;
-        //}
-
-        public async Task<decimal> GetPriceOnDate(CryptoCurrency cryptoCurrency, DateTime dateTime, Currency currency)
+        public async Task<decimal> GetEuroPriceOnDateAsync(CryptoCurrency cryptoCurrency, DateTime dateTime)
         {
+            HttpResponseMessage response = new HttpResponseMessage();
 
+            var unixTimeStamp = (Int32)(dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+
+            switch (cryptoCurrency)
+            {
+                case CryptoCurrency.Bitcoin:
+                    response = await client.GetAsync("dayAvg?fsym=BTC&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.BitcoinCash:
+                    response = await client.GetAsync("dayAvg?fsym=BCH&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.BitcoinGold:
+                    response = await client.GetAsync("dayAvg?fsym=BTG&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.Ethereum:
+                    response = await client.GetAsync("dayAvg?fsym=ETHtsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.Ripple:
+                    response = await client.GetAsync("dayAvg?fsym=XRP&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.Monero:
+                    response = await client.GetAsync("dayAvg?fsym=XMR&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.IOTA:
+                    response = await client.GetAsync("dayAvg?fsym=IOT&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.NEO:
+                    response = await client.GetAsync("dayAvg?fsym=NEO&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.Stellar:
+                    response = await client.GetAsync("dayAvg?fsym=XLM&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                case CryptoCurrency.RaiBlocks:
+                    response = await client.GetAsync("dayAvg?fsym=XRB&tsym=EUR&toTs=" + unixTimeStamp);
+                    break;
+                default:
+                    return 0;
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = response.Content.ReadAsStringAsync().Result;
+                var data = JObject.Parse(jsonData);
+                var dataValue = data.Value<decimal>("EUR");
+                return dataValue;
+            }
 
             return 0;
         }

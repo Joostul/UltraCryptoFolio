@@ -36,7 +36,7 @@ namespace UltraCryptoFolio.Helpers
                 case CryptoCurrency.Stellar:
                 case CryptoCurrency.IOTA:
                 case CryptoCurrency.Bitcoin:
-                case CryptoCurrency.Etherium:
+                case CryptoCurrency.Ethereum:
                 case CryptoCurrency.Ripple:
                 case CryptoCurrency.Monero:
                     response = await client.GetAsync(cryptoCurrency.ToString().ToLower() + "/?convert=EUR");

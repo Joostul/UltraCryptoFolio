@@ -5,7 +5,7 @@
         Bitcoin,
         BitcoinCash,
         BitcoinGold,
-        Etherium,
+        Ethereum,
         Ripple,
         Monero,
         IOTA,

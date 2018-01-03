@@ -221,6 +221,14 @@ namespace UltraCryptoFolio.Data
                 DateTime = new DateTime(2017,1,1),
                 ReceivingCurrency = CryptoCurrency.RaiBlocks,
                 SpendingCurrency = CryptoCurrency.BitcoinCash
+            },
+            new Trade()
+            {
+                AmountReceived = 296135160,
+                AmountSpent = 100000000,
+                DateTime = new DateTime(2017,1,1),
+                ReceivingCurrency = CryptoCurrency.Ethereum,
+                SpendingCurrency = CryptoCurrency.BitcoinCash
             }
         };
     }

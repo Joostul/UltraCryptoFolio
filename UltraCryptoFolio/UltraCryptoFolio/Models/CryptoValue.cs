@@ -26,7 +26,8 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Investment).Cast<Investment>().ToList();
+                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Investment).Cast<Investment>()
+                    .Where(i => i.ReceivingCurrency == CryptoCurrency).ToList();
             }
         }
 
@@ -34,7 +35,8 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>().ToList();
+                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>().ToList()
+                    .Where(i => i.SpendingCurrency == CryptoCurrency).ToList();
             }
         }
 
@@ -42,7 +44,8 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Trade).Cast<Trade>().ToList();
+                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Trade).Cast<Trade>().ToList()
+                    .Where(i => i.ReceivingCurrency == CryptoCurrency || i.SpendingCurrency == CryptoCurrency).ToList();
             }
         }
 
@@ -50,7 +53,17 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Spend).Cast<Spend>().ToList();
+                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Spend).Cast<Spend>().ToList()
+                    .Where(i => i.SpendingCurrency == CryptoCurrency).ToList();
+            }
+        }
+
+        public List<Dividend> Dividends
+        {
+            get
+            {
+                return ExampleTransactions.Transactions.Where(t => t.TransactionType == TransactionType.Dividend).Cast<Dividend>().ToList()
+                    .Where(i => i.ReceivingCurrency == CryptoCurrency).ToList();
             }
         }
 
@@ -69,6 +82,14 @@ namespace UltraCryptoFolio.Models
             {
                 return (Divestments.Sum(i => i.AmountReceived) 
                     + Trades.Where(t => t.SpendingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth));
+            }
+        }
+
+        public decimal CurrentProfit
+        {
+            get
+            {
+                return Math.Round(AmountDivested + Dividends.Sum(d => d.TransactionWorth) - AmountInvested + MonetaryValue, 2);
             }
         }
     }

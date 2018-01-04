@@ -12,22 +12,22 @@
             <th>Currency</th>
             <th>Amount (in sathosi or tokens)</th>
             <th>Value (@Model.MonetaryCurrency)</th>
-            <th>% holdings</th>
             <th>Invested</th>
             <th>Profit</th>
+            <th>% holdings</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var value in Model.CryptoValues)
         {
-            <tr>
-                <td>@value.CryptoCurrency</td>
-                <td>@value.Amount.ToString("N0")</td>
-                <td>@value.MonetaryValue</td>
-                <td>@Model.GetPercentHoldings(value.CryptoCurrency) %</td>
-                <td></td>
-                <td></td>
-            </tr>
+        <tr>
+            <td>@value.CryptoCurrency</td>
+            <td>@value.Amount.ToString("N0")</td>
+            <td>@value.MonetaryValue</td>
+            <td>@value.AmountInvested</td>
+            <td>@value.CurrentProfit</td>
+            <td>@Model.GetPercentHoldings(value.CryptoCurrency) %</td>
+        </tr>
         }
     </tbody>
 </table>

@@ -5,14 +5,14 @@ using UltraCryptoFolio.Helpers;
 
 namespace UltraCryptoFolio.Models
 {
-    public class Spend : Transaction
+    public class Dividend : Transaction
     {
         [Required]
-        [Description("Amount spent in satoshi or cents.")]
-        public long AmountSpent { get; set; }
+        [Description("Amount received in satoshi or cents.")]
+        public long AmountReceived { get; set; }
         [Required]
-        public CryptoCurrency SpendingCurrency { get; set; }
-        public override TransactionType TransactionType => TransactionType.Spend;
+        public CryptoCurrency ReceivingCurrency { get; set; }
+        public override TransactionType TransactionType => TransactionType.Dividend;
         private decimal _transactionWorth;
         public override decimal TransactionWorth
         {
@@ -22,13 +22,13 @@ namespace UltraCryptoFolio.Models
                 {
                     using (var priceGetter = new PriceGetter())
                     {
-                        if (SpendingCurrency == CryptoCurrency.Stellar)
+                        if (ReceivingCurrency == CryptoCurrency.Stellar)
                         {
-                            _transactionWorth = (priceGetter.GetEuroPriceOnDateAsync(SpendingCurrency, DateTime).Result * AmountSpent);
+                            _transactionWorth = (priceGetter.GetEuroPriceOnDateAsync(ReceivingCurrency, DateTime).Result * AmountReceived);
                         }
                         else
                         {
-                            _transactionWorth = ((priceGetter.GetEuroPriceOnDateAsync(SpendingCurrency, DateTime).Result * AmountSpent) / 100000000);
+                            _transactionWorth = ((priceGetter.GetEuroPriceOnDateAsync(ReceivingCurrency, DateTime).Result * AmountReceived) / 100000000);
                         }
                     }
                 }

@@ -144,13 +144,11 @@ namespace UltraCryptoFolio.Data
                 ReceivingCurrency = CryptoCurrency.BitcoinCash,
                 SpendingCurrency = Currency.Euro
             },
-            new Trade()
+            new Dividend()
             {
                 AmountReceived = 50000000,
-                AmountSpent = 0,
                 DateTime = new DateTime(2017,8,1),
-                ReceivingCurrency = CryptoCurrency.BitcoinCash,
-                SpendingCurrency = CryptoCurrency.Bitcoin
+                ReceivingCurrency = CryptoCurrency.BitcoinCash
             },
             new Spend()
             {
@@ -158,13 +156,11 @@ namespace UltraCryptoFolio.Data
                 DateTime = new DateTime(2017,8,1),
                 SpendingCurrency = CryptoCurrency.Bitcoin
             },
-            new Trade()
+            new Dividend()
             {
                 AmountReceived = 50000000,
-                AmountSpent = 0,
-                DateTime = new DateTime(2017,8,8),
-                ReceivingCurrency = CryptoCurrency.BitcoinGold,
-                SpendingCurrency = CryptoCurrency.Bitcoin
+                DateTime = new DateTime(2018,1,1),
+                ReceivingCurrency = CryptoCurrency.BitcoinGold
             },
             new Divestment()
             {
@@ -202,7 +198,7 @@ namespace UltraCryptoFolio.Data
             {
                 AmountReceived = 13100000000,
                 AmountSpent = 20000000,
-                DateTime = new DateTime(2017,1,1),
+                DateTime = new DateTime(2018,1,1),
                 ReceivingCurrency = CryptoCurrency.IOTA,
                 SpendingCurrency = CryptoCurrency.BitcoinCash
             },
@@ -210,7 +206,7 @@ namespace UltraCryptoFolio.Data
             {
                 AmountReceived = 619000000,
                 AmountSpent = 20000000,
-                DateTime = new DateTime(2017,1,1),
+                DateTime = new DateTime(2018,1,1),
                 ReceivingCurrency = CryptoCurrency.NEO,
                 SpendingCurrency = CryptoCurrency.BitcoinCash
             },
@@ -218,7 +214,7 @@ namespace UltraCryptoFolio.Data
             {
                 AmountReceived = 4739423057,
                 AmountSpent = 50000000,
-                DateTime = new DateTime(2017,1,1),
+                DateTime = new DateTime(2018,1,1),
                 ReceivingCurrency = CryptoCurrency.RaiBlocks,
                 SpendingCurrency = CryptoCurrency.BitcoinCash
             },
@@ -226,7 +222,7 @@ namespace UltraCryptoFolio.Data
             {
                 AmountReceived = 296135160,
                 AmountSpent = 100000000,
-                DateTime = new DateTime(2017,1,1),
+                DateTime = new DateTime(2018,1,1),
                 ReceivingCurrency = CryptoCurrency.Ethereum,
                 SpendingCurrency = CryptoCurrency.BitcoinCash
             }

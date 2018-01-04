@@ -51,9 +51,13 @@ namespace UltraCryptoFolio.Models
                     t => t.TransactionType == TransactionType.Trade).Cast<Trade>().ToList();
                 var spends = transactions.Where(
                     t => t.TransactionType == TransactionType.Spend).Cast<Spend>().ToList();
+                var dividends = transactions.Where(
+                    t => t.TransactionType == TransactionType.Dividend).Cast<Dividend>().ToList();
 
                 totalAmountCryptoCurrency = (investments.Where(i => i.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(i => i.AmountReceived)
+                    + dividends.Where(d => d.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
+                    .Sum(d => d.AmountReceived)
                     - divestments.Where(d => d.SpendingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(d => d.AmountSpent)
                     + trades.Where(t => t.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
@@ -87,10 +91,6 @@ namespace UltraCryptoFolio.Models
                     {
                         valueOfOne = priceGetter.GetEuroPriceOfAsync(value.CryptoCurrency).Result;
                     }
-                    //if (MonetaryCurrency == Currency.Dollar)
-                    //{
-                    //    valueOfOne = priceGetter.GetDollarPriceOfAsync(value.CryptoCurrency).Result;
-                    //}
 
                     if (value.CryptoCurrency == CryptoCurrency.Stellar)
                     {

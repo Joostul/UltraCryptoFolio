@@ -5,6 +5,7 @@
         Investment,
         Trade,
         Spend,
-        Divestment
+        Divestment,
+        Dividend
     }
 }

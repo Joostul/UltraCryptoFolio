@@ -15,16 +15,19 @@
 <table class="table table-responsive">
     <thead>
         <tr>
+            <th>Transaction Type</th>
             <th>Date</th>
             <th>Spending currency</th>
             <th>Amount spent</th>
             <th>Receiving currency</th>
             <th>Amount received</th>
+            <th>Transaction worth</th>
         </tr>
     </thead>
     @foreach (var transaction in Model)
     {
         <tr>
+            <td>@transaction.TransactionType</td>
             <td>@transaction.DateTime.Date.ToString("yyyy-MM-dd")</td>
             @switch (transaction.TransactionType)
             {
@@ -34,6 +37,7 @@
                     <td>@investment.AmountSpent</td>
                     <td>@investment.ReceivingCurrency</td>
                     <td>@investment.AmountReceived.ToString("N0")</td>
+                    <td>@investment.TransactionWorth</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Divestment:
                     var divestment = (UltraCryptoFolio.Models.Divestment)transaction;
@@ -41,6 +45,7 @@
                     <td>@divestment.AmountSpent.ToString("N0")</td>
                     <td>@divestment.ReceivingCurrency</td>
                     <td>@divestment.AmountReceived</td>
+                    <td>@divestment.TransactionWorth</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Spend:
                     var spend = (UltraCryptoFolio.Models.Spend)transaction;
@@ -48,6 +53,7 @@
                     <td>@spend.AmountSpent.ToString("N0")</td>
                     <td>-</td>
                     <td>-</td>
+                    <td>@spend.TransactionWorth</td>
                     break;
                 case UltraCryptoFolio.Models.TransactionType.Trade:
                     var trade = (UltraCryptoFolio.Models.Trade)transaction;
@@ -55,6 +61,15 @@
                     <td>@trade.AmountSpent.ToString("N0")</td>
                     <td>@trade.ReceivingCurrency</td>
                     <td>@trade.AmountReceived.ToString("N0")</td>
+                    <td>@trade.TransactionWorth</td>
+                    break;
+                case UltraCryptoFolio.Models.TransactionType.Dividend:
+                    var dividend = (UltraCryptoFolio.Models.Dividend)transaction;
+                    <td>-</td>
+                    <td>-</td>
+                    <td>@dividend.ReceivingCurrency</td>
+                    <td>@dividend.AmountReceived.ToString("N0")</td>
+                    <td>@dividend.TransactionWorth</td>
                     break;
                 default:
                     break;

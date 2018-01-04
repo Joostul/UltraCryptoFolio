@@ -25,7 +25,7 @@
     @foreach (var transaction in Model)
     {
         <tr>
-            <td>@transaction.DateTime.Date</td>
+            <td>@transaction.DateTime.Date.ToString("yyyy-MM-dd")</td>
             @switch (transaction.TransactionType)
             {
                 case UltraCryptoFolio.Models.TransactionType.Investment:

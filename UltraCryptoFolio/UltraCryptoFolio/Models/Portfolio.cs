@@ -25,11 +25,11 @@ namespace UltraCryptoFolio.Models
                     t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>().ToList();
 
                 totalAmountCurrency = (divestments.Where(d => d.ReceivingCurrency == (Currency)currency)
-                    .Sum(d => d.AmountReceived)) 
-                    - (investments.Where(i=> i.SpendingCurrency == (Currency)currency)
+                    .Sum(d => d.AmountReceived))
+                    - (investments.Where(i => i.SpendingCurrency == (Currency)currency)
                     .Sum(i => i.AmountSpent));
 
-                if(totalAmountCurrency != 0)
+                if (totalAmountCurrency != 0)
                 {
                     MonetaryValues.Add(new MonetaryValue()
                     {
@@ -95,7 +95,8 @@ namespace UltraCryptoFolio.Models
                     if (value.CryptoCurrency == CryptoCurrency.Stellar)
                     {
                         value.MonetaryValue = (valueOfOne * value.Amount);
-                    } else
+                    }
+                    else
                     {
                         value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
                     }
@@ -134,6 +135,16 @@ namespace UltraCryptoFolio.Models
             var percentHoldings = Math.Round(((cryptoValue / TotalCryptoValue) * 100), 2);
 
             return percentHoldings;
+        }
+
+        public decimal GetPercentGrowth(CryptoCurrency cryptoCurrency)
+        {
+            var cryptoValue = CryptoValues.FirstOrDefault(c => c.CryptoCurrency == cryptoCurrency);
+
+            var profit = cryptoValue.CurrentProfit;
+            var invested = cryptoValue.AmountInvested - cryptoValue.AmountDivested - cryptoValue.AmountSpent;
+
+            return Math.Round(((profit / invested) * 100), 2);
         }
 
         public decimal TotalProfit

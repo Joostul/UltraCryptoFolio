@@ -85,11 +85,20 @@ namespace UltraCryptoFolio.Models
             }
         }
 
+        public decimal AmountSpent
+        {
+            get
+            {
+                return (Spends.Sum(s => s.TransactionWorth));
+            }
+        }
+
+
         public decimal CurrentProfit
         {
             get
             {
-                return Math.Round(AmountDivested + Dividends.Sum(d => d.TransactionWorth) - AmountInvested + MonetaryValue, 2);
+                return Math.Round(AmountDivested + Dividends.Sum(d => d.TransactionWorth) + AmountSpent - AmountInvested + MonetaryValue, 2);
             }
         }
     }

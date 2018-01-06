@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Data;
+using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Controllers
@@ -9,12 +10,11 @@ namespace UltraCryptoFolio.Controllers
     {
         private List<Transaction> _transactions = ExampleTransactions.Transactions;
 
-        private Portfolio _currencyPortfolio = new Portfolio();
+        private Portfolio _currencyPortfolio;
 
         public IActionResult Index()
         {
-            _currencyPortfolio.BuildPortfolioFromTransacions(_transactions);
-            _currencyPortfolio.CalculateMonetaryValue(Currency.Euro);
+            _currencyPortfolio = new Portfolio(new PriceGetter(), _transactions);
 
             return View(_currencyPortfolio);
         }

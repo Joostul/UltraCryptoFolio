@@ -1,27 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UltraCryptoFolio.Helpers;
 
 namespace UltraCryptoFolio.Models
 {
     public class Portfolio
     {
-        public Portfolio()
+        private IPriceGetter _priceGetter;
+
+        public List<Transaction> Transactions;
+        public List<CryptoValue> CryptoValues { get; set; }
+        public List<MonetaryValue> MonetaryValues { get; set; }
+        public Currency MonetaryCurrency { get; set; }
+
+        public Portfolio(IPriceGetter priceGetter, List<Transaction> transactions)
         {
+            _priceGetter = priceGetter;
+            Transactions = transactions;
             CryptoValues = new List<CryptoValue>();
             MonetaryValues = new List<MonetaryValue>();
+
+            CalculateTransactionsWorth();
+            CalculateMonetaryValues();
+            CalculateCryptoValues();
         }
 
-        public void BuildPortfolioFromTransacions(List<Transaction> transactions)
+        private void CalculateMonetaryValues()
         {
             foreach (var currency in Enum.GetValues(typeof(Currency)))
             {
                 decimal totalAmountCurrency = 0;
 
-                var investments = transactions.Where(
+                var investments = Transactions.Where(
                     t => t.TransactionType == TransactionType.Investment).Cast<Investment>().ToList();
-                var divestments = transactions.Where(
+                var divestments = Transactions.Where(
                     t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>().ToList();
 
                 totalAmountCurrency = (divestments.Where(d => d.ReceivingCurrency == (Currency)currency)
@@ -38,77 +50,116 @@ namespace UltraCryptoFolio.Models
                     });
                 }
             }
+        }
 
+        private void CalculateCryptoValues()
+        {
             foreach (var cryptoCurrency in Enum.GetValues(typeof(CryptoCurrency)))
             {
                 long totalAmountCryptoCurrency = 0;
 
-                var investments = transactions.Where(
-                    t => t.TransactionType == TransactionType.Investment).Cast<Investment>().ToList();
-                var divestments = transactions.Where(
-                    t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>().ToList();
-                var trades = transactions.Where(
-                    t => t.TransactionType == TransactionType.Trade).Cast<Trade>().ToList();
-                var spends = transactions.Where(
-                    t => t.TransactionType == TransactionType.Spend).Cast<Spend>().ToList();
-                var dividends = transactions.Where(
-                    t => t.TransactionType == TransactionType.Dividend).Cast<Dividend>().ToList();
+                var investments = Transactions.Where(
+                    t => t.TransactionType == TransactionType.Investment).Cast<Investment>()
+                    .Where(i => i.ReceivingCurrency == (CryptoCurrency)cryptoCurrency).ToList();
+                var divestments = Transactions.Where(
+                    t => t.TransactionType == TransactionType.Divestment).Cast<Divestment>()
+                    .Where(d => d.SpendingCurrency == (CryptoCurrency)cryptoCurrency).ToList();
+                var trades = Transactions.Where(
+                    t => t.TransactionType == TransactionType.Trade).Cast<Trade>()
+                    .Where(t => t.ReceivingCurrency == (CryptoCurrency)cryptoCurrency || t.SpendingCurrency == (CryptoCurrency)cryptoCurrency).ToList();
+                var spends = Transactions.Where(
+                    t => t.TransactionType == TransactionType.Spend).Cast<Spend>()
+                    .Where(t => t.SpendingCurrency == (CryptoCurrency)cryptoCurrency).ToList();
+                var dividends = Transactions.Where(
+                    t => t.TransactionType == TransactionType.Dividend).Cast<Dividend>()
+                    .Where(d => d.ReceivingCurrency == (CryptoCurrency)cryptoCurrency).ToList();
 
-                totalAmountCryptoCurrency = (investments.Where(i => i.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
-                    .Sum(i => i.AmountReceived)
-                    + dividends.Where(d => d.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
-                    .Sum(d => d.AmountReceived)
-                    - divestments.Where(d => d.SpendingCurrency == (CryptoCurrency)cryptoCurrency)
-                    .Sum(d => d.AmountSpent)
+                totalAmountCryptoCurrency = (investments.Sum(i => i.AmountReceived)
+                    + dividends.Sum(d => d.AmountReceived)
+                    - divestments.Sum(d => d.AmountSpent)
                     + trades.Where(t => t.ReceivingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(t => t.AmountReceived)
                     - trades.Where(t => t.SpendingCurrency == (CryptoCurrency)cryptoCurrency)
                     .Sum(t => t.AmountSpent)
-                    - spends.Where(t => t.SpendingCurrency == (CryptoCurrency)cryptoCurrency)
-                    .Sum(t => t.AmountSpent));
+                    - spends.Sum(t => t.AmountSpent));
 
-                if (totalAmountCryptoCurrency != 0)
+                if (totalAmountCryptoCurrency != 0 || investments.Count > 0 || trades.Count > 0 || dividends.Count > 0)
                 {
                     CryptoValues.Add(new CryptoValue()
                     {
                         CryptoCurrency = (CryptoCurrency)cryptoCurrency,
-                        Amount = totalAmountCryptoCurrency
+                        Amount = totalAmountCryptoCurrency,
+                        Investments = investments,
+                        Divestments = divestments,
+                        Dividends = dividends,
+                        Spends = spends,
+                        Trades = trades
                     });
                 }
             }
         }
 
-        public void CalculateMonetaryValue(Currency currency)
+        private void CalculateMonetaryValueOfCryptoCurrenciesIn(Currency currency)
         {
+            CalculateTransactionsWorth();
+
             MonetaryCurrency = currency;
-
-            using (var priceGetter = new PriceGetter())
+            foreach (var value in CryptoValues)
             {
-                foreach (var value in CryptoValues)
+                decimal valueOfOne = 0;
+                if (MonetaryCurrency == Currency.Euro)
                 {
-                    decimal valueOfOne = 0;
-                    if (MonetaryCurrency == Currency.Euro)
-                    {
-                        valueOfOne = priceGetter.GetEuroPriceOfAsync(value.CryptoCurrency).Result;
-                    }
+                    valueOfOne = _priceGetter.GetEuroPriceOfAsync(value.CryptoCurrency).Result;
+                }
 
-                    if (value.CryptoCurrency == CryptoCurrency.Stellar)
-                    {
-                        value.MonetaryValue = (valueOfOne * value.Amount);
-                    }
-                    else
-                    {
-                        value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
-                    }
+                if (value.CryptoCurrency == CryptoCurrency.Stellar)
+                {
+                    value.MonetaryValue = (valueOfOne * value.Amount);
+                }
+                else
+                {
+                    value.MonetaryValue = ((valueOfOne * value.Amount) / 100000000);
                 }
             }
         }
 
-        public List<CryptoValue> CryptoValues { get; set; }
-        public List<MonetaryValue> MonetaryValues { get; set; }
-        public Currency MonetaryCurrency { get; set; }
+        public void CalculateTransactionsWorth()
+        {
+            foreach (var transaction in Transactions)
+            {
+                if (transaction.TransactionWorth == 0)
+                {
+                    switch (transaction.TransactionType)
+                    {
+                        case TransactionType.Investment:
+                            var investment = (Investment)transaction;
+                            transaction.TransactionWorth = investment.AmountSpent;
+                            break;
+                        case TransactionType.Trade:
+                            var trade = (Trade)transaction;
+                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(trade.SpendingCurrency, trade.DateTime).Result;
+                            break;
+                        case TransactionType.Spend:
+                            var spend = (Spend)transaction;
+                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(spend.SpendingCurrency, spend.DateTime).Result;
+                            break;
+                        case TransactionType.Divestment:
+                            var divestment = (Divestment)transaction;
+                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(divestment.SpendingCurrency, divestment.DateTime).Result;
+                            break;
+                        case TransactionType.Dividend:
+                            var dividend = (Dividend)transaction;
+                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(dividend.ReceivingCurrency, dividend.DateTime).Result;
+                            break;
+                        default:
+                            break;
+                    }
+                }
 
-        public decimal TotalCryptoValue
+            }
+        }
+
+        public decimal PortfolioCryptoValue
         {
             get
             {
@@ -116,7 +167,7 @@ namespace UltraCryptoFolio.Models
             }
         }
 
-        public decimal TotalMonetaryValue
+        public decimal PortfolioMonetaryValue
         {
             get
             {
@@ -126,15 +177,30 @@ namespace UltraCryptoFolio.Models
 
         public decimal GetCryptoValue(CryptoCurrency cryptoCurrency)
         {
-            return CryptoValues.FirstOrDefault(c => c.CryptoCurrency == cryptoCurrency).MonetaryValue;
+            decimal monetaryValueOfCrypto = 0;
+
+            //do
+            {
+                CalculateMonetaryValueOfCryptoCurrenciesIn(MonetaryCurrency);
+                monetaryValueOfCrypto = CryptoValues.FirstOrDefault(c => c.CryptoCurrency == cryptoCurrency).MonetaryValue;
+
+            } //while (monetaryValueOfCrypto == 0);
+
+            return monetaryValueOfCrypto;
         }
 
         public decimal GetPercentHoldings(CryptoCurrency cryptoCurrency)
         {
             var cryptoValue = GetCryptoValue(cryptoCurrency);
-            var percentHoldings = Math.Round(((cryptoValue / TotalCryptoValue) * 100), 2);
-
-            return percentHoldings;
+            if(cryptoValue == 0m)
+            {
+                return 0m;
+            }
+            else
+            {
+                var percentHoldings = Math.Round(((cryptoValue / PortfolioCryptoValue) * 100), 2);
+                return percentHoldings;
+            }
         }
 
         public decimal GetPercentGrowth(CryptoCurrency cryptoCurrency)
@@ -151,7 +217,7 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return TotalCryptoValue + TotalMonetaryValue;
+                return PortfolioCryptoValue + PortfolioMonetaryValue;
             }
         }
     }

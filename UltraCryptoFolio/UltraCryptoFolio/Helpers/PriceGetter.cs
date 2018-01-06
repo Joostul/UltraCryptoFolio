@@ -7,7 +7,7 @@ using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Helpers
 {
-    public class PriceGetter : IDisposable
+    public class PriceGetter : IPriceGetter
     {
         private static HttpClient client;
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace UltraCryptoFolio.Models
@@ -18,12 +17,5 @@ namespace UltraCryptoFolio.Models
         public Currency ReceivingCurrency { get; set; }
         public int? ExchangeRate { get; set; }
         public override TransactionType TransactionType => TransactionType.Divestment;
-        public override decimal TransactionWorth
-        {
-            get
-            {
-                return Math.Round(AmountReceived, 2);
-            }
-        }
     }
 }

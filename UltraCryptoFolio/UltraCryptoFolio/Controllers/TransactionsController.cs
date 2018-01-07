@@ -34,6 +34,10 @@ namespace UltraCryptoFolio.Controllers
         {
             return View("NewDivestment");
         }
+        public IActionResult NewDividend()
+        {
+            return View("NewDividend");
+        }
 
         [HttpPost]
         public IActionResult NewDivestment(DivestmentViewModel divestmentViewModel)
@@ -120,6 +124,26 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(spend);
+            }
+
+            return View("Index", _transactions);
+        }
+
+        [HttpPost]
+        public IActionResult NewDividend(DividendViewModel dividendViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Dividend dividend = new Dividend()
+                {
+                    AmountReceived = dividendViewModel.AmountReceived,
+                    DateTime = dividendViewModel.DateTime,
+                    Fee = dividendViewModel.Fee,
+                    ReceivingCurrency = dividendViewModel.ReceivingCurrency,
+                    TransactionType = TransactionType.Dividend
+                };
+
+                _transactions.Add(dividend);
             }
 
             return View("Index", _transactions);

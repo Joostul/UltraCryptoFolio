@@ -10,13 +10,11 @@ namespace UltraCryptoFolio.Controllers
     {
         private List<Transaction> _transactions = ExampleTransactions.Transactions;
 
-        private Portfolio _currencyPortfolio;
-
         public IActionResult Index()
         {
-            _currencyPortfolio = new Portfolio(new PriceGetter(), _transactions);
+            var currencyPortfolio = new Portfolio(new PriceGetter(), _transactions);
 
-            return View(_currencyPortfolio);
+            return View(currencyPortfolio);
         }
     }
 }

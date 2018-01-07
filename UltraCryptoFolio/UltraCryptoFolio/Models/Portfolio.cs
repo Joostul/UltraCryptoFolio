@@ -31,27 +31,32 @@ namespace UltraCryptoFolio.Models
             {
                 if (transaction.TransactionWorth == 0)
                 {
+                    decimal valueOfOneCrypto = 0;
+
                     switch (transaction.TransactionType)
                     {
                         case TransactionType.Investment:
                             var investment = (Investment)transaction;
-                            transaction.TransactionWorth = investment.AmountSpent;
+                            transaction.TransactionWorth = Math.Round(investment.AmountSpent, 2);
                             break;
                         case TransactionType.Trade:
                             var trade = (Trade)transaction;
-                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(trade.SpendingCurrency, trade.DateTime).Result;
+                            valueOfOneCrypto = _priceGetter.GetEuroPriceOnDateAsync(trade.SpendingCurrency, trade.DateTime).Result;
+                            transaction.TransactionWorth = Math.Round(GetMonetaryValueOfCrypto(valueOfOneCrypto, trade.AmountSpent, trade.SpendingCurrency), 2);
                             break;
                         case TransactionType.Spend:
                             var spend = (Spend)transaction;
-                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(spend.SpendingCurrency, spend.DateTime).Result;
+                            valueOfOneCrypto = _priceGetter.GetEuroPriceOnDateAsync(spend.SpendingCurrency, spend.DateTime).Result;
+                            transaction.TransactionWorth = Math.Round(GetMonetaryValueOfCrypto(valueOfOneCrypto, spend.AmountSpent, spend.SpendingCurrency), 2);
                             break;
                         case TransactionType.Divestment:
                             var divestment = (Divestment)transaction;
-                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(divestment.SpendingCurrency, divestment.DateTime).Result;
+                            transaction.TransactionWorth = Math.Round(divestment.AmountReceived, 2);
                             break;
                         case TransactionType.Dividend:
                             var dividend = (Dividend)transaction;
-                            transaction.TransactionWorth = _priceGetter.GetEuroPriceOnDateAsync(dividend.ReceivingCurrency, dividend.DateTime).Result;
+                            valueOfOneCrypto = _priceGetter.GetEuroPriceOnDateAsync(dividend.ReceivingCurrency, dividend.DateTime).Result;
+                            transaction.TransactionWorth = Math.Round(GetMonetaryValueOfCrypto(valueOfOneCrypto, dividend.AmountReceived, dividend.ReceivingCurrency), 2);
                             break;
                     }
                 }
@@ -93,15 +98,7 @@ namespace UltraCryptoFolio.Models
                 if (totalAmountCryptoCurrency != 0 || investments.Count > 0 || trades.Count > 0 || dividends.Count > 0)
                 {
                     var valueOfOneCrypto = _priceGetter.GetEuroPriceOfAsync(cryptoCurrencyType).Result;
-                    decimal monetaryValueOfCrypto = 0;
-                    if (cryptoCurrencyType == CryptoCurrency.Stellar)
-                    {
-                        monetaryValueOfCrypto = (valueOfOneCrypto * totalAmountCryptoCurrency);
-                    }
-                    else
-                    {
-                        monetaryValueOfCrypto = (valueOfOneCrypto * totalAmountCryptoCurrency) / 100000000;
-                    }
+                    decimal monetaryValueOfCrypto = GetMonetaryValueOfCrypto(valueOfOneCrypto, totalAmountCryptoCurrency, cryptoCurrencyType);
 
                     CryptoValues.Add(new CryptoValue()
                     {
@@ -115,6 +112,18 @@ namespace UltraCryptoFolio.Models
                         MonetaryValue = monetaryValueOfCrypto
                     });
                 }
+            }
+        }
+
+        private decimal GetMonetaryValueOfCrypto(decimal valueOfOneCrypto, long amountCrypto, CryptoCurrency cryptoCurrencyType)
+        {
+            if (cryptoCurrencyType == CryptoCurrency.Stellar)
+            {
+                return (valueOfOneCrypto * amountCrypto);
+            }
+            else
+            {
+                return(valueOfOneCrypto * amountCrypto) / 100000000;
             }
         }
 

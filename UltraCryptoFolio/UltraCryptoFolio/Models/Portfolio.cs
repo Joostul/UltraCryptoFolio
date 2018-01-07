@@ -68,7 +68,7 @@ namespace UltraCryptoFolio.Models
             foreach (var cryptoCurrency in Enum.GetValues(typeof(CryptoCurrency)))
             {
                 long totalAmountCryptoCurrency = 0;
-                CryptoCurrency cryptoCurrencyType = (CryptoCurrency)cryptoCurrency; 
+                CryptoCurrency cryptoCurrencyType = (CryptoCurrency)cryptoCurrency;
 
                 var investments = Transactions.Where(
                     t => t.TransactionType == TransactionType.Investment).Cast<Investment>()
@@ -123,7 +123,7 @@ namespace UltraCryptoFolio.Models
             }
             else
             {
-                return(valueOfOneCrypto * amountCrypto) / 100000000;
+                return (valueOfOneCrypto * amountCrypto) / 100000000;
             }
         }
 
@@ -164,22 +164,37 @@ namespace UltraCryptoFolio.Models
 
         public decimal GetPercentGrowth(CryptoCurrency cryptoCurrency)
         {
-            return 50;
+            var cryptoValue = CryptoValues.FirstOrDefault(c => c.CryptoCurrency == cryptoCurrency);
+
+            var currentValue = cryptoValue.MonetaryValue;
+
+            if (cryptoValue.AmountInvested == 0 && currentValue >= 0)
+            {
+                return Decimal.MaxValue;
+            }
+            else if (currentValue == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return Math.Round(((cryptoValue.CurrentProfit) / currentValue) * 100, 2);
+            }
         }
 
         public decimal GetTotalProfit()
         {
-            return 1000;
+            return Math.Round(GetTotalValue() - GetTotalInvestment(), 2);
         }
 
         public decimal GetTotalInvestment()
         {
-            return 1000;
+            return Transactions.Where(t => t.TransactionType == TransactionType.Investment).Sum(t => t.TransactionWorth);
         }
 
         public decimal GetTotalValue()
         {
-            return 1000;
+            return MonetaryValues.Sum(m => m.Amount) + CryptoValues.Sum(c => c.MonetaryValue);
         }
     }
 }

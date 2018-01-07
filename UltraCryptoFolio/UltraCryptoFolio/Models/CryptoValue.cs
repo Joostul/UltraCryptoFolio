@@ -29,8 +29,8 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return (Investments.Sum(i => i.AmountSpent)
-                    + Trades.Where(t => t.ReceivingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth));
+                return Investments.Sum(i => i.AmountSpent)
+                    + Trades.Where(t => t.ReceivingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth);
             }
         }
 
@@ -38,7 +38,7 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return (Divestments.Sum(i => i.AmountReceived)
+                return Divestments.Sum(i => i.AmountReceived
                     + Trades.Where(t => t.SpendingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth));
             }
         }
@@ -47,7 +47,15 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return (Spends.Sum(s => s.TransactionWorth));
+                return Spends.Sum(s => s.TransactionWorth);
+            }
+        }
+
+        public decimal DividendsReceived
+        {
+            get
+            {
+                return Dividends.Sum(d => d.TransactionWorth);
             }
         }
 
@@ -56,7 +64,7 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return Math.Round(AmountDivested + Dividends.Sum(d => d.TransactionWorth) + AmountSpent - AmountInvested + MonetaryValue, 2);
+                return Math.Round(AmountDivested + DividendsReceived + AmountSpent - AmountInvested + MonetaryValue, 2);
             }
         }
     }

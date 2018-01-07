@@ -39,7 +39,6 @@ namespace UltraCryptoFolio.Models
             get
             {
                 return Divestments.Sum(i => i.AmountReceived);
-                    //+ Trades.Where(t => t.SpendingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth));
             }
         }
 

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Data;
+using UltraCryptoFolio.Extensions;
 using UltraCryptoFolio.Models;
 using UltraCryptoFolio.ViewModels;
 
@@ -8,10 +10,38 @@ namespace UltraCryptoFolio.Controllers
 {
     public class TransactionsController : Controller
     {
-        private List<Transaction> _transactions = ExampleTransactions.Transactions;
+        private List<Transaction> _transactions = new List<Transaction>();
+
+        public void SetTransactionList(List<Transaction> transactions)
+        {
+            HttpContext.Session.Set(Constants.SessionKeyInvestments, transactions.Where(t => t.TransactionType == TransactionType.Investment));
+            HttpContext.Session.Set(Constants.SessionKeyDivestments, transactions.Where(t => t.TransactionType == TransactionType.Divestment));
+            HttpContext.Session.Set(Constants.SessionKeySpends, transactions.Where(t => t.TransactionType == TransactionType.Spend));
+            HttpContext.Session.Set(Constants.SessionKeyTrades, transactions.Where(t => t.TransactionType == TransactionType.Trade));
+            HttpContext.Session.Set(Constants.SessionKeyDividends, transactions.Where(t => t.TransactionType == TransactionType.Dividend));
+        }
+
+        public List<Transaction> GetTransactionList()
+        {
+            List<Transaction> transactionList = new List<Transaction>();
+            var investments = HttpContext.Session.Get<List<Investment>>(Constants.SessionKeyInvestments);
+            var divestments = HttpContext.Session.Get<List<Divestment>>(Constants.SessionKeyDivestments);
+            var spends = HttpContext.Session.Get<List<Spend>>(Constants.SessionKeySpends);
+            var trades = HttpContext.Session.Get<List<Trade>>(Constants.SessionKeyTrades);
+            var dividends = HttpContext.Session.Get<List<Dividend>>(Constants.SessionKeyDividends);
+
+            if (investments != null) { transactionList.AddRange(investments); }
+            if (divestments != null) { transactionList.AddRange(divestments); }
+            if (spends != null) { transactionList.AddRange(spends); }
+            if (trades != null) { transactionList.AddRange(trades); }
+            if (dividends != null) { transactionList.AddRange(dividends); }
+
+            return transactionList.OrderByDescending(t => t.DateTime).ToList();
+        }
 
         public IActionResult Index()
         {
+            _transactions = GetTransactionList();
             return View(_transactions);
         }
 
@@ -57,6 +87,8 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(divestment);
+                _transactions.AddRange(GetTransactionList());
+                SetTransactionList(_transactions);
             }
 
             return View("Index", _transactions);
@@ -65,7 +97,6 @@ namespace UltraCryptoFolio.Controllers
         [HttpPost]
         public IActionResult NewInvestment(InvestmentViewModel investmentViewModel)
         {
-
             if (ModelState.IsValid)
             {
                 Investment investment = new Investment()
@@ -81,6 +112,8 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(investment);
+                _transactions.AddRange(GetTransactionList());
+                SetTransactionList(_transactions);
             }
 
             return View("Index", _transactions);
@@ -104,6 +137,8 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(trade);
+                _transactions.AddRange(GetTransactionList());
+                SetTransactionList(_transactions);
             }
 
             return View("Index", _transactions);
@@ -124,6 +159,8 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(spend);
+                _transactions.AddRange(GetTransactionList());
+                SetTransactionList(_transactions);
             }
 
             return View("Index", _transactions);
@@ -144,6 +181,8 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(dividend);
+                _transactions.AddRange(GetTransactionList());
+                SetTransactionList(_transactions);
             }
 
             return View("Index", _transactions);

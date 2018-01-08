@@ -15,7 +15,7 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.Get<List<Transaction>>(Constants.SessionKeyInvestments) != null)
+            if (HttpContext.Session.Get<List<Transaction>>(Constants.SessionKeyInvestments) == null)
             {
                 SetTransactionList(_transactions);
             }

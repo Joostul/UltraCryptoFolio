@@ -15,7 +15,10 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult Index()
         {
-            SetTransactionList(_transactions);
+            if (HttpContext.Session.Get<List<Transaction>>(Constants.SessionKeyInvestments) != null)
+            {
+                SetTransactionList(_transactions);
+            }
 
             var currencyPortfolio = new Portfolio(new PriceGetter(), GetTransactionList());
             SetTransactionList(currencyPortfolio.Transactions);

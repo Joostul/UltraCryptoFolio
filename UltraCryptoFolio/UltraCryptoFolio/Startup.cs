@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 
 namespace UltraCryptoFolio
 {
@@ -25,6 +27,10 @@ namespace UltraCryptoFolio
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+
+            services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
             services.AddMvc();
 
             services.AddDistributedMemoryCache();

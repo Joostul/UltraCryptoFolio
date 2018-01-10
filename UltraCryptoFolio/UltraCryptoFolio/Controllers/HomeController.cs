@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Data;
 using UltraCryptoFolio.Extensions;
 using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace UltraCryptoFolio.Controllers
 {
@@ -27,14 +31,43 @@ namespace UltraCryptoFolio.Controllers
             return View(portfolio);
         }
 
-        public IActionResult ExportPortfolio()
+        public async Task<IActionResult> ExportPortfolio()
         {
-            return View("Index", new Portfolio(new PriceGetter(), GetTransactions()));
+            var portfolio = GetTransactions();
+            var fileName = "UltraCryptoFolio.txt";
+
+            var path = Path.Combine(
+                           Directory.GetCurrentDirectory(), "wwwroot",
+                           fileName);
+
+            using (var file = System.IO.File.CreateText(path))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, portfolio);
+            }
+            var txtfile = File(path, "text/plain", Path.GetFileName(path));
+
+            return txtfile;
+        }
+
+        [HttpPost]
+        public IActionResult ExportPortfolio(FolderLocation folderLocation)
+        {
+            var portfolio = new Portfolio(new PriceGetter(), GetTransactions());
+            var fileName = Path.Combine(folderLocation.FolderLocationString, "UltraCryptoPortfolio", DateTime.UtcNow.Date.ToString(), ".txt");
+
+            using(StreamWriter file = System.IO.File.CreateText(fileName))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, portfolio);
+            }
+
+            return RedirectToAction("Index", portfolio);
         }
 
         public IActionResult ImportPortfolio()
         {
-            return View("Index", new Portfolio(new PriceGetter(), GetTransactions()));
+            return RedirectToAction("Index", new Portfolio(new PriceGetter(), GetTransactions()));
         }
 
         private void SetTransactions(List<Transaction> transactions)

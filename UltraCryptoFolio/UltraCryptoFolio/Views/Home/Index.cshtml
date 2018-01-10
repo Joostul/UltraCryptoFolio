@@ -42,9 +42,7 @@
                 <td>@value.AmountInvested</td>
                 <td>@value.AmountDivested</td>
                 <td>@value.CurrentProfit</td>
-                <td>
-                    @value.AmountSpent
-                </td>
+                <td>@value.AmountSpent</td>
                 <td>@value.DividendsReceived</td>
                 @{
                     var growth = Model.GetPercentGrowth(value.CryptoCurrency);

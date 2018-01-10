@@ -27,7 +27,6 @@ namespace UltraCryptoFolio
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-
             services.AddSingleton<IFileProvider>(
                 new PhysicalFileProvider(
                     Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));

@@ -49,7 +49,15 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult ImportPortfolio()
         {
-            return RedirectToAction("Index", new Portfolio(new PriceGetter(), GetTransactions()));
+            return View("ImportPortfolio");
+        }
+
+        [HttpPost]
+        public IActionResult ImportPortfolio(IFormFile file)
+        {
+
+
+            return View("ImportPortfolio");
         }
 
         // Convert an object to a byte array

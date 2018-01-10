@@ -179,7 +179,7 @@ namespace UltraCryptoFolio.Models
             }
             else
             {
-                return Math.Round(((cryptoValue.MonetaryValue) / cryptoValue.AmountInvested) * 100, 2);
+                return Math.Round(((cryptoValue.MonetaryValue / cryptoValue.AmountInvested)-100) * 100, 2);
             }
         }
 

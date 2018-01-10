@@ -31,7 +31,7 @@ namespace UltraCryptoFolio.Controllers
             return View(portfolio);
         }
 
-        public async Task<IActionResult> ExportPortfolio()
+        public IActionResult ExportPortfolio()
         {
             var portfolio = GetTransactions();
             var fileName = "UltraCryptoFolio.txt";
@@ -48,21 +48,6 @@ namespace UltraCryptoFolio.Controllers
             var txtfile = File(path, "text/plain", Path.GetFileName(path));
 
             return txtfile;
-        }
-
-        [HttpPost]
-        public IActionResult ExportPortfolio(FolderLocation folderLocation)
-        {
-            var portfolio = new Portfolio(new PriceGetter(), GetTransactions());
-            var fileName = Path.Combine(folderLocation.FolderLocationString, "UltraCryptoPortfolio", DateTime.UtcNow.Date.ToString(), ".txt");
-
-            using(StreamWriter file = System.IO.File.CreateText(fileName))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, portfolio);
-            }
-
-            return RedirectToAction("Index", portfolio);
         }
 
         public IActionResult ImportPortfolio()

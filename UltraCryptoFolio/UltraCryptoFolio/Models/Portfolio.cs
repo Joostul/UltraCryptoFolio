@@ -16,7 +16,7 @@ namespace UltraCryptoFolio.Models
         public Portfolio(IPriceGetter priceGetter, List<Transaction> transactions)
         {
             _priceGetter = priceGetter;
-            Transactions = transactions;
+            Transactions = transactions ?? new List<Transaction>();
             CryptoValues = new List<CryptoValue>();
             MonetaryValues = new List<MonetaryValue>();
 
@@ -27,6 +27,7 @@ namespace UltraCryptoFolio.Models
 
         private void CalculateMonetaryValueOfTransactions()
         {
+            if (Transactions.Count < 1) { return; }
             foreach (var transaction in Transactions)
             {
                 if (transaction.TransactionWorth == 0)
@@ -184,10 +185,10 @@ namespace UltraCryptoFolio.Models
 
         public decimal GetTotalProfit()
         {
-            return Math.Round(GetTotalValue() - GetTotalInvestment(), 2);
+            return Math.Round(GetTotalValue() - GetTotalMonetaryInvestment(), 2);
         }
 
-        public decimal GetTotalInvestment()
+        public decimal GetTotalMonetaryInvestment()
         {
             return Transactions.Where(t => t.TransactionType == TransactionType.Investment).Sum(t => t.TransactionWorth);
         }
@@ -195,6 +196,11 @@ namespace UltraCryptoFolio.Models
         public decimal GetTotalValue()
         {
             return MonetaryValues.Sum(m => m.Amount) + CryptoValues.Sum(c => c.MonetaryValue);
+        }
+
+        public decimal GetTotalCryptoValue()
+        {
+            return Math.Round(CryptoValues.Sum(c => c.MonetaryValue), 2);
         }
     }
 }

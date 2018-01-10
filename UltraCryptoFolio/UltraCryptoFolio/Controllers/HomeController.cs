@@ -29,12 +29,12 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult ExportPortfolio()
         {
-            return View("Index", new Portfolio(new PriceGetter(), _transactions));
+            return View("Index", new Portfolio(new PriceGetter(), GetTransactions()));
         }
 
         public IActionResult ImportPortfolio()
         {
-            return View("Index", new Portfolio(new PriceGetter(), _transactions));
+            return View("Index", new Portfolio(new PriceGetter(), GetTransactions()));
         }
 
         private void SetTransactions(List<Transaction> transactions)

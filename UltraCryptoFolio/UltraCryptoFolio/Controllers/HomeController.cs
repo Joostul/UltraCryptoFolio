@@ -15,11 +15,13 @@ namespace UltraCryptoFolio.Controllers
 {
     public class HomeController : Controller
     {
-        private List<Transaction> _transactions;
-
         public IActionResult Index()
         {
+#if DEBUG
+            var _transactions = ExampleTransactions.Transactions;
+#else
             var _transactions = GetTransactions();
+#endif
             if(_transactions.Count < 1)
             {
                 return View(new Portfolio(new PriceGetter(), new List<Transaction>()));

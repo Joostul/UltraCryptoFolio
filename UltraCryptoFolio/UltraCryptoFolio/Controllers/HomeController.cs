@@ -10,6 +10,7 @@ using UltraCryptoFolio.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace UltraCryptoFolio.Controllers
 {
@@ -42,19 +43,28 @@ namespace UltraCryptoFolio.Controllers
                            Directory.GetCurrentDirectory(), "wwwroot",
                            fileName);
 
-            using (var file = System.IO.File.CreateText(path))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, portfolio);
-            }
-            var txtfile = File(path, "text/plain", Path.GetFileName(path));
-
-            return txtfile;
+            byte[] myFile = ObjectToByteArray(portfolio);
+            return File(myFile, "test/plain", fileName);
         }
 
         public IActionResult ImportPortfolio()
         {
             return RedirectToAction("Index", new Portfolio(new PriceGetter(), GetTransactions()));
+        }
+
+        // Convert an object to a byte array
+        private byte[] ObjectToByteArray(Object obj)
+        {
+            if (obj == null)
+                return null;
+            TextWriter textWriter = new StringWriter();
+            JsonSerializer jsonSerializer = new JsonSerializer();
+            jsonSerializer.Serialize(textWriter, obj);
+
+            var encoding = new UTF8Encoding();
+            byte[] bytes = encoding.GetBytes(textWriter.ToString());
+
+            return bytes;
         }
 
         private void SetTransactions(List<Transaction> transactions)

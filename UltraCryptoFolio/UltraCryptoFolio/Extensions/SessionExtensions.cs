@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Extensions
 {

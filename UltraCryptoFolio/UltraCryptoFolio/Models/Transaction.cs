@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using UltraCryptoFolio.Extensions;
 
 namespace UltraCryptoFolio.Models
 {
+    [JsonConverter(typeof(TransactionConverter))]
     public abstract class Transaction
     {
         [Required]

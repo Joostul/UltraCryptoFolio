@@ -9,7 +9,6 @@ using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using System.Text;
 
 namespace UltraCryptoFolio.Controllers
@@ -18,11 +17,11 @@ namespace UltraCryptoFolio.Controllers
     {
         public IActionResult Index()
         {
-#if DEBUG
-            var _transactions = ExampleTransactions.Transactions;
-#else
+//#if DEBUG
+//            var _transactions = ExampleTransactions.Transactions;
+//#else
             var _transactions = GetTransactions();
-#endif
+//#endif
             if(_transactions.Count < 1)
             {
                 return View(new Portfolio(new PriceGetter(), new List<Transaction>()));
@@ -55,9 +54,24 @@ namespace UltraCryptoFolio.Controllers
         [HttpPost]
         public IActionResult ImportPortfolio(IFormFile file)
         {
+            List<Transaction> transactions;
 
+            try
+            {
+                using (var reader = new StreamReader(file.OpenReadStream()))
+                {
+                    transactions = JsonConvert.DeserializeObject<List<Transaction>>(reader.ReadToEnd());
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Not a valid portfolio file.";
+                return View();
+            }
 
-            return View("ImportPortfolio");
+            SetTransactions(transactions);
+
+            return RedirectToAction("Index");
         }
 
         // Convert an object to a byte array
@@ -82,8 +96,6 @@ namespace UltraCryptoFolio.Controllers
             HttpContext.Session.Set(Constants.SessionKeySpends, transactions.Where(t => t.TransactionType == TransactionType.Spend));
             HttpContext.Session.Set(Constants.SessionKeyTrades, transactions.Where(t => t.TransactionType == TransactionType.Trade));
             HttpContext.Session.Set(Constants.SessionKeyDividends, transactions.Where(t => t.TransactionType == TransactionType.Dividend));
-            //HttpContext.Session.Set(Constants.SessionKeyCryptoValues, _portfolio.CryptoValues);
-            //HttpContext.Session.Set(Constants.SessionKeyMonetaryValues, _portfolio.MonetaryValues);
         }
 
         private List<Transaction> GetTransactions()

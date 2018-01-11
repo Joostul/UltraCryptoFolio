@@ -17,11 +17,11 @@ namespace UltraCryptoFolio.Controllers
     {
         public IActionResult Index()
         {
-#if DEBUG
-            var _transactions = ExampleTransactions.Transactions;
-#else
+//#if DEBUG
+//            var _transactions = ExampleTransactions.Transactions;
+//#else
             var _transactions = GetTransactions();
-#endif
+//#endif
             if(_transactions.Count < 1)
             {
                 return View(new Portfolio(new PriceGetter(), new List<Transaction>()));
@@ -55,30 +55,14 @@ namespace UltraCryptoFolio.Controllers
         public IActionResult ImportPortfolio(IFormFile file)
         {
             List<Transaction> transactions;
-            Transaction transaction;
             using (var reader = new StreamReader(file.OpenReadStream()))
             {
-                TransactionConverter transactionConverter = new TransactionConverter();
-                JsonReader jsonReader = new JsonTextReader(reader);
-                JsonSerializer jsonSerializer = new JsonSerializer();
-                transactions = transactionConverter.ReadJson(jsonReader, typeof(Transaction), new Investment(), jsonSerializer);
-
-                //JsonTextReader jsonReader = new JsonTextReader(reader);
-                //transactions = jsonSerializer.Deserialize<List<Transaction>>(jsonReader);
+                transactions = JsonConvert.DeserializeObject<List<Transaction>>(reader.ReadToEnd());
             }
 
+            SetTransactions(transactions);
 
-            //var result = new List<string>();
-            //using (var reader = new StreamReader(file.OpenReadStream()))
-            //{
-            //    while (reader.Peek() >= 0)
-            //        result.Add(reader.ReadLine());
-            //}
-
-            //JsonSerializer jsonSerializer = new JsonSerializer();
-            //var portfolioString = jsonSerializer.Deserialize<Portfolio>(result);
-
-            return View("ImportPortfolio");
+            return RedirectToAction("Index");
         }
 
         // Convert an object to a byte array
@@ -103,8 +87,6 @@ namespace UltraCryptoFolio.Controllers
             HttpContext.Session.Set(Constants.SessionKeySpends, transactions.Where(t => t.TransactionType == TransactionType.Spend));
             HttpContext.Session.Set(Constants.SessionKeyTrades, transactions.Where(t => t.TransactionType == TransactionType.Trade));
             HttpContext.Session.Set(Constants.SessionKeyDividends, transactions.Where(t => t.TransactionType == TransactionType.Dividend));
-            //HttpContext.Session.Set(Constants.SessionKeyCryptoValues, _portfolio.CryptoValues);
-            //HttpContext.Session.Set(Constants.SessionKeyMonetaryValues, _portfolio.MonetaryValues);
         }
 
         private List<Transaction> GetTransactions()

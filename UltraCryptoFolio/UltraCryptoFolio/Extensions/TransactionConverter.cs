@@ -5,40 +5,43 @@ using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Extensions
 {
-    public class TransactionConverter : AbstractJsonConverter<Transaction> 
+    public class TransactionConverter : JsonConverter
     {
-        protected override Transaction Read(JsonReader reader)
+        static JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings()
         {
-            var jsonObject = JObject.Load(reader);
+            ContractResolver = new BaseSpecifiedConcreteClassConverter()
+        };
 
-            Transaction transaction = null;
-            TransactionType transactionType = JsonExtensions.GetPropertyValue(jsonObject, "TransactionType", TransactionType.Investment);
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(Transaction));
+        }
 
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            JObject jo = JObject.Load(reader);
+            TransactionType transactionType = (TransactionType)jo["TransactionType"].Value<int>();
             switch (transactionType)
             {
                 case TransactionType.Investment:
-                    transaction = new Investment();
-                    break;
+                    return JsonConvert.DeserializeObject<Investment>(jo.ToString(), SpecifiedSubclassConversion);
                 case TransactionType.Trade:
-                    transaction = new Trade();
-                    break;
+                    return JsonConvert.DeserializeObject<Trade>(jo.ToString(), SpecifiedSubclassConversion);
                 case TransactionType.Spend:
-                    transaction = new Spend();
-                    break;
+                    return JsonConvert.DeserializeObject<Spend>(jo.ToString(), SpecifiedSubclassConversion);
                 case TransactionType.Divestment:
-                    transaction = new Divestment();
-                    break;
+                    return JsonConvert.DeserializeObject<Divestment>(jo.ToString(), SpecifiedSubclassConversion);
                 case TransactionType.Dividend:
-                    transaction = new Dividend();
-                    break;
+                    return JsonConvert.DeserializeObject<Dividend>(jo.ToString(), SpecifiedSubclassConversion);
                 default:
-                    break;
+                    throw new InvalidOperationException();
             }
-
-            return transaction;
+            throw new NotImplementedException();
         }
 
-        protected override void Write(JsonWriter writer, Transaction value)
+        public override bool CanWrite { get { return false; } }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

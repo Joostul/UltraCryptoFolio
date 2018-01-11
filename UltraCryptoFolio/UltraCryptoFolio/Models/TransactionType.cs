@@ -2,10 +2,10 @@
 {
     public enum TransactionType
     {
-        Investment,
-        Trade,
-        Spend,
-        Divestment,
-        Dividend
+        Investment = 0,
+        Trade = 1,
+        Spend = 2,
+        Divestment = 3,
+        Dividend = 4
     }
 }

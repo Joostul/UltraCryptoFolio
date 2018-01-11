@@ -192,6 +192,10 @@ namespace UltraCryptoFolio.Models
         {
             return Transactions.Where(t => t.TransactionType == TransactionType.Investment).Sum(t => t.TransactionWorth);
         }
+        public decimal GetTotalMonetaryDivestment()
+        {
+            return Transactions.Where(t => t.TransactionType == TransactionType.Divestment).Sum(t => t.TransactionWorth);
+        }
 
         public decimal GetTotalValue()
         {

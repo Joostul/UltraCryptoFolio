@@ -78,18 +78,22 @@
             <td>@Model.GetTotalMonetaryInvestment()</td>
         </tr>
         <tr>
+            <td>Total cash divestment:</td>
+            <td>@Model.GetTotalMonetaryDivestment()</td>
+        </tr>
+        <tr>
             <td>Profit/loss:</td>
             @{
-                var totalProfit = Model.GetTotalValue();
+            var totalProfit = Model.GetTotalValue();
 
-                if (totalProfit > 0)
-                {
-                    <td style="color:green">@totalProfit</td>
-                }
-                else
-                {
-                    <td style="color:darkred">@totalProfit</td>
-                }
+            if (totalProfit > 0)
+            {
+                <td style="color:green">@totalProfit</td>
+        }
+        else
+        {
+            <td style="color:darkred">@totalProfit</td>
+    }
             }
         </tr>
     </tbody>

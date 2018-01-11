@@ -9,7 +9,6 @@ using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 using System.Text;
 
 namespace UltraCryptoFolio.Controllers
@@ -55,7 +54,29 @@ namespace UltraCryptoFolio.Controllers
         [HttpPost]
         public IActionResult ImportPortfolio(IFormFile file)
         {
+            List<Transaction> transactions;
+            Transaction transaction;
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            {
+                TransactionConverter transactionConverter = new TransactionConverter();
+                JsonReader jsonReader = new JsonTextReader(reader);
+                JsonSerializer jsonSerializer = new JsonSerializer();
+                transactions = transactionConverter.ReadJson(jsonReader, typeof(Transaction), new Investment(), jsonSerializer);
 
+                //JsonTextReader jsonReader = new JsonTextReader(reader);
+                //transactions = jsonSerializer.Deserialize<List<Transaction>>(jsonReader);
+            }
+
+
+            //var result = new List<string>();
+            //using (var reader = new StreamReader(file.OpenReadStream()))
+            //{
+            //    while (reader.Peek() >= 0)
+            //        result.Add(reader.ReadLine());
+            //}
+
+            //JsonSerializer jsonSerializer = new JsonSerializer();
+            //var portfolioString = jsonSerializer.Deserialize<Portfolio>(result);
 
             return View("ImportPortfolio");
         }

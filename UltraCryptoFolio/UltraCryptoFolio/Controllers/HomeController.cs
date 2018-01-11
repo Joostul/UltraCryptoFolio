@@ -55,9 +55,18 @@ namespace UltraCryptoFolio.Controllers
         public IActionResult ImportPortfolio(IFormFile file)
         {
             List<Transaction> transactions;
-            using (var reader = new StreamReader(file.OpenReadStream()))
+
+            try
             {
-                transactions = JsonConvert.DeserializeObject<List<Transaction>>(reader.ReadToEnd());
+                using (var reader = new StreamReader(file.OpenReadStream()))
+                {
+                    transactions = JsonConvert.DeserializeObject<List<Transaction>>(reader.ReadToEnd());
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Not a valid portfolio file.";
+                return View();
             }
 
             SetTransactions(transactions);

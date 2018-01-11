@@ -5,6 +5,12 @@
 
 <h2>ImportPortfolio</h2>
 
+@if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+{
+    <div class="alert alert-danger">
+        <strong>Warning!</strong> @ViewBag.Message
+    </div>
+}
 
 <form enctype="multipart/form-data" asp-action="ImportPortfolio">
     <div class="form-horizontal">

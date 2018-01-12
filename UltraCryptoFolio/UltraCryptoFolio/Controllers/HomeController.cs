@@ -17,15 +17,7 @@ namespace UltraCryptoFolio.Controllers
     {
         public IActionResult Index()
         {
-//#if DEBUG
-//            var _transactions = ExampleTransactions.Transactions;
-//#else
             var _transactions = GetTransactions();
-//#endif
-            if(_transactions.Count < 1)
-            {
-                return View(new Portfolio(new PriceGetter(), new List<Transaction>()));
-            }
 
             var portfolio = new Portfolio(new PriceGetter(), _transactions);
             SetTransactions(_transactions);
@@ -37,11 +29,6 @@ namespace UltraCryptoFolio.Controllers
         {
             var portfolio = GetTransactions();
             var fileName = "UltraCryptoFolio.txt";
-
-            var path = Path.Combine(
-                           Directory.GetCurrentDirectory(), "wwwroot",
-                           fileName);
-
             byte[] myFile = ObjectToByteArray(portfolio);
             return File(myFile, "test/plain", fileName);
         }

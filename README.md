@@ -6,7 +6,6 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 # Roadmap:
 
 ## Features / short term:
-- Able to delete transactions.
 - When entering transactions able to enter values in Satoshi or Bitcoin.
 - When entering transactions able to click "current value" for receiving currency.
 - When entering transactions able to click "max" for sending all your available currency.
@@ -21,7 +20,8 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Support exchange rate.
 
 ## Done:
-- [x]	Calculate value of transactions when they are entered.
+- [x] Able to delete transactions.
+- [x] Calculate value of transactions when they are entered.
 - [x] Basic import / export.
 - [x] Basic overview.
 - [x] Basic entering of transactions.

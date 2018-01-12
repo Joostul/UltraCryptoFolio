@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Data;
 using UltraCryptoFolio.Extensions;
+using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
 using UltraCryptoFolio.ViewModels;
 
@@ -83,7 +85,8 @@ namespace UltraCryptoFolio.Controllers
                     Fee = divestmentViewModel.Fee,
                     ReceivingCurrency = divestmentViewModel.Receivingurrency,
                     SpendingCurrency = divestmentViewModel.SpendingCurrency,
-                    TransactionType = TransactionType.Divestment
+                    TransactionType = TransactionType.Divestment,
+                    TransactionWorth = Math.Round(divestmentViewModel.AmountReceived, 2)
                 };
 
                 _transactions.Add(divestment);
@@ -108,7 +111,8 @@ namespace UltraCryptoFolio.Controllers
                     Fee = investmentViewModel.Fee,
                     ReceivingCurrency = investmentViewModel.ReceivingCurrency,
                     SpendingCurrency = investmentViewModel.SpendingCurrency,
-                    TransactionType = TransactionType.Investment
+                    TransactionType = TransactionType.Investment,
+                    TransactionWorth = Math.Round(investmentViewModel.AmountSpent, 2)
                 };
 
                 _transactions.Add(investment);
@@ -124,6 +128,13 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                decimal transactionWorth = 0;
+                using(var priceGetter = new PriceGetter())
+                {
+                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOnDateAsync(tradeViewModel.SpendingCurrency, DateTime.UtcNow).Result;
+                    transactionWorth = ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, tradeViewModel.AmountSpent, tradeViewModel.SpendingCurrency);
+                }
+
                 Trade trade = new Trade()
                 {
                     AmountReceived = tradeViewModel.AmountReceived,
@@ -133,7 +144,8 @@ namespace UltraCryptoFolio.Controllers
                     Fee = tradeViewModel.Fee,
                     ReceivingCurrency = tradeViewModel.ReceivingCurrency,
                     SpendingCurrency = tradeViewModel.SpendingCurrency,
-                    TransactionType = TransactionType.Trade
+                    TransactionType = TransactionType.Trade,
+                    TransactionWorth = transactionWorth
                 };
 
                 _transactions.Add(trade);
@@ -149,13 +161,21 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                decimal transactionWorth = 0;
+                using (var priceGetter = new PriceGetter())
+                {
+                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOnDateAsync(spendViewModel.SpendingCurrency, DateTime.UtcNow).Result;
+                    transactionWorth = ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, spendViewModel.AmountSpent, spendViewModel.SpendingCurrency);
+                }
+
                 Spend spend = new Spend()
                 {
                     AmountSpent = spendViewModel.AmountSpent,
                     DateTime = spendViewModel.DateTime,
                     Fee = spendViewModel.Fee,
                     SpendingCurrency = spendViewModel.SpendingCurrency,
-                    TransactionType = TransactionType.Spend
+                    TransactionType = TransactionType.Spend,
+                    TransactionWorth = transactionWorth
                 };
 
                 _transactions.Add(spend);
@@ -171,13 +191,21 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                decimal transactionWorth = 0;
+                using (var priceGetter = new PriceGetter())
+                {
+                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOnDateAsync(dividendViewModel.ReceivingCurrency, DateTime.UtcNow).Result;
+                    transactionWorth = ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, dividendViewModel.AmountReceived, dividendViewModel.ReceivingCurrency);
+                }
+
                 Dividend dividend = new Dividend()
                 {
                     AmountReceived = dividendViewModel.AmountReceived,
                     DateTime = dividendViewModel.DateTime,
                     Fee = dividendViewModel.Fee,
                     ReceivingCurrency = dividendViewModel.ReceivingCurrency,
-                    TransactionType = TransactionType.Dividend
+                    TransactionType = TransactionType.Dividend,
+                    TransactionWorth = transactionWorth
                 };
 
                 _transactions.Add(dividend);

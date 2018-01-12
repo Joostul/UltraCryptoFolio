@@ -1,5 +1,5 @@
 # UltraCryptoFolio
-## Version: 0.3
+## Version: 0.4
 
 A simple webpage for myself to play with CryptoCurrency values and API's.
 
@@ -9,7 +9,6 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Able to delete transactions.
 - When entering transactions able to enter values in Satoshi or Bitcoin.
 - When entering transactions able to click "current value".
-- Calculate value of transactions when they are entered.
 - In overview get 24h change of specific coins.
 - Use Html5 web storage instead of cookies.
 
@@ -21,9 +20,10 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Support exchange rate.
 
 ## Done:
-- Basic import / export.
-- Basic overview.
-- Basic entering of transactions.
+[x]	Calculate value of transactions when they are entered.
+[x] Basic import / export.
+[x] Basic overview.
+[x] Basic entering of transactions.
 
 ## Known bugs:
 - 

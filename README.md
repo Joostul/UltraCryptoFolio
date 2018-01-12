@@ -20,10 +20,10 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Support exchange rate.
 
 ## Done:
-[x]	Calculate value of transactions when they are entered.
-[x] Basic import / export.
-[x] Basic overview.
-[x] Basic entering of transactions.
+- [x]	Calculate value of transactions when they are entered.
+- [x] Basic import / export.
+- [x] Basic overview.
+- [x] Basic entering of transactions.
 
 ## Known bugs:
 - 

@@ -38,6 +38,11 @@ namespace UltraCryptoFolio.Controllers
             return View("ImportPortfolio");
         }
 
+        public IActionResult About()
+        {
+            return View("About");
+        }
+
         [HttpPost]
         public IActionResult ImportPortfolio(IFormFile file)
         {

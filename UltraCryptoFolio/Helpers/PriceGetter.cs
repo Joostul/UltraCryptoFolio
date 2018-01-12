@@ -17,10 +17,6 @@ namespace UltraCryptoFolio.Helpers
             client.BaseAddress = new Uri("https://min-api.cryptocompare.com/data/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            //client.BaseAddress = new Uri("https://api.coinmarketcap.com/v1/ticker/");
-            //client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<decimal> GetEuroPriceOfAsync(CryptoCurrency cryptoCurrency)
@@ -31,11 +27,9 @@ namespace UltraCryptoFolio.Helpers
             {
                 case CryptoCurrency.BitcoinCash:
                     response = await client.GetAsync("price?fsym=BCH&tsyms=EUR");
-                    //response = await client.GetAsync("bitcoin-cash" + "/?convert=EUR");
                     break;
                 case CryptoCurrency.BitcoinGold:
                     response = await client.GetAsync("price?fsym=BTG&tsyms=EUR");
-                    //response = await client.GetAsync("bitcoin-gold" + "/?convert=EUR");
                     break;
                 case CryptoCurrency.NEO:
                     response = await client.GetAsync("price?fsym=NEO&tsyms=EUR");

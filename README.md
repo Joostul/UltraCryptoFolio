@@ -1,5 +1,5 @@
 # UltraCryptoFolio
-## Version: 0.4
+## Version: 0.5
 
 A simple webpage for myself to play with CryptoCurrency values and API's.
 

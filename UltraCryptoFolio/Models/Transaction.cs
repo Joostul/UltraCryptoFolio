@@ -9,6 +9,7 @@ namespace UltraCryptoFolio.Models
     [JsonConverter(typeof(TransactionConverter))]
     public abstract class Transaction
     {
+        public int Id { get; set; }
         [Required]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

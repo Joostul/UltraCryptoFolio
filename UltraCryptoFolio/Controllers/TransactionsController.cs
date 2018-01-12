@@ -70,14 +70,23 @@ namespace UltraCryptoFolio.Controllers
         {
             return View("NewDividend");
         }
+        public IActionResult Delete(int id)
+        {
+            var transactions = GetTransactionList();
+            SetTransactionList(transactions.Where(t => t.Id != id).ToList());
+            return RedirectToAction("Index");
+        }
 
         [HttpPost]
         public IActionResult NewDivestment(DivestmentViewModel divestmentViewModel)
         {
             if (ModelState.IsValid)
             {
+                var allTransactions = GetTransactionList();
+
                 Divestment divestment = new Divestment()
                 {
+                    Id = allTransactions.Count,
                     AmountReceived = divestmentViewModel.AmountReceived,
                     AmountSpent = divestmentViewModel.AmountSpent,
                     DateTime = divestmentViewModel.DateTime,
@@ -90,11 +99,12 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(divestment);
-                _transactions.AddRange(GetTransactionList());
+                _transactions.Remove(divestment);
+                _transactions.AddRange(allTransactions);
                 SetTransactionList(_transactions);
             }
 
-            return View("Index", _transactions);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -102,8 +112,11 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allTransactions = GetTransactionList();
+
                 Investment investment = new Investment()
                 {
+                    Id = allTransactions.Count,
                     AmountReceived = investmentViewModel.AmountReceived,
                     AmountSpent = investmentViewModel.AmountSpent,
                     DateTime = investmentViewModel.DateTime,
@@ -116,11 +129,11 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(investment);
-                _transactions.AddRange(GetTransactionList());
+                _transactions.AddRange(allTransactions);
                 SetTransactionList(_transactions);
             }
 
-            return View("Index", _transactions);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -128,6 +141,8 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allTransactions = GetTransactionList();
+
                 decimal transactionWorth = 0;
                 using(var priceGetter = new PriceGetter())
                 {
@@ -137,6 +152,7 @@ namespace UltraCryptoFolio.Controllers
 
                 Trade trade = new Trade()
                 {
+                    Id = allTransactions.Count,
                     AmountReceived = tradeViewModel.AmountReceived,
                     AmountSpent = tradeViewModel.AmountSpent,
                     DateTime = tradeViewModel.DateTime,
@@ -149,11 +165,11 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(trade);
-                _transactions.AddRange(GetTransactionList());
+                _transactions.AddRange(allTransactions);
                 SetTransactionList(_transactions);
             }
 
-            return View("Index", _transactions);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -161,6 +177,8 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allTransactions = GetTransactionList();
+
                 decimal transactionWorth = 0;
                 using (var priceGetter = new PriceGetter())
                 {
@@ -170,6 +188,7 @@ namespace UltraCryptoFolio.Controllers
 
                 Spend spend = new Spend()
                 {
+                    Id = allTransactions.Count,
                     AmountSpent = spendViewModel.AmountSpent,
                     DateTime = spendViewModel.DateTime,
                     Fee = spendViewModel.Fee,
@@ -179,11 +198,11 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(spend);
-                _transactions.AddRange(GetTransactionList());
+                _transactions.AddRange(allTransactions);
                 SetTransactionList(_transactions);
             }
 
-            return View("Index", _transactions);
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -191,6 +210,8 @@ namespace UltraCryptoFolio.Controllers
         {
             if (ModelState.IsValid)
             {
+                var allTransactions = GetTransactionList();
+
                 decimal transactionWorth = 0;
                 using (var priceGetter = new PriceGetter())
                 {
@@ -200,6 +221,7 @@ namespace UltraCryptoFolio.Controllers
 
                 Dividend dividend = new Dividend()
                 {
+                    Id = allTransactions.Count,
                     AmountReceived = dividendViewModel.AmountReceived,
                     DateTime = dividendViewModel.DateTime,
                     Fee = dividendViewModel.Fee,
@@ -209,11 +231,11 @@ namespace UltraCryptoFolio.Controllers
                 };
 
                 _transactions.Add(dividend);
-                _transactions.AddRange(GetTransactionList());
+                _transactions.AddRange(allTransactions);
                 SetTransactionList(_transactions);
             }
 
-            return View("Index", _transactions);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Error()

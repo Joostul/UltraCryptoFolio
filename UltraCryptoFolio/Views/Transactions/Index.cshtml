@@ -23,6 +23,7 @@
             <th>Receiving currency</th>
             <th>Amount received</th>
             <th>Transaction worth</th>
+            <th></th>
         </tr>
     </thead>
     @foreach (var transaction in Model)
@@ -75,6 +76,7 @@
                 default:
                     break;
             }
+            <td><a asp-action="Delete/@transaction.Id" >Delete</a></td>
         </tr>
     }
 </table>

@@ -8,7 +8,8 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 ## Features / short term:
 - Able to delete transactions.
 - When entering transactions able to enter values in Satoshi or Bitcoin.
-- When entering transactions able to click "current value".
+- When entering transactions able to click "current value" for receiving currency.
+- When entering transactions able to click "max" for sending all your available currency.
 - In overview get 24h change of specific coins.
 - Use Html5 web storage instead of cookies.
 

@@ -75,7 +75,9 @@ namespace UltraCryptoFolio.Controllers
                 ViewBag.Message = "Not a valid portfolio file.";
                 return View();
             }
-            
+
+            SetTransactions(transactions);
+
             return RedirectToAction("Index");
         }
 

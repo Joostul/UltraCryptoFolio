@@ -20,6 +20,16 @@ namespace UltraCryptoFolio.Controllers
             var _transactions = GetTransactions();
 
             var portfolio = new Portfolio(new PriceGetter(), _transactions);
+
+            List<DataPoint> dataPoints = new List<DataPoint>();
+
+            foreach (var cryptoValue in portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList())
+            {
+                dataPoints.Add(new DataPoint(y: (double)cryptoValue.MonetaryValue, name: cryptoValue.CryptoCurrency.ToString()));
+            }
+
+            ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
+
             SetTransactions(_transactions);
 
             return View(portfolio);

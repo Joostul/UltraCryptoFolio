@@ -13,6 +13,7 @@
     <a href="#" class="close" data-dismiss="alert">&times;</a>
     <strong>Warning!</strong> Be sure to export your data if you don't want to lose it.
 </div>
+
 <div>
     <a class="btn btn-primary" asp-action="ExportPortfolio">Export</a>
     <a class="btn btn-primary" asp-action="ImportPortfolio">Import</a>
@@ -85,17 +86,56 @@
         <tr>
             <td>Profit/loss:</td>
             @{
-            var totalProfit = Model.GetTotalValue();
+                var totalProfit = Model.GetTotalValue();
 
-            if (totalProfit > 0)
-            {
-                <td style="color:green">@totalProfit</td>
-        }
-        else
-        {
-            <td style="color:darkred">@totalProfit</td>
-    }
+                if (totalProfit > 0)
+                {
+                    <td style="color:green">@totalProfit</td>
+                }
+                else
+                {
+                    <td style="color:darkred">@totalProfit</td>
+                }
             }
         </tr>
     </tbody>
 </table>
+
+<div id="chartContainer" ></div>
+
+<script type="text/javascript">
+    var chartData2 = [
+        { y: 71 },
+        { y: 55 },
+        { y: 50 },
+        { y: 65 },
+        { y: 95 },
+        { y: 68 },
+        { y: 28 },
+        { y: 34 },
+        { y: 14 }
+    ];
+
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "theme2",
+            animationEnabled: true,
+            title: {
+                text: "Holdings"
+            },
+            subtitles: [
+                { text: "Your relative portfolio holdings" }
+            ],
+            data: [
+                {
+                    type: "doughnut",
+                    dataPoints: @Html.Raw(ViewBag.Data),
+                    showInLegend: true,
+                    indexLabelFontColor: "darkgrey",
+                    indexLabelLineColor: "darkgrey"
+                }
+            ]
+        });
+        chart.render();
+    };
+</script>

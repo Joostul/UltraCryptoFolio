@@ -1,4 +1,6 @@
-﻿using UltraCryptoFolio.Models;
+﻿using System;
+using System.Collections.Generic;
+using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Extensions
 {
@@ -14,6 +16,13 @@ namespace UltraCryptoFolio.Extensions
             {
                 return (valueOfOneCrypto * amountCrypto) / 100000000;
             }
+        }
+
+        public static decimal GetMonetaryValueOfTransactionsOnDate(List<Transaction> transactions, DateTime dateTime)
+        {
+            Random rnd = new Random();
+
+            return rnd.Next(500,5000);
         }
     }
 }

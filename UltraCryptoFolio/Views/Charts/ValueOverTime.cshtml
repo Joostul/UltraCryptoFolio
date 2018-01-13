@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "ValueOverTime";
+}
+
+@{await Html.RenderPartialAsync("_GraphsMenuPartial");}
+
+<h2>Your portfolio over time</h2>
+<p>
+    This chart is not working as intended yet.
+</p>
+
+<div id="linechartContainer"></div>
+
+<script type="text/javascript">
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("linechartContainer", {
+            theme: "theme2",
+            animationEnabled: true,
+            animationEnabled: true,
+            data: [
+                {
+                    type: "area",
+                    dataPoints: @Html.Raw(ViewBag.Data),
+                    showInLegend: true,
+                    indexLabelFontColor: "darkgrey",
+                    indexLabelLineColor: "darkgrey"
+                }
+            ]
+        });
+        chart.render();
+    };
+</script>

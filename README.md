@@ -1,5 +1,5 @@
 # UltraCryptoFolio
-## Version: 0.6
+## Version: 0.6b
 
 A simple webpage for myself to play with CryptoCurrency values and API's.
 
@@ -20,6 +20,7 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Support exchange rate.
 
 ## Done:
+- [] Basic graphs page.
 - [x] Example data button to show off the website easily.
 - [x] Doughnut graph of relative holdings in portfolio homepage.
 - [x] Able to delete transactions.
@@ -29,4 +30,5 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - [x] Basic entering of transactions.
 
 ## Known bugs:
-- 
+- [] Hamburger menu in 0.6b not working.
+- [] Portfolio over time chart shows dates as numbers.

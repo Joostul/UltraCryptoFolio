@@ -20,6 +20,7 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Support exchange rate.
 
 ## Done:
+- [x] Example data button to show off the website easily.
 - [x] Doughnut graph of relative holdings in portfolio homepage.
 - [x] Able to delete transactions.
 - [x] Calculate value of transactions when they are entered.

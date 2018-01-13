@@ -68,8 +68,8 @@ namespace UltraCryptoFolio.Controllers
                 },
                 new Trade()
                 {
-                    AmountReceived = 200000000,
-                    AmountSpent = 50000000,
+                    AmountReceived = 300000000,
+                    AmountSpent = 39000000,
                     DateTime = new DateTime(2017, 12, 12),
                     Id = 1,
                     ReceivingCurrency = CryptoCurrency.BitcoinCash,

@@ -6,6 +6,38 @@ namespace UltraCryptoFolio.Data
 {
     public static class ExampleTransactions
     {
+        public static List<Transaction> Example => new List<Transaction>()
+            {
+                new Investment()
+                {
+                    AmountReceived = 100000000,
+                    AmountSpent = 10000,
+                    DateTime = new DateTime(2017, 12, 7),
+                    Id = 0,
+                    ReceivingCurrency = CryptoCurrency.Bitcoin,
+                    SpendingCurrency = Currency.Euro
+                },
+                new Trade()
+                {
+                    AmountReceived = 300000000,
+                    AmountSpent = 39000000,
+                    DateTime = new DateTime(2017, 12, 12),
+                    Id = 1,
+                    ReceivingCurrency = CryptoCurrency.BitcoinCash,
+                    SpendingCurrency = CryptoCurrency.Bitcoin
+                },
+                new Trade()
+                {
+                    AmountReceived = 250000000,
+                    AmountSpent = 18000000,
+                    DateTime = new DateTime(2017, 12, 24),
+                    Id = 2,
+                    ReceivingCurrency = CryptoCurrency.Ethereum,
+                    SpendingCurrency = CryptoCurrency.Bitcoin
+                }
+            };
+
+
         public static List<Transaction> Transactions => new List<Transaction>()
         {
             new Investment()

@@ -19,14 +19,27 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Support exchange rate.
 
 ## Done:
+Version 0.7:
 - [x] Temporary solution for making too many calls on Value Over Time chart.
-- [x] Basic graphs page.
+- [x] Basic charts page.
+
+Version 0.6:
 - [x] Example data button to show off the website easily.
 - [x] Doughnut graph of relative holdings in portfolio homepage.
+
+Version 0.5:
 - [x] Able to delete transactions.
+
+Version 0.4:
 - [x] Calculate value of transactions when they are entered.
+
+Version 0.3:
 - [x] Basic import / export.
+
+Version 0.2:
 - [x] Basic overview.
+
+Version 0.1:
 - [x] Basic entering of transactions.
 
 ## Known bugs:

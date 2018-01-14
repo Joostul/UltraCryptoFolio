@@ -19,10 +19,19 @@ namespace UltraCryptoFolio.Data
                 },
                 new Trade()
                 {
+                    AmountReceived = 38600000000,
+                    AmountSpent = 3000000,
+                    DateTime = new DateTime(2017,12,17),
+                    Id = 1,
+                    ReceivingCurrency = CryptoCurrency.Ripple,
+                    SpendingCurrency = CryptoCurrency.Bitcoin
+                },
+                new Trade()
+                {
                     AmountReceived = 300000000,
                     AmountSpent = 39000000,
                     DateTime = new DateTime(2017, 12, 12),
-                    Id = 1,
+                    Id = 2,
                     ReceivingCurrency = CryptoCurrency.BitcoinCash,
                     SpendingCurrency = CryptoCurrency.Bitcoin
                 },
@@ -31,7 +40,7 @@ namespace UltraCryptoFolio.Data
                     AmountReceived = 250000000,
                     AmountSpent = 18000000,
                     DateTime = new DateTime(2017, 12, 24),
-                    Id = 2,
+                    Id = 3,
                     ReceivingCurrency = CryptoCurrency.Ethereum,
                     SpendingCurrency = CryptoCurrency.Bitcoin
                 },
@@ -40,7 +49,7 @@ namespace UltraCryptoFolio.Data
                     AmountReceived = 4000,
                     AmountSpent = 40000000,
                     DateTime = new DateTime(2018,1,14),
-                    Id = 3,
+                    Id = 4,
                     ReceivingCurrency = Currency.Euro,
                     SpendingCurrency = CryptoCurrency.Bitcoin
                 }

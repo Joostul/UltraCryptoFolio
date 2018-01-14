@@ -48,14 +48,18 @@ namespace UltraCryptoFolio.Controllers
             for (int i = 0; i < weeks; i++)
             {
                 var dateOfTransaction = firstTransactionDate.AddDays((i*7)).Date;
+
+                // Calculate portfolio value on that day
                 var value = (double)ValueCalculation.GetMonetaryValueOfTransactionsOnDate(portfolio.Transactions, dateOfTransaction);
+
+                // Calculate invested currency up until that day
                 var relevantTransactions = portfolio.Transactions.Where(t => t.DateTime < dateOfTransaction);
                 var investments = relevantTransactions.Where(t => t.TransactionType == TransactionType.Investment).Sum(t => t.TransactionWorth);
                 var divestments = relevantTransactions.Where(t => t.TransactionType == TransactionType.Divestment).Sum(t => t.TransactionWorth);
-
                 var invested = (double)(investments - divestments);
-                var label = $"{dateOfTransaction.Year}-{GetIso8601WeekOfYear(dateOfTransaction)}";
 
+                var label = $"{dateOfTransaction.Year}-{GetIso8601WeekOfYear(dateOfTransaction)}";
+                
                 dataPoints.Add(new LineDataPoint(value, label));
                 secondDataPoints.Add(new LineDataPoint(invested, label));
             }

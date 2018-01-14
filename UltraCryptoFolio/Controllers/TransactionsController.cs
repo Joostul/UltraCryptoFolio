@@ -146,7 +146,7 @@ namespace UltraCryptoFolio.Controllers
                 decimal transactionWorth = 0;
                 using(var priceGetter = new PriceGetter())
                 {
-                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOnDateAsync(tradeViewModel.SpendingCurrency, DateTime.UtcNow).Result;
+                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOfAsync(tradeViewModel.SpendingCurrency, DateTime.UtcNow).Result;
                     transactionWorth = ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, tradeViewModel.AmountSpent, tradeViewModel.SpendingCurrency);
                 }
 
@@ -182,7 +182,7 @@ namespace UltraCryptoFolio.Controllers
                 decimal transactionWorth = 0;
                 using (var priceGetter = new PriceGetter())
                 {
-                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOnDateAsync(spendViewModel.SpendingCurrency, DateTime.UtcNow).Result;
+                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOfAsync(spendViewModel.SpendingCurrency, DateTime.UtcNow).Result;
                     transactionWorth = ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, spendViewModel.AmountSpent, spendViewModel.SpendingCurrency);
                 }
 
@@ -215,7 +215,7 @@ namespace UltraCryptoFolio.Controllers
                 decimal transactionWorth = 0;
                 using (var priceGetter = new PriceGetter())
                 {
-                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOnDateAsync(dividendViewModel.ReceivingCurrency, DateTime.UtcNow).Result;
+                    decimal valueOfOneCrypto = priceGetter.GetEuroPriceOfAsync(dividendViewModel.ReceivingCurrency, DateTime.UtcNow).Result;
                     transactionWorth = ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, dividendViewModel.AmountReceived, dividendViewModel.ReceivingCurrency);
                 }
 

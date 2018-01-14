@@ -6,7 +6,7 @@ namespace UltraCryptoFolio
 {
     public interface IPriceGetter : IDisposable
     {
-        Task<decimal> GetEuroPriceOfAsync(CryptoCurrency cryptoCurrency);
-        Task<decimal> GetEuroPriceOnDateAsync(CryptoCurrency cryptoCurrency, DateTime dateTime);
+        Task<decimal> GetEuroPriceOfAsync(CryptoCurrency cryptoCurrency, DateTime? dateTime = null);
+        //Task<decimal> GetEuroPriceOnDateAsync(CryptoCurrency cryptoCurrency, DateTime dateTime);
     }
 }

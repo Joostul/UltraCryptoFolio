@@ -33,7 +33,7 @@ namespace UltraCryptoFolio.Models
             {
                 if (transaction.TransactionWorth == 0)
                 {
-                    decimal valueOfOneCrypto = 0;
+                    decimal valueOfOneCrypto;
 
                     switch (transaction.TransactionType)
                     {
@@ -43,6 +43,7 @@ namespace UltraCryptoFolio.Models
                             break;
                         case TransactionType.Trade:
                             var trade = (Trade)transaction;
+                            valueOfOneCrypto = _priceGetter.GetEuroPriceOfAsync(trade.SpendingCurrency).Result;
                             transaction.TransactionWorth = Math.Round(ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, trade.AmountSpent, trade.SpendingCurrency), 2);
                             break;
                         case TransactionType.Spend:

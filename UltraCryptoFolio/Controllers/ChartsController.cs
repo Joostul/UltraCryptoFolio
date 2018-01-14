@@ -54,9 +54,10 @@ namespace UltraCryptoFolio.Controllers
                 var divestments = relevantTransactions.Where(t => t.TransactionType == TransactionType.Divestment).Sum(t => t.TransactionWorth);
 
                 var invested = (double)(investments - divestments);
+                var label = $"{dateOfTransaction.Year}-{GetIso8601WeekOfYear(dateOfTransaction)}";
 
-                dataPoints.Add(new LineDataPoint(value, (Int32)(dateOfTransaction.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
-                secondDataPoints.Add(new LineDataPoint(invested, (Int32)(dateOfTransaction.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                dataPoints.Add(new LineDataPoint(value, label));
+                secondDataPoints.Add(new LineDataPoint(invested, label));
             }
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
             ViewBag.SecondData = JsonConvert.SerializeObject(secondDataPoints);

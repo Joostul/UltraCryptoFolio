@@ -6,14 +6,14 @@ namespace UltraCryptoFolio.Models
     [DataContract]
     public class LineDataPoint
     {
-        public LineDataPoint(double y, int x)
+        public LineDataPoint(double y, string label)
         {
-            X = x;
+            Label = label;
             Y = y;
         }
 
-        [DataMember(Name = "x")]
-        public int? X = null;
+        [DataMember(Name = "label")]
+        public string Label = null;
 
         [DataMember(Name = "y")]
         public double? Y = null;

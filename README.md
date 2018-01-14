@@ -6,6 +6,7 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 # Roadmap:
 
 ## Features / short term:
+- Tick which cryptocurrencies you want to see represented in charts.
 - When entering transactions able to enter values in Satoshi or Bitcoin.
 - When entering transactions able to click "current value" for receiving currency.
 - When entering transactions able to click "max" for sending all your available currency.

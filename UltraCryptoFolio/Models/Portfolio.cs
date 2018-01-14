@@ -43,12 +43,11 @@ namespace UltraCryptoFolio.Models
                             break;
                         case TransactionType.Trade:
                             var trade = (Trade)transaction;
-                            valueOfOneCrypto = _priceGetter.GetEuroPriceOnDateAsync(trade.SpendingCurrency, trade.DateTime).Result;
                             transaction.TransactionWorth = Math.Round(ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, trade.AmountSpent, trade.SpendingCurrency), 2);
                             break;
                         case TransactionType.Spend:
                             var spend = (Spend)transaction;
-                            valueOfOneCrypto = _priceGetter.GetEuroPriceOnDateAsync(spend.SpendingCurrency, spend.DateTime).Result;
+                            valueOfOneCrypto = _priceGetter.GetEuroPriceOfAsync(spend.SpendingCurrency, spend.DateTime).Result;
                             transaction.TransactionWorth = Math.Round(ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, spend.AmountSpent, spend.SpendingCurrency), 2);
                             break;
                         case TransactionType.Divestment:
@@ -57,7 +56,7 @@ namespace UltraCryptoFolio.Models
                             break;
                         case TransactionType.Dividend:
                             var dividend = (Dividend)transaction;
-                            valueOfOneCrypto = _priceGetter.GetEuroPriceOnDateAsync(dividend.ReceivingCurrency, dividend.DateTime).Result;
+                            valueOfOneCrypto = _priceGetter.GetEuroPriceOfAsync(dividend.ReceivingCurrency, dividend.DateTime).Result;
                             transaction.TransactionWorth = Math.Round(ValueCalculation.GetMonetaryValueOfCrypto(valueOfOneCrypto, dividend.AmountReceived, dividend.ReceivingCurrency), 2);
                             break;
                     }

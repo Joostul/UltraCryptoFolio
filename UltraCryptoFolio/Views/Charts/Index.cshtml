@@ -1,6 +1,28 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
 }
 
 @{await Html.RenderPartialAsync("_GraphsMenuPartial");}
+
+<h2>Relative Portfolio holdings</h2>
+
+<div id="doughnutContainer"></div>
+
+<script type="text/javascript">
+    window.onload = function () {
+        var chart = new CanvasJS.Chart("doughnutContainer", {
+            theme: "theme2",
+            animationEnabled: true,
+            data: [
+                {
+                    type: "doughnut",
+                    dataPoints: @Html.Raw(ViewBag.Data),
+                    showInLegend: true,
+                    indexLabelFontColor: "darkgrey",
+                    indexLabelLineColor: "darkgrey"
+                }
+            ]
+        });
+        chart.render();
+    };
+</script>

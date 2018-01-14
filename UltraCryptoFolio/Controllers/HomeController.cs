@@ -21,16 +21,14 @@ namespace UltraCryptoFolio.Controllers
 
             var portfolio = new Portfolio(new PriceGetter(), _transactions);
 
-            List<DataPoint> dataPoints = new List<DataPoint>();
+            List<DoughnutDataPoint> dataPoints = new List<DoughnutDataPoint>();
 
             foreach (var cryptoValue in portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList())
             {
-                dataPoints.Add(new DataPoint(y: (double)cryptoValue.MonetaryValue, name: cryptoValue.CryptoCurrency.ToString()));
+                dataPoints.Add(new DoughnutDataPoint(y: (double)cryptoValue.MonetaryValue, name: cryptoValue.CryptoCurrency.ToString()));
             }
 
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
-
-            SetTransactions(_transactions);
 
             return View(portfolio);
         }

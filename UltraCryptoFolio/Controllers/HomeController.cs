@@ -29,6 +29,7 @@ namespace UltraCryptoFolio.Controllers
             }
 
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
+            SetTransactions(portfolio.Transactions);
 
             return View(portfolio);
         }

@@ -30,6 +30,5 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - [x] Basic entering of transactions.
 
 ## Known bugs:
-- [] Menu bar has empty space above it.
 - [] Hamburger menu since 0.6b not working on some mobile browsers.
 - [] Portfolio over time chart shows dates as numbers.

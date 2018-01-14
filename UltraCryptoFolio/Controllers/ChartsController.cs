@@ -43,17 +43,23 @@ namespace UltraCryptoFolio.Controllers
             int weeks = (int)(DateTime.UtcNow - firstTransactionDate).TotalDays / 7;
             var firstSunday = NextSunday(firstTransactionDate);
 
-
             List<LineDataPoint> dataPoints = new List<LineDataPoint>();
+            List<LineDataPoint> secondDataPoints = new List<LineDataPoint>();
             for (int i = 0; i < weeks; i++)
             {
                 var dateOfTransaction = firstTransactionDate.AddDays((i*7)).Date;
                 var value = (double)ValueCalculation.GetMonetaryValueOfTransactionsOnDate(portfolio.Transactions, dateOfTransaction);
+                var relevantTransactions = portfolio.Transactions.Where(t => t.DateTime < dateOfTransaction);
+                var investments = relevantTransactions.Where(t => t.TransactionType == TransactionType.Investment).Sum(t => t.TransactionWorth);
+                var divestments = relevantTransactions.Where(t => t.TransactionType == TransactionType.Divestment).Sum(t => t.TransactionWorth);
+
+                var invested = (double)(investments - divestments);
 
                 dataPoints.Add(new LineDataPoint(value, (Int32)(dateOfTransaction.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
+                secondDataPoints.Add(new LineDataPoint(invested, (Int32)(dateOfTransaction.Subtract(new DateTime(1970, 1, 1))).TotalSeconds));
             }
-
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
+            ViewBag.SecondData = JsonConvert.SerializeObject(secondDataPoints);
 
             return View();
         }

@@ -5,27 +5,36 @@
 
 @{await Html.RenderPartialAsync("_GraphsMenuPartial");}
 
-<h2>Your portfolio over time</h2>
+<h2>Your portfolio over time (weekly)</h2>
 
 <div class="alert alert-danger">
     <strong>Warning!</strong> This chart is not representing your portfolio data yet, it is still in development.
 </div>
 
-<div id="linechartContainer"></div>
+<div id="areachartContainer"></div>
 
 <script type="text/javascript">
     window.onload = function () {
-        var chart = new CanvasJS.Chart("linechartContainer", {
+        var chart = new CanvasJS.Chart("areachartContainer", {
             theme: "theme2",
             animationEnabled: true,
             animationEnabled: true,
+            axisX: {
+                title: "Week",
+            },
+            axisY: {
+                title: "Value",
+            },
             data: [
                 {
                     type: "area",
-                    dataPoints: @Html.Raw(ViewBag.Data),
-                    showInLegend: true,
-                    indexLabelFontColor: "darkgrey",
-                    indexLabelLineColor: "darkgrey"
+                    xValueType: "dateTime",
+                    dataPoints: @Html.Raw(ViewBag.Data)
+                },
+                {
+                    type: "area",
+                    xValueType: "dateTime",
+                    dataPoints: @Html.Raw(ViewBag.SecondData)
                 }
             ]
         });

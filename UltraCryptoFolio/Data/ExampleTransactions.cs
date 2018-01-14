@@ -34,6 +34,15 @@ namespace UltraCryptoFolio.Data
                     Id = 2,
                     ReceivingCurrency = CryptoCurrency.Ethereum,
                     SpendingCurrency = CryptoCurrency.Bitcoin
+                },
+                new Divestment()
+                {
+                    AmountReceived = 4000,
+                    AmountSpent = 40000000,
+                    DateTime = new DateTime(2018,1,14),
+                    Id = 3,
+                    ReceivingCurrency = Currency.Euro,
+                    SpendingCurrency = CryptoCurrency.Bitcoin
                 }
             };
 

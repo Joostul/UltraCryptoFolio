@@ -10,6 +10,7 @@ namespace UltraCryptoFolio.Helpers
     public class PriceGetter : IPriceGetter
     {
         private static HttpClient client;
+        private DateTime? _dateTime;
 
         public PriceGetter()
         {
@@ -19,51 +20,64 @@ namespace UltraCryptoFolio.Helpers
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public PriceGetter(DateTime dateTime) : base()
+        {
+            _dateTime = dateTime;
+        }
+
         public async Task<decimal> GetEuroPriceOfAsync(CryptoCurrency cryptoCurrency)
         {
             HttpResponseMessage response = new HttpResponseMessage();
 
-            switch (cryptoCurrency)
+            if(_dateTime == null)
             {
-                case CryptoCurrency.BitcoinCash:
-                    response = await client.GetAsync("price?fsym=BCH&tsyms=EUR");
-                    break;
-                case CryptoCurrency.BitcoinGold:
-                    response = await client.GetAsync("price?fsym=BTG&tsyms=EUR");
-                    break;
-                case CryptoCurrency.NEO:
-                    response = await client.GetAsync("price?fsym=NEO&tsyms=EUR");
-                    break;
-                case CryptoCurrency.RaiBlocks:
-                    response = await client.GetAsync("price?fsym=XRB&tsyms=EUR");
-                    break;
-                case CryptoCurrency.Stellar:
-                    response = await client.GetAsync("price?fsym=XLM&tsyms=EUR");
-                    break;
-                case CryptoCurrency.IOTA:
-                    response = await client.GetAsync("price?fsym=IOT&tsyms=EUR");
-                    break;
-                case CryptoCurrency.Bitcoin:
-                    response = await client.GetAsync("price?fsym=BTC&tsyms=EUR");
-                    break;
-                case CryptoCurrency.Ethereum:
-                    response = await client.GetAsync("price?fsym=ETH&tsyms=EUR");
-                    break;
-                case CryptoCurrency.Ripple:
-                    response = await client.GetAsync("price?fsym=XRP&tsyms=EUR");
-                    break;
-                case CryptoCurrency.Monero:
-                    response = await client.GetAsync("price?fsym=XMR&tsyms=EUR");
-                    break;
-                default:
-                    break;
+
+                switch (cryptoCurrency)
+                {
+                    case CryptoCurrency.BitcoinCash:
+                        response = await client.GetAsync("price?fsym=BCH&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.BitcoinGold:
+                        response = await client.GetAsync("price?fsym=BTG&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.NEO:
+                        response = await client.GetAsync("price?fsym=NEO&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.RaiBlocks:
+                        response = await client.GetAsync("price?fsym=XRB&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.Stellar:
+                        response = await client.GetAsync("price?fsym=XLM&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.IOTA:
+                        response = await client.GetAsync("price?fsym=IOT&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.Bitcoin:
+                        response = await client.GetAsync("price?fsym=BTC&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.Ethereum:
+                        response = await client.GetAsync("price?fsym=ETH&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.Ripple:
+                        response = await client.GetAsync("price?fsym=XRP&tsyms=EUR");
+                        break;
+                    case CryptoCurrency.Monero:
+                        response = await client.GetAsync("price?fsym=XMR&tsyms=EUR");
+                        break;
+                    default:
+                        break;
+                }
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonData = response.Content.ReadAsStringAsync().Result;
+                    var data = JObject.Parse(jsonData);
+                    var dataValue = data.Value<decimal>("EUR");
+                    return dataValue;
+                }
             }
-            if(response.IsSuccessStatusCode)
+            else
             {
-                var jsonData = response.Content.ReadAsStringAsync().Result;
-                var data = JObject.Parse(jsonData);
-                var dataValue = data.Value<decimal>("EUR");
-                return dataValue;
+                return GetEuroPriceOnDateAsync(cryptoCurrency, _dateTime ?? DateTime.Now).Result;
             }
 
             return 0;

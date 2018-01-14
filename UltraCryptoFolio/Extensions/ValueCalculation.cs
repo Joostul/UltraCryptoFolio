@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
 
 namespace UltraCryptoFolio.Extensions
@@ -18,11 +20,12 @@ namespace UltraCryptoFolio.Extensions
             }
         }
 
-        public static decimal GetMonetaryValueOfTransactionsOnDate(List<Transaction> transactions, DateTime dateTime)
+        public static decimal GetMonetaryValueOfTransactionsOnDate(List<Transaction> transactions, DateTime dateOfTransaction)
         {
-            Random rnd = new Random();
+            var relevantTransactions = transactions.Where(t => t.DateTime < dateOfTransaction).ToList();
+            var portfolio = new Portfolio(new PriceGetter(dateOfTransaction), relevantTransactions);
 
-            return rnd.Next(500,5000);
+            return portfolio.GetTotalCryptoValue();
         }
     }
 }

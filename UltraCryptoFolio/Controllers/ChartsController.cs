@@ -36,9 +36,11 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult ValueOverTime()
         {
-            var _transactions = GetTransactions();
+            var transactions = GetTransactions();
 
-            var portfolio = new Portfolio(new PriceGetter(), _transactions);
+            if (transactions.Count < 1) return View();
+
+            var portfolio = new Portfolio(new PriceGetter(), transactions);
             var firstTransactionDate = portfolio.Transactions.OrderBy(t => t.DateTime).FirstOrDefault().DateTime;
             int weeks = (int)(DateTime.UtcNow - firstTransactionDate).TotalDays / 7;
             var firstSunday = NextSunday(firstTransactionDate);

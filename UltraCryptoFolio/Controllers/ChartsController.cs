@@ -43,6 +43,14 @@ namespace UltraCryptoFolio.Controllers
             var portfolio = new Portfolio(new PriceGetter(), transactions);
             var firstTransactionDate = portfolio.Transactions.OrderBy(t => t.DateTime).FirstOrDefault().DateTime;
             int weeks = (int)(DateTime.UtcNow - firstTransactionDate).TotalDays / 7;
+
+            // Temporary measure to not make too many calls to cryptoCompare
+            if(weeks > 5)
+            {
+                firstTransactionDate = DateTime.UtcNow.AddDays(-35);
+                weeks = 5;
+            }
+
             var firstSunday = NextSunday(firstTransactionDate);
 
             List<LineDataPoint> dataPoints = new List<LineDataPoint>();
@@ -65,6 +73,11 @@ namespace UltraCryptoFolio.Controllers
                 dataPoints.Add(new LineDataPoint(value, label));
                 secondDataPoints.Add(new LineDataPoint(invested, label));
             }
+
+            // Always add current data
+            dataPoints.Add(new LineDataPoint((double)portfolio.GetTotalCryptoValue(), $"{DateTime.UtcNow.Year}-{GetIso8601WeekOfYear(DateTime.UtcNow)}"));
+            secondDataPoints.Add(new LineDataPoint((double)(portfolio.GetTotalMonetaryInvestment() - portfolio.GetTotalMonetaryDivestment()), $"{DateTime.UtcNow.Year}-{GetIso8601WeekOfYear(DateTime.UtcNow)}"));
+
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
             ViewBag.SecondData = JsonConvert.SerializeObject(secondDataPoints);
 

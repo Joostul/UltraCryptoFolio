@@ -31,7 +31,6 @@ namespace UltraCryptoFolio.Helpers
 
             if(_dateTime == null)
             {
-
                 switch (cryptoCurrency)
                 {
                     case CryptoCurrency.BitcoinCash:

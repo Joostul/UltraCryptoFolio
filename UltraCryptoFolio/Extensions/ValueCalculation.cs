@@ -24,8 +24,9 @@ namespace UltraCryptoFolio.Extensions
         {
             var relevantTransactions = transactions.Where(t => t.DateTime < dateOfTransaction).ToList();
             var portfolio = new Portfolio(new PriceGetter(dateOfTransaction), relevantTransactions);
+            var portfolioValue = portfolio.GetTotalCryptoValue();
 
-            return portfolio.GetTotalCryptoValue();
+            return portfolioValue;
         }
     }
 }

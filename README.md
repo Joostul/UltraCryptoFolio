@@ -34,4 +34,3 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 	-> Reason: request limit of price data is 15/second, 300/minute and 8000/hour
 	-> Solution: find way to limit data calls, for now limit history to couple of weeks
 - [] Hamburger menu since 0.6b not working on some mobile browsers.
-- [] Portfolio over time chart shows dates as numbers.

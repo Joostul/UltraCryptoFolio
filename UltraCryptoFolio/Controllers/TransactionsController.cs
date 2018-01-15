@@ -64,6 +64,8 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult NewDivestment()
         {
+            ViewBag.CryptoAmounts = new Portfolio(new PriceGetter(), GetTransactionList()).CryptoValues;
+
             return View("NewDivestment");
         }
         public IActionResult NewDividend()

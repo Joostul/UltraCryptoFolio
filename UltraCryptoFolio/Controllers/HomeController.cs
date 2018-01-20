@@ -21,14 +21,21 @@ namespace UltraCryptoFolio.Controllers
 
             var portfolio = new Portfolio(new PriceGetter(), _transactions);
 
-            List<DoughnutDataPoint> dataPoints = new List<DoughnutDataPoint>();
+            var cryptoValues = portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList().Count;
+
+            List<decimal> dataPoints = new List<decimal>();
+            List<string> labels = new List<string>();
 
             foreach (var cryptoValue in portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList())
             {
-                dataPoints.Add(new DoughnutDataPoint(y: (double)cryptoValue.MonetaryValue, name: cryptoValue.CryptoCurrency.ToString()));
+                dataPoints.Add(cryptoValue.MonetaryValue);
+                labels.Add(cryptoValue.CryptoCurrency.ToString());
             }
 
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
+            ViewBag.Labels = JsonConvert.SerializeObject(labels);
+            ViewBag.Colors = JsonConvert.SerializeObject(ChartJsColorHelper.GetRandomColors(dataPoints.Count));
+
             SetTransactions(portfolio.Transactions);
 
             return View(portfolio);

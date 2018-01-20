@@ -22,14 +22,18 @@ namespace UltraCryptoFolio.Controllers
 
             var portfolio = new Portfolio(new PriceGetter(), _transactions);
 
-            List<DoughnutDataPoint> dataPoints = new List<DoughnutDataPoint>();
+            List<decimal> dataPoints = new List<decimal>();
+            List<string> labels = new List<string>();
 
             foreach (var cryptoValue in portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList())
             {
-                dataPoints.Add(new DoughnutDataPoint(y: (double)cryptoValue.MonetaryValue, name: cryptoValue.CryptoCurrency.ToString()));
+                dataPoints.Add(cryptoValue.MonetaryValue);
+                labels.Add(cryptoValue.CryptoCurrency.ToString());
             }
 
             ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
+            ViewBag.Labels = JsonConvert.SerializeObject(labels);
+            ViewBag.Colors = JsonConvert.SerializeObject(ChartJsColorHelper.GetRandomColors(dataPoints.Count));
             ViewBag.Current = "Index";
 
             return View();
@@ -54,8 +58,10 @@ namespace UltraCryptoFolio.Controllers
 
             var firstSunday = NextSunday(firstTransactionDate);
 
-            List<LineDataPoint> cryptoValues = new List<LineDataPoint>();
-            List<LineDataPoint> investmentValues = new List<LineDataPoint>();
+            List<double> cryptoValues = new List<double>();
+            List<double> investmentValues = new List<double>();
+            List<string> labels = new List<string>();
+
             for (int i = 0; i < weeks; i++)
             {
                 var dateOfTransaction = firstTransactionDate.AddDays((i * 7)).Date;
@@ -69,23 +75,19 @@ namespace UltraCryptoFolio.Controllers
                 var divestments = relevantTransactions.Where(t => t.TransactionType == TransactionType.Divestment).Sum(t => t.TransactionWorth);
                 var invested = (double)(investments - divestments);
 
-                var label = $"{dateOfTransaction.Year}-{GetIso8601WeekOfYear(dateOfTransaction)}";
+                labels.Add( $"{dateOfTransaction.Year}-{GetIso8601WeekOfYear(dateOfTransaction)}");
 
-                cryptoValues.Add(new LineDataPoint(value, label));
-                investmentValues.Add(new LineDataPoint(invested, label));
+                cryptoValues.Add(value);
+                investmentValues.Add(invested);
             }
 
             // Always add current data
-            cryptoValues.Add(
-                new LineDataPoint(
-                (double)portfolio.GetTotalCryptoValue(),
-                $"{DateTime.UtcNow.Year}-{GetIso8601WeekOfYear(DateTime.UtcNow)}"));
-            investmentValues.Add(new LineDataPoint(
-                (double)(portfolio.GetTotalMonetaryInvestment() - portfolio.GetTotalMonetaryDivestment()),
-                $"{DateTime.UtcNow.Year}-{GetIso8601WeekOfYear(DateTime.UtcNow)}"));
+            cryptoValues.Add((double)portfolio.GetTotalCryptoValue());
+            investmentValues.Add((double)(portfolio.GetTotalMonetaryInvestment() - portfolio.GetTotalMonetaryDivestment()));
 
-            ViewBag.Data = JsonConvert.SerializeObject(cryptoValues);
-            ViewBag.SecondData = JsonConvert.SerializeObject(investmentValues);
+            ViewBag.CryptoData = JsonConvert.SerializeObject(cryptoValues);
+            ViewBag.InvestmentData = JsonConvert.SerializeObject(investmentValues);
+            ViewBag.Labels = JsonConvert.SerializeObject(labels);
             ViewBag.Current = "ValueOverTime";
 
             return View();

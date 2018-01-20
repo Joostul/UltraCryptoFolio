@@ -6,23 +6,32 @@
 
 <h2>Relative Portfolio holdings</h2>
 
-<div id="doughnutContainer"></div>
+<canvas id="doughnutContainer" class="chartjs-render-monitor"></canvas>
 
 <script type="text/javascript">
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: @ViewBag.Data,
+                backgroundColor: @Html.Raw(ViewBag.Colors)
+            }],
+            labels: @Html.Raw(ViewBag.Labels)
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    }
+
     window.onload = function () {
-        var chart = new CanvasJS.Chart("doughnutContainer", {
-            theme: "theme2",
-            animationEnabled: true,
-            data: [
-                {
-                    type: "doughnut",
-                    dataPoints: @Html.Raw(ViewBag.Data),
-                    showInLegend: true,
-                    indexLabelFontColor: "darkgrey",
-                    indexLabelLineColor: "darkgrey"
-                }
-            ]
-        });
-        chart.render();
-    };
+        var ctx = document.getElementById("doughnutContainer").getContext("2d");
+        window.myDoughnut = new Chart(ctx, config);
+    }
 </script>

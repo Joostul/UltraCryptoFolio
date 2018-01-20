@@ -102,29 +102,34 @@
     </tbody>
 </table>
 
-<div id="doughnutContainer" ></div>
+<h3>Relative Portfolio holdings</h3>
+
+<canvas id="doughnutContainer" class="chartjs-render-monitor"></canvas>
 
 <script type="text/javascript">
-    window.onload = function () {
-        var chart = new CanvasJS.Chart("doughnutContainer", {
-            theme: "theme2",
-            animationEnabled: true,
-            title: {
-                text: "Holdings"
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: @ViewBag.Data,
+                backgroundColor: @Html.Raw(ViewBag.Colors)
+            }],
+            labels: @Html.Raw(ViewBag.Labels)
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left'
             },
-            subtitles: [
-                { text: "Your relative portfolio holdings" }
-            ],
-            data: [
-                {
-                    type: "doughnut",
-                    dataPoints: @Html.Raw(ViewBag.Data),
-                    showInLegend: true,
-                    indexLabelFontColor: "darkgrey",
-                    indexLabelLineColor: "darkgrey"
-                }
-            ]
-        });
-        chart.render();
-    };
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    }
+
+    window.onload = function () {
+        var ctx = document.getElementById("doughnutContainer").getContext("2d");
+        window.myDoughnut = new Chart(ctx, config);
+    }
 </script>

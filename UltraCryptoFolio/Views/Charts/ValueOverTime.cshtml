@@ -29,11 +29,15 @@
             data: [
                 {
                     type: "area",
+                    legendText: "Cryptocurrency value",
+                    showInLegend: true, 
                     xValueType: "dateTime",
                     dataPoints: @Html.Raw(ViewBag.Data)
                 },
                 {
                     type: "area",
+                    legendText: "Investments made",
+                    showInLegend: true, 
                     xValueType: "dateTime",
                     dataPoints: @Html.Raw(ViewBag.SecondData)
                 }

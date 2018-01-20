@@ -22,6 +22,8 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 ## Done:
 Version 0.7a
 - [x] Fixed bug where hambuger menu wouldn't work on some browsers.
+- [x] Add legend to ValueOverTime chart.
+- [x] Fix tabs on charts page.
 
 Version 0.7:
 - [x] Temporary solution for making too many calls on Value Over Time chart.

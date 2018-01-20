@@ -17,7 +17,7 @@ namespace UltraCryptoFolio.Helpers
                 var r = rnd.Next(0, 175);
                 var g = rnd.Next(75, 255);
                 var b = rnd.Next(0, 175);
-                colors.Add($"rgb({r}, {g}, {b})");
+                colors.Add($"rgba({r}, {g}, {b}, 0.7)");
             }
 
             return colors;

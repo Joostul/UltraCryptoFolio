@@ -12,37 +12,55 @@
     Weekly portfolio shows data of only the last six weeks. This is a workaround, we are working on a more permamnent solution.
 </div>
 
-<div id="areachartContainer"></div>
+<canvas id="areaContainer" class="chartjs-render-monitor"></canvas>
 
 <script type="text/javascript">
+    var config = {
+        type: 'line',
+        data: {
+            datasets: [{
+                data: @ViewBag.CryptoData,
+                label: 'Cryptocurrencies value',
+                backgroundColor: 'rgba(89, 199, 166, 0.5)',
+                lineTension: 0
+            },
+            {
+                data: @ViewBag.InvestmentData,
+                label: 'Investment value',
+                backgroundColor: 'rgba(0, 71, 153, 0.5)',
+                lineTension: 0
+            }],
+            labels: @Html.Raw(ViewBag.Labels)
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top'
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Week"
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: "Value"
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    }
+
     window.onload = function () {
-        var chart = new CanvasJS.Chart("areachartContainer", {
-            theme: "theme2",
-            animationEnabled: true,
-            animationEnabled: true,
-            axisX: {
-                title: "Week",
-            },
-            axisY: {
-                title: "Value",
-            },
-            data: [
-                {
-                    type: "area",
-                    legendText: "Cryptocurrency value",
-                    showInLegend: true, 
-                    xValueType: "dateTime",
-                    dataPoints: @Html.Raw(ViewBag.Data)
-                },
-                {
-                    type: "area",
-                    legendText: "Investments made",
-                    showInLegend: true, 
-                    xValueType: "dateTime",
-                    dataPoints: @Html.Raw(ViewBag.SecondData)
-                }
-            ]
-        });
-        chart.render();
-    };
+        var ctx = document.getElementById("areaContainer").getContext("2d");
+        window.myDoughnut = new Chart(ctx, config);
+    }
 </script>

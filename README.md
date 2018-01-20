@@ -1,5 +1,5 @@
 # UltraCryptoFolio
-## Version: 0.7b
+## Version: 0.7a
 
 A simple webpage for myself to play with CryptoCurrency values and API's.
 
@@ -14,12 +14,13 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Use Html5 web storage instead of cookies.
 
 ## Ideas / long term:
+- Support import of exchange exports.
 - Coin trends in graphs page.
 - Support fees.
 - Support exchange rate.
 
 ## Done:
-Version 0.7b
+Version 0.7a
 - [x] Fixed bug where hambuger menu wouldn't work on some browsers.
 
 Version 0.7:

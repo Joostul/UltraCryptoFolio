@@ -1,5 +1,5 @@
 # UltraCryptoFolio
-## Version: 0.7
+## Version: 0.7b
 
 A simple webpage for myself to play with CryptoCurrency values and API's.
 
@@ -14,12 +14,14 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 - Use Html5 web storage instead of cookies.
 
 ## Ideas / long term:
-- Get a logo and some actual design instead of ugly basic bootstrap.
 - Coin trends in graphs page.
 - Support fees.
 - Support exchange rate.
 
 ## Done:
+Version 0.7b
+- [x] Fixed bug where hambuger menu wouldn't work on some browsers.
+
 Version 0.7:
 - [x] Temporary solution for making too many calls on Value Over Time chart.
 - [x] Basic charts page.
@@ -47,4 +49,3 @@ Version 0.1:
 - [] Value of portfolio graph for longer portfolio's has some incorrect 0 values. 
 	-> Reason: request limit of price data is 15/second, 300/minute and 8000/hour
 	-> Solution: find way to limit data calls, for now limit history to couple of weeks
-- [] Hamburger menu since 0.6b not working on some mobile browsers.

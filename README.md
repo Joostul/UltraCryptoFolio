@@ -6,6 +6,7 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 # Roadmap:
 
 ## Features / short term:
+- An option to input your current portfolio inline instead of all transactions.
 - When entering transactions able to enter values in Satoshi or Bitcoin.
 - When entering transactions able to click "current value" for receiving currency.
 - In overview get 24h change of specific coins.

@@ -59,43 +59,21 @@
             </table>
         </div>
         <div class="col">
-            <h3>Relative Portfolio holdings</h3>
             <canvas id="doughnutContainer" class="chartjs-render-monitor"></canvas>
         </div>
     </div>
 </div>
 
-
-<script type="text/javascript">
-    var config = {
-        type: 'doughnut',
-        data: {
-            datasets: [{
-                data: @ViewBag.Data,
-                backgroundColor: @Html.Raw(ViewBag.Colors)
-            }],
-            labels: @Html.Raw(ViewBag.Labels)
-        },
-        options: {
-            responsive: true,
-            legend: {
-                position: 'left'
-            },
-            animation: {
-                animateScale: true,
-                animateRotate: true
-            }
-        }
-    }
-
-    window.onload = function () {
-        var ctx = document.getElementById("doughnutContainer").getContext("2d");
-        window.myDoughnut = new Chart(ctx, config);
-    }
-</script>
-
-
-<h3>Portfolio</h3>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Portfolio</h3>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary float-right" asp-action="InputHolding" style="background-color:#59c7a6; border:none">New holding</a>
+        </div>
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -113,6 +91,21 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                <tr>
+                    <td>To be made into input</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+
             @foreach (var value in Model.CryptoValues)
             {
                 <tr>
@@ -142,4 +135,30 @@
     </table>
 </div>
 
+<script type="text/javascript">
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: @ViewBag.Data,
+                backgroundColor: @Html.Raw(ViewBag.Colors)
+            }],
+            labels: @Html.Raw(ViewBag.Labels)
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'left'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    }
 
+    window.onload = function () {
+        var ctx = document.getElementById("doughnutContainer").getContext("2d");
+        window.myDoughnut = new Chart(ctx, config);
+    }
+</script>

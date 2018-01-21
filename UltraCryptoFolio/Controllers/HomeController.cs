@@ -90,6 +90,11 @@ namespace UltraCryptoFolio.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult InputHolding()
+        {
+            return RedirectToAction("Index");
+        }
+
         // Convert an object to a byte array
         private byte[] ObjectToByteArray(Object obj)
         {

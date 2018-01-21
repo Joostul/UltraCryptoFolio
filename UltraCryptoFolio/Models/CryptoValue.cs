@@ -29,8 +29,19 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return Investments.Sum(i => i.AmountSpent)
-                    + Trades.Where(t => t.ReceivingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth);
+                decimal tradeValue = 0;
+                decimal investmentValue = 0;
+
+                if (Investments != null)
+                {
+                    investmentValue = Investments.Sum(i => i.AmountSpent);
+                } 
+                if(Trades != null)
+                {
+                    tradeValue = Trades.Where(t => t.ReceivingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth);
+                }
+                
+                return investmentValue + tradeValue ;
             }
         }
 
@@ -38,8 +49,19 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return Divestments.Sum(i => i.AmountReceived)
-                    + Trades.Where(t => t.SpendingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth);
+                decimal tradeValue = 0;
+                decimal divestmentValue = 0;
+
+                if (Investments != null)
+                {
+                    divestmentValue = Divestments.Sum(i => i.AmountReceived);
+                }
+                if (Trades != null)
+                {
+                    tradeValue = Trades.Where(t => t.SpendingCurrency == CryptoCurrency).Sum(t => t.TransactionWorth);
+                }
+
+                return divestmentValue + tradeValue;
             }
         }
 
@@ -47,7 +69,9 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return Spends.Sum(s => s.TransactionWorth);
+                if (Spends != null) return Spends.Sum(s => s.TransactionWorth);
+
+                return 0;
             }
         }
 
@@ -55,7 +79,9 @@ namespace UltraCryptoFolio.Models
         {
             get
             {
-                return Dividends.Sum(d => d.TransactionWorth);
+                if (Dividends != null) return Dividends.Sum(d => d.TransactionWorth);
+
+                return 0;
             }
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using UltraCryptoFolio.Data;
 using UltraCryptoFolio.Extensions;
 using UltraCryptoFolio.Helpers;
@@ -54,6 +55,24 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult NewTrade()
         {
+            var maxValues = new List<long>();
+            var portfolio = new Portfolio(new PriceGetter(), GetTransactionList());
+
+            foreach (var cryptoCurrencyEnum in Enum.GetValues(typeof(CryptoCurrency)))
+            {
+                var cryptoValue = portfolio.CryptoValues.FirstOrDefault(c => c.CryptoCurrency == (CryptoCurrency)cryptoCurrencyEnum);
+                if (cryptoValue != null)
+                {
+                    maxValues.Add(cryptoValue.Amount);
+                } else
+                {
+                    maxValues.Add(0);
+                }
+
+            }
+
+            ViewBag.MaxValues = JsonConvert.SerializeObject(maxValues);
+
             return View("NewTrade");
         }
 

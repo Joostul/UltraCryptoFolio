@@ -19,14 +19,20 @@
         <div class="form-group row">
             <label asp-for="AmountSpent" class="col-md-2 control-label"></label>
             <div class="col-md-3">
-                <input asp-for="AmountSpent" class="form-control" />
+                <input asp-for="AmountSpent" class="form-control" id="AmountSpent" />
                 <span asp-validation-for="AmountSpent" class="text-danger"></span>
+            </div>
+            <div class="col-md-1">
+                <a class="btn btn-outline-secondary" style="border: 1px solid #59c7a6;" onclick="InputMax(@ViewBag.MaxValues)">Max</a>
+            </div>
+            <div class="col-md-1">
+                <a class="btn btn-outline-secondary" style="border: 1px solid #59c7a6;" onclick="InputHalf(@ViewBag.MaxValues)">Half</a>
             </div>
         </div>
         <div class="form-group row">
             <label asp-for="SpendingCurrency" class="col-md-2 control-label"></label>
             <div class="col-md-3">
-                <select asp-for="SpendingCurrency" class="form-control" asp-items="Html.GetEnumSelectList<UltraCryptoFolio.Models.CryptoCurrency>()"></select>
+                <select asp-for="SpendingCurrency" class="form-control" asp-items="Html.GetEnumSelectList<UltraCryptoFolio.Models.CryptoCurrency>()" id="SpendingCurrency"></select>
                 <span asp-validation-for="SpendingCurrency" class="text-danger"></span>
             </div>
         </div>

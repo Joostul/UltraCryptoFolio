@@ -55,35 +55,21 @@ namespace UltraCryptoFolio.Controllers
 
         public IActionResult NewTrade()
         {
-            var maxValues = new List<long>();
-            var portfolio = new Portfolio(new PriceGetter(), GetTransactionList());
-
-            foreach (var cryptoCurrencyEnum in Enum.GetValues(typeof(CryptoCurrency)))
-            {
-                var cryptoValue = portfolio.CryptoValues.FirstOrDefault(c => c.CryptoCurrency == (CryptoCurrency)cryptoCurrencyEnum);
-                if (cryptoValue != null)
-                {
-                    maxValues.Add(cryptoValue.Amount);
-                } else
-                {
-                    maxValues.Add(0);
-                }
-
-            }
-
-            ViewBag.MaxValues = JsonConvert.SerializeObject(maxValues);
+            ViewBag.MaxValues = JsonConvert.SerializeObject(GetMaxValues());
 
             return View("NewTrade");
         }
 
         public IActionResult NewSpend()
         {
+            ViewBag.MaxValues = JsonConvert.SerializeObject(GetMaxValues());
+
             return View("NewSpend");
         }
 
         public IActionResult NewDivestment()
         {
-            ViewBag.CryptoAmounts = new Portfolio(new PriceGetter(), GetTransactionList()).CryptoValues;
+            ViewBag.MaxValues = JsonConvert.SerializeObject(GetMaxValues());
 
             return View("NewDivestment");
         }
@@ -262,6 +248,27 @@ namespace UltraCryptoFolio.Controllers
         public IActionResult Error()
         {
             return View();
+        }
+
+        private List<long> GetMaxValues()
+        {
+            var maxValues = new List<long>();
+            var portfolio = new Portfolio(new PriceGetter(), GetTransactionList());
+
+            foreach (var cryptoCurrencyEnum in Enum.GetValues(typeof(CryptoCurrency)))
+            {
+                var cryptoValue = portfolio.CryptoValues.FirstOrDefault(c => c.CryptoCurrency == (CryptoCurrency)cryptoCurrencyEnum);
+                if (cryptoValue != null)
+                {
+                    maxValues.Add(cryptoValue.Amount);
+                }
+                else
+                {
+                    maxValues.Add(0);
+                }
+            }
+
+            return maxValues;
         }
     }
 }

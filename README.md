@@ -6,10 +6,8 @@ A simple webpage for myself to play with CryptoCurrency values and API's.
 # Roadmap:
 
 ## Features / short term:
-- Tick which cryptocurrencies you want to see represented in charts.
 - When entering transactions able to enter values in Satoshi or Bitcoin.
 - When entering transactions able to click "current value" for receiving currency.
-- When entering transactions able to click "max" for sending all your available currency.
 - In overview get 24h change of specific coins.
 - Use Html5 web storage instead of cookies.
 
@@ -25,6 +23,8 @@ Version 0.7b
 - [x] Add legend to ValueOverTime chart.
 - [x] Fix tabs on charts page.
 - [x] Update charts from canvas.js to chart.js.
+- [x] Buttons to input all or half your cryptocurrency amount in spends, divestments or trades.
+- [x] Able to tick which cryptocurrencies you want to see represented in charts.
 
 Version 0.7:
 - [x] Temporary solution for making too many calls on Value Over Time chart.

@@ -20,49 +20,52 @@
     <a class="btn btn-outline-secondary" asp-action="ExampleData" style="border-color:#59c7a6;">Example data</a>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Currency</th>
-            <th>Amount (in sathosi or tokens)</th>
-            <th>Value (@Model.MonetaryCurrency)</th>
-            <th>Invested</th>
-            <th>Divested</th>
-            <th>Profit</th>
-            <th>Spent</th>
-            <th>Dividends</th>
-            <th>% Growth</th>
-            <th>% Holdings</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var value in Model.CryptoValues)
-        {
+<div class="table-responsive">
+    <table class="table">
+        <thead>
             <tr>
-                <td>@value.CryptoCurrency</td>
-                <td>@value.Amount.ToString("N0")</td>
-                <td>@value.MonetaryValue</td>
-                <td>@value.AmountInvested</td>
-                <td>@value.AmountDivested</td>
-                <td>@value.CurrentProfit</td>
-                <td>@value.AmountSpent</td>
-                <td>@value.DividendsReceived</td>
-                @{
-                    var growth = Model.GetPercentGrowth(value.CryptoCurrency);
-                    if (growth == Decimal.MaxValue)
-                    {
-                        <td>inf %</td>
-                    }
-                    else
-                    {
-                        <td>@growth  %</td>
-                    }
-                }
-                <td>@Model.GetPercentHoldings(value.CryptoCurrency) %</td>
+                <th>Currency</th>
+                <th>Amount (in sathosi or tokens)</th>
+                <th>Value (@Model.MonetaryCurrency)</th>
+                <th>Invested</th>
+                <th>Divested</th>
+                <th>Profit</th>
+                <th>Spent</th>
+                <th>Dividends</th>
+                <th>% Growth</th>
+                <th>% Holdings</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var value in Model.CryptoValues)
+            {
+                <tr>
+                    <td>@value.CryptoCurrency</td>
+                    <td>@value.Amount.ToString("N0")</td>
+                    <td>@value.MonetaryValue</td>
+                    <td>@value.AmountInvested</td>
+                    <td>@value.AmountDivested</td>
+                    <td>@value.CurrentProfit</td>
+                    <td>@value.AmountSpent</td>
+                    <td>@value.DividendsReceived</td>
+                    @{
+                        var growth = Model.GetPercentGrowth(value.CryptoCurrency);
+                        if (growth == Decimal.MaxValue)
+                        {
+                            <td>inf %</td>
+                        }
+                        else
+                        {
+                            <td>@growth  %</td>
+                        }
+                    }
+                    <td>@Model.GetPercentHoldings(value.CryptoCurrency) %</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
 
 <table class="table">
     <thead>

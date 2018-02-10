@@ -6,12 +6,9 @@
 
 <h2>Portfolio overview</h2>
 
-<div class="alert alert-danger">
-    <strong>Warning!</strong> We are in an early alpha stage, export/import your data every time you change.
-</div>
 <div class="alert alert-warning">
     <a href="#" class="close" data-dismiss="alert">&times;</a>
-    <strong>Warning!</strong> Be sure to export your data if you don't want to lose it.
+    <strong>Warning!</strong> We don't save your data, be sure to export your data if you don't want to lose it.
 </div>
 
 <div>
@@ -20,13 +17,70 @@
     <a class="btn btn-outline-secondary" asp-action="ExampleData" style="border-color:#59c7a6;">Example data</a>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Indicator</th>
+                        <th>Value (@Model.MonetaryCurrency)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Crypto value:</td>
+                        <td>@Model.GetTotalCryptoValue()</td>
+                    </tr>
+                    <tr>
+                        <td>Total cash investment:</td>
+                        <td>@Model.GetTotalMonetaryInvestment()</td>
+                    </tr>
+                    <tr>
+                        <td>Total cash divestment:</td>
+                        <td>@Model.GetTotalMonetaryDivestment()</td>
+                    </tr>
+                    <tr>
+                        <td>Profit/loss:</td>
+                        @{
+                            var totalProfit = Model.GetTotalValue();
+
+                            if (totalProfit > 0)
+                            {
+                                <td style="color:green">@totalProfit</td>
+                            }
+                            else
+                            {
+                                <td style="color:darkred">@totalProfit</td>
+                            }
+                        }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <canvas id="doughnutContainer" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Portfolio</h3>
+        </div>
+        <div class="col">
+            <a class="btn btn-primary float-right" asp-action="InputHolding" style="background-color:#59c7a6; border:none">New holding</a>
+        </div>
+    </div>
+</div>
 <div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
                 <th>Currency</th>
-                <th>Amount (in sathosi or tokens)</th>
-                <th>Value (@Model.MonetaryCurrency)</th>
+                <th>Holdings (in sathosi or tokens)</th>
+                <th>Valuation (@Model.MonetaryCurrency)</th>
                 <th>Invested</th>
                 <th>Divested</th>
                 <th>Profit</th>
@@ -37,6 +91,21 @@
             </tr>
         </thead>
         <tbody>
+            @{
+                <tr>
+                    <td>To be made into input</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+
             @foreach (var value in Model.CryptoValues)
             {
                 <tr>
@@ -65,49 +134,6 @@
         </tbody>
     </table>
 </div>
-
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Indicator</th>
-            <th>Value (@Model.MonetaryCurrency)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Total Crypto value:</td>
-            <td>@Model.GetTotalCryptoValue()</td>
-        </tr>
-        <tr>
-            <td>Total cash investment:</td>
-            <td>@Model.GetTotalMonetaryInvestment()</td>
-        </tr>
-        <tr>
-            <td>Total cash divestment:</td>
-            <td>@Model.GetTotalMonetaryDivestment()</td>
-        </tr>
-        <tr>
-            <td>Profit/loss:</td>
-            @{
-                var totalProfit = Model.GetTotalValue();
-
-                if (totalProfit > 0)
-                {
-                    <td style="color:green">@totalProfit</td>
-                }
-                else
-                {
-                    <td style="color:darkred">@totalProfit</td>
-                }
-            }
-        </tr>
-    </tbody>
-</table>
-
-<h3>Relative Portfolio holdings</h3>
-
-<canvas id="doughnutContainer" class="chartjs-render-monitor"></canvas>
 
 <script type="text/javascript">
     var config = {

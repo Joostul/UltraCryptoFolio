@@ -6,12 +6,12 @@
 
 <h1>Transactions</h1>
 
-<div>
-    <a class="btn btn-primary" asp-action="NewInvestment" style="background-color:#59c7a6; border:none">Input new Investment</a>
-    <a class="btn btn-primary" asp-action="NewTrade" style="background-color:#59c7a6; border:none">Input new Trade</a>
-    <a class="btn btn-primary" asp-action="NewSpend" style="background-color:#59c7a6; border:none">Input new Spend</a>
-    <a class="btn btn-primary" asp-action="NewDivestment" style="background-color:#59c7a6; border:none">Input new Divestment</a>
-    <a class="btn btn-primary" asp-action="NewDividend" style="background-color:#59c7a6; border:none">Input new Dividend</a>
+<div class="btn-group" role="group">
+    <a class="btn btn-primary" asp-action="NewInvestment" style="background-color:#59c7a6; border:1px solid white">Input new Investment</a>
+    <a class="btn btn-primary" asp-action="NewTrade" style="background-color:#59c7a6; border:1px solid white">Input new Trade</a>
+    <a class="btn btn-primary" asp-action="NewSpend" style="background-color:#59c7a6; border:1px solid white">Input new Spend</a>
+    <a class="btn btn-primary" asp-action="NewDivestment" style="background-color:#59c7a6; border:1px solid white">Input new Divestment</a>
+    <a class="btn btn-primary" asp-action="NewDividend" style="background-color:#59c7a6; border:1px solid white">Input new Dividend</a>
 </div>
 <table class="table table-responsive">
     <thead>
@@ -22,7 +22,7 @@
             <th>Amount spent</th>
             <th>Receiving currency</th>
             <th>Amount received</th>
-            <th>Transaction worth</th>
+            <th>Valuation</th>
             <th></th>
         </tr>
     </thead>

@@ -20,6 +20,7 @@ namespace UltraCryptoFolio.Controllers
             var _transactions = GetTransactions();
 
             var portfolio = new Portfolio(new PriceGetter(), _transactions);
+            portfolio.CryptoValues = portfolio.CryptoValues.OrderBy(c => c.MonetaryValue).ToList();
 
             var cryptoValues = portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList().Count;
 
@@ -86,6 +87,11 @@ namespace UltraCryptoFolio.Controllers
 
             SetTransactions(transactions);
 
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult InputHolding()
+        {
             return RedirectToAction("Index");
         }
 

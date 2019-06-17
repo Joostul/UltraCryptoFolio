@@ -1,10 +1,10 @@
-{
+﻿{
   "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
+    "windowsAuthentication": false, 
+    "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:51758/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:62336",
+      "sslPort": 44374
     }
   },
   "profiles": {
@@ -18,10 +18,10 @@
     "UltraCryptoFolio": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:51759/"
+      }
     }
   }
 }

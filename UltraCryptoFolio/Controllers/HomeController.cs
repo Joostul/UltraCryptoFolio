@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using UltraCryptoFolio.Data;
-using UltraCryptoFolio.Extensions;
-using UltraCryptoFolio.Helpers;
 using UltraCryptoFolio.Models;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Http;
-using System.Text;
 
 namespace UltraCryptoFolio.Controllers
 {
@@ -17,124 +8,18 @@ namespace UltraCryptoFolio.Controllers
     {
         public IActionResult Index()
         {
-            var _transactions = GetTransactions();
-
-            var portfolio = new Portfolio(new PriceGetter(), _transactions);
-            portfolio.CryptoValues = portfolio.CryptoValues.OrderBy(c => c.MonetaryValue).ToList();
-
-            var cryptoValues = portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList().Count;
-
-            List<decimal> dataPoints = new List<decimal>();
-            List<string> labels = new List<string>();
-
-            foreach (var cryptoValue in portfolio.CryptoValues.Where(c => c.MonetaryValue > 0).ToList())
-            {
-                dataPoints.Add(cryptoValue.MonetaryValue);
-                labels.Add(cryptoValue.CryptoCurrency.ToString());
-            }
-
-            ViewBag.Data = JsonConvert.SerializeObject(dataPoints);
-            ViewBag.Labels = JsonConvert.SerializeObject(labels);
-            ViewBag.Colors = JsonConvert.SerializeObject(ChartJsColorHelper.GetRandomColors(dataPoints.Count));
-
-            SetTransactions(portfolio.Transactions);
-
-            return View(portfolio);
+            return View();
         }
 
-        public IActionResult ExportPortfolio()
+        public IActionResult Privacy()
         {
-            var portfolio = GetTransactions();
-            var fileName = "UltraCryptoFolio.txt";
-            byte[] myFile = ObjectToByteArray(portfolio);
-            return File(myFile, "test/plain", fileName);
+            return View();
         }
 
-        public IActionResult ImportPortfolio()
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            return View("ImportPortfolio");
-        }
-
-        public IActionResult About()
-        {
-            return View("About");
-        }
-
-        public IActionResult ExampleData()
-        {
-            SetTransactions(ExampleTransactions.Example);
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult ImportPortfolio(IFormFile file)
-        {
-            List<Transaction> transactions;
-
-            try
-            {
-                using (var reader = new StreamReader(file.OpenReadStream()))
-                {
-                    transactions = JsonConvert.DeserializeObject<List<Transaction>>(reader.ReadToEnd());
-                }
-            }
-            catch (Exception)
-            {
-                ViewBag.Message = "Not a valid portfolio file.";
-                return View();
-            }
-
-            SetTransactions(transactions);
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult InputHolding()
-        {
-            return RedirectToAction("Index");
-        }
-
-        // Convert an object to a byte array
-        private byte[] ObjectToByteArray(Object obj)
-        {
-            if (obj == null)
-                return null;
-            TextWriter textWriter = new StringWriter();
-            JsonSerializer jsonSerializer = new JsonSerializer();
-            jsonSerializer.Serialize(textWriter, obj);
-
-            var encoding = new UTF8Encoding();
-            byte[] bytes = encoding.GetBytes(textWriter.ToString());
-
-            return bytes;
-        }
-
-        private void SetTransactions(List<Transaction> transactions)
-        {
-            HttpContext.Session.Set(Constants.SessionKeyInvestments, transactions.Where(t => t.TransactionType == TransactionType.Investment));
-            HttpContext.Session.Set(Constants.SessionKeyDivestments, transactions.Where(t => t.TransactionType == TransactionType.Divestment));
-            HttpContext.Session.Set(Constants.SessionKeySpends, transactions.Where(t => t.TransactionType == TransactionType.Spend));
-            HttpContext.Session.Set(Constants.SessionKeyTrades, transactions.Where(t => t.TransactionType == TransactionType.Trade));
-            HttpContext.Session.Set(Constants.SessionKeyDividends, transactions.Where(t => t.TransactionType == TransactionType.Dividend));
-        }
-
-        private List<Transaction> GetTransactions()
-        {
-            List<Transaction> transactionList = new List<Transaction>();
-            var investments = HttpContext.Session.Get<List<Investment>>(Constants.SessionKeyInvestments);
-            var divestments = HttpContext.Session.Get<List<Divestment>>(Constants.SessionKeyDivestments);
-            var spends = HttpContext.Session.Get<List<Spend>>(Constants.SessionKeySpends);
-            var trades = HttpContext.Session.Get<List<Trade>>(Constants.SessionKeyTrades);
-            var dividends = HttpContext.Session.Get<List<Dividend>>(Constants.SessionKeyDividends);
-
-            if (investments != null) { transactionList.AddRange(investments); }
-            if (divestments != null) { transactionList.AddRange(divestments); }
-            if (spends != null) { transactionList.AddRange(spends); }
-            if (trades != null) { transactionList.AddRange(trades); }
-            if (dividends != null) { transactionList.AddRange(dividends); }
-
-            return transactionList;
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

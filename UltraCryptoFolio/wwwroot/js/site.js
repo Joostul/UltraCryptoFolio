@@ -1,15 +1,4 @@
-﻿function InputMax(maxValues) {
-    var amountSpentInput = document.getElementById("AmountSpent");
-    amountSpentInput.value = GetMaxInputAmount(maxValues);
-}
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+// for details on configuring this project to bundle and minify static web assets.
 
-function InputHalf(maxValues) {
-    var amountSpentInput = document.getElementById("AmountSpent");
-    amountSpentInput.value = (GetMaxInputAmount(maxValues) / 2);
-}
-
-function GetMaxInputAmount(maxValues) {
-    var sel = document.getElementById("SpendingCurrency");
-    var cryptoCurrency = sel.options[sel.selectedIndex].value;
-    return maxValues[cryptoCurrency];
-}
+// Write your JavaScript code.

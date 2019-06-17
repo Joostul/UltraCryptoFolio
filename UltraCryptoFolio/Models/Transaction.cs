@@ -1,27 +1,21 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.ComponentModel;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using UltraCryptoFolio.Extensions;
+using UltraCryptoFolio.Models.Enums;
 
 namespace UltraCryptoFolio.Models
 {
-    [JsonConverter(typeof(TransactionConverter))]
-    public abstract class Transaction
+    public class Transaction
     {
-        public int Id { get; set; }
-        [Required]
+        public Guid Id { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateTime { get; set; }
-        public int? Fee { get; set; }
-        public virtual TransactionType TransactionType { get; set; }
-        [Description("Amount that the sending value is worth at the time of the transaction.")]
-        private decimal _transactionWorth;
-        public decimal TransactionWorth
-        {
-            get { return _transactionWorth; }
-            set { _transactionWorth = value; }
-        }
+        public decimal AmountSpent { get; set; }
+        public decimal Fee { get; set; }
+        public Currency SpentCurrency { get; set; }
+        public decimal SpentCurrencyPrice { get; set; }
+        public decimal AmountReceived { get; set; }
+        public Currency ReceivedCurrency { get; set; }
+        public decimal ReceivedCurrencyPrice { get; set; }
     }
 }

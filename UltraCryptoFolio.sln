@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltraCryptoFolio", "UltraCryptoFolio\UltraCryptoFolio.csproj", "{3965D338-520C-440F-A1B3-75C724D8E8B3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{97B168BC-645A-4579-A380-8A3B870B4C19}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{931DF2BA-2D3A-42FE-B237-E7214AA5820C}"
@@ -14,20 +12,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UltraCryptoFolio", "..\UltraCryptoFolio\UltraCryptoFolio\UltraCryptoFolio\UltraCryptoFolio.csproj", "{16E63596-B767-45AD-A371-A616AB987308}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3965D338-520C-440F-A1B3-75C724D8E8B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97B168BC-645A-4579-A380-8A3B870B4C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97B168BC-645A-4579-A380-8A3B870B4C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97B168BC-645A-4579-A380-8A3B870B4C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97B168BC-645A-4579-A380-8A3B870B4C19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E63596-B767-45AD-A371-A616AB987308}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E63596-B767-45AD-A371-A616AB987308}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E63596-B767-45AD-A371-A616AB987308}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E63596-B767-45AD-A371-A616AB987308}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

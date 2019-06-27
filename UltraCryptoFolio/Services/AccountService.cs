@@ -45,7 +45,7 @@ namespace UltraCryptoFolio.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent)
+        public async Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri)
         {
             var result = new IdentityResult();
 
@@ -71,7 +71,7 @@ namespace UltraCryptoFolio.Services
                         ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
                         IsPersistent = isPersistent,
                         IssuedUtc = DateTime.UtcNow,
-                        RedirectUri = "https://localhost:5001"
+                        RedirectUri = redirectUri
                     };
                     result.ClaimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 

@@ -28,7 +28,7 @@ namespace UltraCryptoFolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = await _accountService.SignInAsync(model.UserEmail, model.PassWord, model.RememberMe);
+            var result = await _accountService.SignInAsync(model.UserEmail, model.PassWord, model.RememberMe, HttpContext.Request.Path);
             if (result.Succeeded)
             {
                 await HttpContext.SignInAsync(

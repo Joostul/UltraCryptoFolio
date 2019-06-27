@@ -1,46 +1,33 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UltraCryptoFolio.Models;
-using UltraCryptoFolio.Models.Enums;
+using UltraCryptoFolio.Models.DomainModels;
 
 namespace UltraCryptoFolio.Repositories
 {
     public class StoragePortfolioRepository : IPortfolioRepository
     {
+        private CloudStorageAccount _storageAccount { get; set; }
 
-        public StoragePortfolioRepository()
+        public StoragePortfolioRepository(CloudStorageAccount storageAccount)
         {
-
+            _storageAccount = storageAccount;
         }
 
-        public void AddTransaction(Transaction transaction)
+        public void AddTransaction(Transaction transaction, PortfolioUser user)
         {
-            throw new NotImplementedException();
+            var blobClient = _storageAccount.CreateCloudBlobClient();
+            var container = blobClient.GetContainerReference("portfolio");
+            var blob = container.GetBlockBlobReference(user.UserEmail);
+            //container.CreateIfNotExistsAsync
         }
 
-        public IDictionary<Currency, decimal> GetCurrenciesWorth()
-        {
-            throw new NotImplementedException();
-        }
-
-        public decimal GetCurrencyWorth(Currency currency)
-        {
-            throw new NotImplementedException();
-        }
-
-        public decimal GetTotalWorth()
+        public Transaction GetTransaction(Guid Id, PortfolioUser user)
         {
             throw new NotImplementedException();
         }
 
-        public Transaction GetTransaction(Guid Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Transaction> GetTransactions()
+        public IEnumerable<Transaction> GetTransactions(PortfolioUser user)
         {
             throw new NotImplementedException();
         }

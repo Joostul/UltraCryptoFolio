@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using UltraCryptoFolio;
-using UltraCryptoFolio.Models;
 
 namespace UnitTests.Mock
 {

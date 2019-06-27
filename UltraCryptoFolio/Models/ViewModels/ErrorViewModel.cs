@@ -1,6 +1,6 @@
 using System;
 
-namespace UltraCryptoFolio.Models
+namespace UltraCryptoFolio.Models.ViewModels
 {
     public class ErrorViewModel
     {

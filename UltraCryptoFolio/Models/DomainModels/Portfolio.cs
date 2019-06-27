@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UltraCryptoFolio.Models
+namespace UltraCryptoFolio.Models.DomainModels
 {
     public class Portfolio
     {

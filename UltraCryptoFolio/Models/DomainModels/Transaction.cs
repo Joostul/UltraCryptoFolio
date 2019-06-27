@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using UltraCryptoFolio.Models.Enums;
 
-namespace UltraCryptoFolio.Models
+namespace UltraCryptoFolio.Models.DomainModels
 {
     public class Transaction
     {

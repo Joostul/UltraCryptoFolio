@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UltraCryptoFolio.Models.DomainModels;
@@ -12,11 +14,12 @@ namespace UltraCryptoFolio.Services
     public class AccountService : IAccountService
     {
         private readonly IUserRepository _userRepository;
-        private bool _isSignedIn;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountService(IUserRepository userRepository)
+        public AccountService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IdentityResult> CreateUserAsync(PortfolioUser user)
@@ -25,7 +28,7 @@ namespace UltraCryptoFolio.Services
 
             try
             {
-                await _userRepository.AddUser(user);
+                await _userRepository.AddUserAsync(user);
                 result.Succeeded = true;
                 // TODO: send confimation email
             }
@@ -48,62 +51,57 @@ namespace UltraCryptoFolio.Services
         public async Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri)
         {
             var result = new IdentityResult();
+            var user = await _userRepository.GetUserAsync(userEmail);
 
-            try
+            if (user != null && user.ValidatePassword(password))
             {
-                var userInDatabase = await _userRepository.GetUser(userEmail);
-                if (userInDatabase.ValidatePassword(password))
-                {
-                    result.Succeeded = true;
-                    _isSignedIn = true;
+                result.Succeeded = true;
 
-                    var claims = new List<Claim>
+                var claims = new List<Claim>
                     {
                     new Claim(ClaimTypes.Email, userEmail),
                     new Claim(ClaimTypes.Role, "User")
                     };
 
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                    result.AuthenticationProperties = new AuthenticationProperties
-                    {
-                        AllowRefresh = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
-                        IsPersistent = isPersistent,
-                        IssuedUtc = DateTime.UtcNow,
-                        RedirectUri = redirectUri
-                    };
-                    result.ClaimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                } else
+                result.AuthenticationProperties = new AuthenticationProperties
                 {
-                    result.Errors = new List<string>
+                    AllowRefresh = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
+                    IsPersistent = isPersistent,
+                    IssuedUtc = DateTime.UtcNow,
+                    RedirectUri = redirectUri
+                };
+                result.ClaimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            }
+            else
+            {
+                result.Errors = new List<string>
                     {
                         "Invalid login attempt."
                     };
-                    result.Succeeded = false;
-                }
-            }
-            catch (KeyNotFoundException)
-            {
                 result.Succeeded = false;
-                result.Errors = new List<string>
-                {
-                    "User not found."
-                };
-                return result;
             }
             return result;
         }
 
-        public void SignOutAsync()
+        public async Task SignOutAsync()
         {
-            _isSignedIn = false;
+            await _httpContextAccessor.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
-        public bool IsSignedIn(ClaimsPrincipal claimsPrincipal)
+        public bool IsSignedIn()
         {
-            return _isSignedIn;
+            if (_httpContextAccessor.HttpContext.User != null && _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

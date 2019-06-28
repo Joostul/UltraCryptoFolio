@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UltraCryptoFolio.Models.DomainModels;
 using UltraCryptoFolio.Models.Enums;
 using UltraCryptoFolio.Repositories;
 
@@ -8,16 +9,31 @@ namespace UltraCryptoFolio.Services
 {
     public class PortfolioService : IPortfolioService
     {
-        private readonly IPortfolioRepository _repository;
+        private readonly IPortfolioRepository _portfolioRepository;
+        private Portfolio _portfolio;
+        private readonly IPriceRepository _priceRepository;
 
-        public PortfolioService(IPortfolioRepository repository)
+        public PortfolioService(IPortfolioRepository portfolioRepository, IPriceRepository priceRepository)
         {
-            _repository = repository;
+            _portfolioRepository = portfolioRepository;
+            _priceRepository = priceRepository;
         }
 
-        public IDictionary<Currency, decimal> GetCurrenciesWorth()
+        public async Task AddTransactionsAsync(IEnumerable<Transaction> transactions)
         {
-            //var transactions = _repository.GetTransactions();
+            if(_portfolio == null)
+            {
+                await GetPortfolioFromDatabaseAsync();
+            }
+            _portfolio.Transactions.AddRange(transactions);
+        }
+
+        public async Task< IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies)
+        {
+            if(_portfolio == null)
+            {
+                await GetPortfolioFromDatabaseAsync();
+            }
 
             return new Dictionary<Currency, decimal>();
         }
@@ -32,9 +48,14 @@ namespace UltraCryptoFolio.Services
             throw new NotImplementedException();
         }
 
-        public Task SavePortfolio()
+        public async Task SavePortfolio()
         {
-            throw new NotImplementedException();
+            await _portfolioRepository.SavePortfolioAsync(_portfolio);
+        }
+
+        private async Task GetPortfolioFromDatabaseAsync()
+        {
+            _portfolio = await _portfolioRepository.GetPortfolioAsync();
         }
     }
 }

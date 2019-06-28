@@ -9,7 +9,7 @@ namespace UltraCryptoFolio.Services
         Task<IdentityResult> CreateUserAsync(PortfolioUser user);
         Task<IdentityResult> DeleteUserAsync(PortfolioUser user);
         Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri);
-        void SignOutAsync();
-        bool IsSignedIn(ClaimsPrincipal claimsPrincipal);
+        Task SignOutAsync();
+        bool IsSignedIn();
     }
 }

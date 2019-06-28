@@ -22,7 +22,7 @@ namespace UltraCryptoFolio.Models.DomainModels
         }
 
         public string UserEmail { get; set; }
-        public string Password { get; private set; }
+        public string Password { get { return _password; } }
         public UserRole Role { get; set; }
         public UserState State { get; set; }
 

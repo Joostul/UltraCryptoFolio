@@ -6,10 +6,10 @@ namespace UltraCryptoFolio.Repositories
 {
     public interface IUserRepository
     {
-        Task<bool> UserNameExists(string userName);
-        Task<PortfolioUser> GetUser(string userName);
-        Task<Uri> AddUser(PortfolioUser user);
-        Task RemoveUser(PortfolioUser user);
+        Task<PortfolioUser> GetUserAsync();
+        Task<PortfolioUser> GetUserAsync(string userName);
+        Task AddUserAsync(PortfolioUser user);
+        Task RemoveUserAsync(PortfolioUser user);
         Task UpdateUserPassword(PortfolioUser user);
         Task UpdateUsername(PortfolioUser user);
     }

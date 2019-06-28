@@ -1,4 +1,5 @@
-﻿using UltraCryptoFolio.Models.DomainModels;
+﻿using System.Linq;
+using UltraCryptoFolio.Models.DomainModels;
 using UltraCryptoFolio.Models.Enums;
 using UltraCryptoFolio.Models.ViewModels;
 using UltraCryptoFolio.Repositories.DataAccessObjects;
@@ -33,6 +34,30 @@ namespace UltraCryptoFolio.Extensions
             {
                 Role = role,
                 State = state
+            };
+        }
+
+        public static Portfolio ToDomainModel(this PortfolioDao dao)
+        {
+            return new Portfolio
+            {
+                Transactions = dao.Transactions.Select(t => t.ToDomainModel()).ToList()
+            };
+        }
+
+        public static Transaction ToDomainModel(this TransactionDao dao)
+        {
+            return new Transaction
+            {
+                Id = dao.Id,
+                AmountReceived = dao.AmountReceived,
+                AmountSpent = dao.AmountSpent,
+                DateTime = dao.DateTime,
+                Fee = dao.Fee,
+                ReceivedCurrency = dao.ReceivedCurrency,
+                ReceivedCurrencyPrice = dao.ReceivedCurrencyPrice,
+                SpentCurrency = dao.SpentCurrency,
+                SpentCurrencyPrice = dao.SpentCurrencyPrice
             };
         }
     }

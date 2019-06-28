@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -38,18 +39,22 @@ namespace UltraCryptoFolio.Controllers
             }
             else
             {
-                ModelState.AddModelError(nameof(model.PassWord), "Invalid password.");
+                ModelState.AddModelError(nameof(model.PassWord), result.Errors.First());
             }
 
             return View();
         }
 
+        [HttpGet]
+        public IActionResult SignOut()
+        {
+            return RedirectToAction("signoutasync");
+        }
+
         [HttpPost]
         public async Task<IActionResult> SignOutAsync()
         {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
-            _accountService.SignOutAsync();
+            await _accountService.SignOutAsync();
 
             return RedirectToAction("index", "home");
         }

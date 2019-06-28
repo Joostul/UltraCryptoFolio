@@ -1,8 +1,8 @@
-﻿using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UltraCryptoFolio.Extensions;
 using UltraCryptoFolio.Models.DomainModels;
@@ -12,41 +12,48 @@ namespace UltraCryptoFolio.Repositories
 {
     public class StorageUserRepository : IUserRepository
     {
-        private CloudStorageAccount _storageAccount;
+        private readonly IAzureStorageAccountRepository _storageAccount;
+        private string _userName { get; set; }
 
-        public StorageUserRepository(CloudStorageAccount storageAccount)
+        public StorageUserRepository(IAzureStorageAccountRepository storageAccount, IHttpContextAccessor httpContextAccessor)
         {
             _storageAccount = storageAccount;
-        }
 
-        public async Task<Uri> AddUser(PortfolioUser user)
-        {
-            var userContainer = await GetPortfolioContainer();
-            var userDao = user.ToDao();
-            userDao.Id = Guid.NewGuid();
-            var userBlob = userContainer.GetBlockBlobReference(user.UserEmail);
-            var stringContent = JsonConvert.SerializeObject(userDao);
-            await userBlob.UploadTextAsync(stringContent);
-            return userBlob.Uri;
-        }
-
-        public async Task<PortfolioUser> GetUser(string userName)
-        {
-            var userContainer = await GetPortfolioContainer();
-            var userBlob = userContainer.GetBlockBlobReference(userName);
-            if (await userBlob.ExistsAsync())
+            if (httpContextAccessor.HttpContext.User != null && httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                var stringContent = await userBlob.DownloadTextAsync();
-                var dao = JsonConvert.DeserializeObject<PortfolioUserDao>(stringContent);
-                return dao.ToDomainModel();
-
-            } else
-            {
-                throw new KeyNotFoundException();
+                _userName = httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
             }
         }
 
-        public Task RemoveUser(PortfolioUser user)
+        public async Task AddUserAsync(PortfolioUser user)
+        {
+            var userDao = user.ToDao();
+            userDao.Id = Guid.NewGuid();
+            var stringContent = JsonConvert.SerializeObject(userDao);
+            await _storageAccount.UploadTextAsync(stringContent, "users", user.UserEmail);
+        }
+
+        public async Task<PortfolioUser> GetUserAsync()
+        {
+            return await GetUserAsync(_userName);
+        }
+
+        public async Task<PortfolioUser> GetUserAsync(string userName)
+        {
+            if (await _storageAccount.BlobExistsAsync("users", userName))
+            {
+                var stringContent = await _storageAccount.DownloadTextAsync("users", userName);
+                var dao = JsonConvert.DeserializeObject<PortfolioUserDao>(stringContent);
+                return dao.ToDomainModel();
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public Task RemoveUserAsync(PortfolioUser user)
         {
             throw new System.NotImplementedException();
         }
@@ -59,19 +66,6 @@ namespace UltraCryptoFolio.Repositories
         public Task UpdateUserPassword(PortfolioUser user)
         {
             throw new System.NotImplementedException();
-        }
-
-        public Task<bool> UserNameExists(string userName)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<CloudBlobContainer> GetPortfolioContainer()
-        {
-            var blobClient = _storageAccount.CreateCloudBlobClient();
-            var userContainer = blobClient.GetContainerReference("portfolios");
-            await userContainer.CreateIfNotExistsAsync();
-            return userContainer;
         }
     }
 }

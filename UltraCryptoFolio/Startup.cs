@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +24,7 @@ namespace UltraCryptoFolio
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var storageAccountConnectionString = Configuration.GetValue<string>("StorageAccountConnectionString");
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -32,17 +34,27 @@ namespace UltraCryptoFolio
             services.AddControllersWithViews()
                 .AddNewtonsoftJson();
             services.AddRazorPages();
+
+            // Infra components
             services.AddHttpClient();
-            services.AddSingleton<IPortfolioService>(
-                s => new PortfolioService(
-                    new StoragePortfolioRepository(
-                        CloudStorageAccount.Parse(Configuration.GetValue<string>("StorageAccountConnectionString")))));
-            services.AddSingleton<IAccountService>(
-                a => new AccountService(
-                    new StorageUserRepository(
-                        CloudStorageAccount.Parse(Configuration.GetValue<string>("StorageAccountConnectionString")))));
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IAzureStorageAccountRepository, AzureStorageAccountRepository>(a =>
+                new AzureStorageAccountRepository(storageAccountConnectionString));
+
+            // Services
+            services.AddTransient<IPortfolioService, PortfolioService>();
+            services.AddTransient<IAccountService, AccountService>();
+
+            // Repositories
+            services.AddTransient<IPortfolioRepository, StoragePortfolioRepository>();
+            services.AddTransient<IUserRepository, StorageUserRepository>();
+            services.AddTransient<IPriceRepository, StoragePriceRepository>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

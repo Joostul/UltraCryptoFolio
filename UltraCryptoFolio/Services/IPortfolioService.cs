@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using UltraCryptoFolio.Models.Enums;
+using UltraCryptoFolio.Models.DomainModels;
 
 namespace UltraCryptoFolio.Services
 {
     public interface IPortfolioService
     {
-        public decimal GetTotalWorth();
-        public IDictionary<Currency, decimal> GetCurrenciesWorth();
-        public decimal GetCurrencyWorth(Currency currency);
-        public Task SavePortfolio();
+        decimal GetTotalWorth();
+        Task<IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies);
+        decimal GetCurrencyWorth(Currency currency);
+        Task AddTransactionsAsync(IEnumerable<Transaction> transactions);
+        Task SavePortfolio();
     }
 }

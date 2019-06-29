@@ -103,5 +103,10 @@ namespace UltraCryptoFolio.Services
                 return false;
             }
         }
+
+        public string GetUserName()
+        {
+            return _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+        }
     }
 }

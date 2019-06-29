@@ -35,9 +35,8 @@
                         {
                             <li class="nav-item">
                                 <form method="post" asp-action="signout" asp-controller="account">
-                                    <button type="submit" class="nav-link btn btn-link">Logout @User.Identity.Name</button>
+                                    <button type="submit" class="nav-link btn btn-link">Logout @accountService.GetUserName()</button>
                                 </form>
-                                @*<a class="nav-link text-dark" asp-controller="Account" asp-action="SignOutAsync">Logout @User.Identity.Name</a>*@
                             </li>
                         }
                         else

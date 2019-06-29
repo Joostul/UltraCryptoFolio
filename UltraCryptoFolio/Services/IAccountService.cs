@@ -11,5 +11,6 @@ namespace UltraCryptoFolio.Services
         Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri);
         Task SignOutAsync();
         bool IsSignedIn();
+        string GetUserName();
     }
 }

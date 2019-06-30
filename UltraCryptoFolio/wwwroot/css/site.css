@@ -7,6 +7,10 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.bg-ultracryptofolio {
+    background-color: #59c7a6 !important;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

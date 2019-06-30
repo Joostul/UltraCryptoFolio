@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Services;
 
 namespace UltraCryptoFolio.Controllers
@@ -12,6 +13,7 @@ namespace UltraCryptoFolio.Controllers
             _portfolioService = portfolioService;
         }
 
+        [Authorize(Policy = "RegisteredUser")]
         public IActionResult Index()
         {
             decimal totalWorth = 0;

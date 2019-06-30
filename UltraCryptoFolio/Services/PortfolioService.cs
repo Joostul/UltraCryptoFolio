@@ -57,5 +57,10 @@ namespace UltraCryptoFolio.Services
         {
             _portfolio = await _portfolioRepository.GetPortfolioAsync();
         }
+
+        public Task CreateExamplePortfolio()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

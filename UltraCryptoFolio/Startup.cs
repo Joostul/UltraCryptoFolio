@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.WindowsAzure.Storage;
+using System.Linq;
+using System.Security.Claims;
 using UltraCryptoFolio.Repositories;
 using UltraCryptoFolio.Services;
 
@@ -50,9 +53,20 @@ namespace UltraCryptoFolio
             services.AddTransient<IUserRepository, StorageUserRepository>();
             services.AddTransient<IPriceRepository, StoragePriceRepository>();
 
+            // Authentication & Authorisation
+            var registeredUserPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
+                .RequireClaim(ClaimTypes.Email)
+                .Build();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("RegisteredUser", registeredUserPolicy);
+            });
 
+            // Add mcv
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }

@@ -7,11 +7,11 @@ namespace UltraCryptoFolio.Services
 {
     public interface IPortfolioService
     {
-        decimal GetTotalWorth();
+        Task<decimal> GetTotalWorth();
         Task<IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies);
-        decimal GetCurrencyWorth(Currency currency);
-        Task AddTransactionsAsync(IEnumerable<Transaction> transactions);
+        Task<decimal> GetCurrencyWorth(Currency currency);
+        void AddTransactions(IEnumerable<Transaction> transactions);
         Task SavePortfolio();
-        Task CreateExamplePortfolio();
+        void CreateExamplePortfolio();
     }
 }

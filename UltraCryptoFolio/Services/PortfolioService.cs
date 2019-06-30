@@ -19,33 +19,36 @@ namespace UltraCryptoFolio.Services
             _priceRepository = priceRepository;
         }
 
-        public async Task AddTransactionsAsync(IEnumerable<Transaction> transactions)
+        public void AddTransactions(IEnumerable<Transaction> transactions)
         {
-            if(_portfolio == null)
-            {
-                await GetPortfolioFromDatabaseAsync();
-            }
             _portfolio.Transactions.AddRange(transactions);
         }
 
-        public async Task< IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies)
+        public async Task<IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies)
         {
-            if(_portfolio == null)
-            {
-                await GetPortfolioFromDatabaseAsync();
-            }
+            await TrySetPortfolio();
 
             return new Dictionary<Currency, decimal>();
         }
 
-        public decimal GetCurrencyWorth(Currency currency)
+        public async Task<decimal> GetCurrencyWorth(Currency currency)
         {
+            await TrySetPortfolio();
             throw new NotImplementedException();
         }
 
-        public decimal GetTotalWorth()
+        public async Task<decimal> GetTotalWorth()
         {
-            throw new NotImplementedException();
+            await TrySetPortfolio();
+
+            decimal totalWorth = 0;
+
+            foreach (var holding in _portfolio.Holdings)
+            {                
+                totalWorth += holding.Amount * await _priceRepository.GetCurrentPriceAsync(holding.Currency, holding.PriceCurrency);
+            }
+
+            return totalWorth;
         }
 
         public async Task SavePortfolio()
@@ -53,14 +56,33 @@ namespace UltraCryptoFolio.Services
             await _portfolioRepository.SavePortfolioAsync(_portfolio);
         }
 
-        private async Task GetPortfolioFromDatabaseAsync()
+        private async Task TrySetPortfolio()
         {
-            _portfolio = await _portfolioRepository.GetPortfolioAsync();
+            if(_portfolio == null)
+            {
+                _portfolio = await _portfolioRepository.GetPortfolioAsync();
+            }
         }
 
-        public Task CreateExamplePortfolio()
+        public void CreateExamplePortfolio()
         {
-            throw new NotImplementedException();
+            _portfolio = new Portfolio
+            {
+                Transactions = new List<Transaction>
+                {
+                    new Transaction
+                    {
+                        AmountReceived = 1,
+                        AmountSpent = 250,
+                        DateTime = new DateTime(2019, 1, 1),
+                        Fee = 0,
+                        ReceivedCurrency = Currency.BitcoinCash,
+                        SpentCurrency = Currency.Euro,
+                        ReceivedCurrencyPrice = 250,
+                        SpentCurrencyPrice = 1
+                    }
+                }
+            };
         }
     }
 }

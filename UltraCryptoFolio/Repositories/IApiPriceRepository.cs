@@ -4,7 +4,7 @@ using UltraCryptoFolio.Models.Enums;
 
 namespace UltraCryptoFolio.Repositories
 {
-    public interface IPriceRepository
+    public interface IApiPriceRepository
     {
         public Task<decimal> GetCurrentPriceAsync(Currency currency, Currency priceCurrency);
         public Task<decimal> GetPriceAtDateAsync(Currency currency, Currency priceCurrency, DateTime date);

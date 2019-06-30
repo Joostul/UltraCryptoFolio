@@ -39,7 +39,7 @@ namespace UltraCryptoFolio
             services.AddRazorPages();
 
             // Infra components
-            services.AddHttpClient();
+            services.AddHttpClient<IApiPriceRepository, ApiPriceRepository>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAzureStorageAccountRepository, AzureStorageAccountRepository>(a =>
                 new AzureStorageAccountRepository(storageAccountConnectionString));
@@ -52,6 +52,7 @@ namespace UltraCryptoFolio
             services.AddTransient<IPortfolioRepository, StoragePortfolioRepository>();
             services.AddTransient<IUserRepository, StorageUserRepository>();
             services.AddTransient<IPriceRepository, StoragePriceRepository>();
+            //services.AddTransient<IApiPriceRepository, ApiPriceRepository>();
 
             // Authentication & Authorisation
             var registeredUserPolicy = new AuthorizationPolicyBuilder()

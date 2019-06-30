@@ -7,7 +7,7 @@ using UltraCryptoFolio.Models.Enums;
 
 namespace UltraCryptoFolio.Repositories
 {
-    public class ApiPriceRepository : IPriceRepository
+    public class ApiPriceRepository : IApiPriceRepository
     {
         private HttpClient _httpClient;
 
@@ -19,19 +19,14 @@ namespace UltraCryptoFolio.Repositories
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void Dispose()
+        public async Task<decimal> GetCurrentPriceAsync(Currency currency, Currency priceCurrency)
         {
-            _httpClient.Dispose();
+            return await GetPriceAtDateAsync(currency, priceCurrency, DateTime.UtcNow);
         }
 
-        public async Task<decimal> GetCurrentPriceAsync(Currency currency)
+        public async Task<decimal> GetPriceAtDateAsync(Currency currency, Currency priceCurrency, DateTime date)
         {
-            return await GetPriceAtDateAsync(currency, DateTime.UtcNow);
-        }
-
-        public async Task<decimal> GetPriceAtDateAsync(Currency currency, DateTime date)
-        {
-            var unixTimeStamp = date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+            var unixTimeStamp = (Int32)date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
             HttpResponseMessage response = new HttpResponseMessage();
 
             switch (currency)
@@ -70,6 +65,7 @@ namespace UltraCryptoFolio.Repositories
                     response = await _httpClient.GetAsync("dayAvg?fsym=BSV&tsym=EUR&toTs=" + unixTimeStamp);
                     break;
                 case Currency.Euro:
+                    return 1;
                 case Currency.Dollar:
                 default:
                     throw new InvalidOperationException(); // Not so clean but sure
@@ -80,7 +76,8 @@ namespace UltraCryptoFolio.Repositories
                 var data = JObject.Parse(jsonData);
                 var dataValue = data.Value<decimal>("EUR");
                 return dataValue;
-            } else
+            }
+            else
             {
                 throw new InvalidOperationException(); // Not so clean but sure
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using UltraCryptoFolio.Services;
 
 namespace UltraCryptoFolio.Controllers
@@ -14,13 +15,10 @@ namespace UltraCryptoFolio.Controllers
         }
 
         [Authorize(Policy = "RegisteredUser")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            decimal totalWorth = 0;
-            if(HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
-            {
-                totalWorth = _portfolioService.GetTotalWorth();
-            }
+            _portfolioService.CreateExamplePortfolio();
+            var totalWorth = await _portfolioService.GetTotalWorth();
             return View(totalWorth);
         }
     }

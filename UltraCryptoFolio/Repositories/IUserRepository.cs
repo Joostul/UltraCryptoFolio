@@ -13,8 +13,7 @@ namespace UltraCryptoFolio.Repositories
         Task<bool> TempUserExists(Guid userId);
         Task AddTempUserAsync(PortfolioUser user);
         Task RegisterTempUserAsync(Guid userId);
-        Task RemoveUserAsync(PortfolioUser user);
-        Task UpdateUserPassword(PortfolioUser user);
-        Task UpdateUsername(PortfolioUser user);
+        Task DeleteUserAsync(PortfolioUser user);
+        Task UpdateUserAsync(PortfolioUser user);
     }
 }

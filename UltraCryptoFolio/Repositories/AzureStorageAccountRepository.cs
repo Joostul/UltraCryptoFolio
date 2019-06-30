@@ -58,6 +58,7 @@ namespace UltraCryptoFolio.Repositories
                 var originBlob = await GetCloudBlockBlobAsync(originContainerName, originBlobName);
                 var destinationBlob = await GetCloudBlockBlobAsync(destinationContainerName, destinationBlobName);
                 await destinationBlob.StartCopyAsync(originBlob);
+                await originBlob.DeleteIfExistsAsync();
             }
         }
     }

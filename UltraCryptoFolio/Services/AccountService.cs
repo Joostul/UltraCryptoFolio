@@ -63,40 +63,49 @@ namespace UltraCryptoFolio.Services
 
         public async Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri)
         {
-            var result = new IdentityResult();
-            var userDao = await _userRepository.GetUserAsync(userEmail);
-            var user = userDao.ToDomainModel();
-
-            if (user != null && user.ValidatePassword(password))
+            var result = new IdentityResult()
             {
-                result.Succeeded = true;
-
-                var claims = new List<Claim>
+                Succeeded = false
+            };
+            var userDao = await _userRepository.GetUserAsync(userEmail);
+            if(userDao != null)
+            {
+                var user = userDao.ToDomainModel();
+                if (user.ValidatePassword(password))
                 {
-                new Claim(ClaimTypes.Email, userEmail),
-                new Claim(ClaimTypes.Role, "User")
-                };
+                    result.Succeeded = true;
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Email, userEmail),
+                        new Claim(ClaimTypes.Role, "User")
+                    };
 
-                result.AuthenticationProperties = new AuthenticationProperties
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    result.AuthenticationProperties = new AuthenticationProperties
+                    {
+                        AllowRefresh = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
+                        IsPersistent = isPersistent,
+                        IssuedUtc = DateTime.UtcNow,
+                        RedirectUri = redirectUri
+                    };
+                    result.ClaimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                } else
                 {
-                    AllowRefresh = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(15),
-                    IsPersistent = isPersistent,
-                    IssuedUtc = DateTime.UtcNow,
-                    RedirectUri = redirectUri
-                };
-                result.ClaimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
+                    result.Errors = new List<string>
+                    {
+                        "Invalid login attempt."
+                    };
+                }
             }
             else
             {
                 result.Errors = new List<string>
-                    {
-                        "Invalid login attempt."
-                    };
-                result.Succeeded = false;
+                {
+                    "Invalid login attempt."
+                };
             }
             return result;
         }
@@ -141,6 +150,7 @@ namespace UltraCryptoFolio.Services
                 try
                 {
                     await _userRepository.RegisterTempUserAsync(id);
+
                     result.Succeeded = true;
                 }
                 catch (Exception)

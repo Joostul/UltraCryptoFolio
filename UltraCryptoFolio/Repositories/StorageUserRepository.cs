@@ -52,17 +52,17 @@ namespace UltraCryptoFolio.Repositories
             }
         }
 
-        public Task RemoveUserAsync(PortfolioUser user)
+        public async Task UpdateUserAsync(PortfolioUser user)
         {
-            throw new NotImplementedException();
+            if(await _storageAccount.BlobExistsAsync("users", user.UserEmail))
+            {
+                var userDao = user.ToDao();
+                var stringContent = JsonConvert.SerializeObject(userDao);
+                await _storageAccount.UploadTextAsync(stringContent, "users", user.UserEmail);
+            }
         }
 
-        public Task UpdateUsername(PortfolioUser user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateUserPassword(PortfolioUser user)
+        public Task DeleteUserAsync(PortfolioUser user)
         {
             throw new NotImplementedException();
         }
@@ -80,8 +80,10 @@ namespace UltraCryptoFolio.Repositories
             var tempUser = await GetTempUserAsync(userId);
             if(tempUser != null)
             {
-                tempUser.State = UserState.Verified;
                 await _storageAccount.MoveBlobAsync("tempusers", tempUser.Id.ToString(), "users", tempUser.UserName);
+                var verifiedUser = tempUser.ToDomainModel();
+                verifiedUser.State = UserState.Verified;
+                await UpdateUserAsync(verifiedUser);
             }
         }
 

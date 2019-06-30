@@ -12,7 +12,6 @@ using UltraCryptoFolio.Services;
 
 namespace UltraCryptoFolio.Controllers
 {
-
     public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
@@ -101,7 +100,7 @@ namespace UltraCryptoFolio.Controllers
             return View();
         }
 
-        [Route("{id}")]
+        [Route("/Account/{id}")]
         [HttpGet]
         public async Task<IActionResult> VerifyEmail([FromRoute]Guid id)
         {

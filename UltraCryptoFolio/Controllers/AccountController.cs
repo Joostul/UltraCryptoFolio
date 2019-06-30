@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UltraCryptoFolio.Extensions;
 using UltraCryptoFolio.Models.Enums;
@@ -18,6 +20,14 @@ namespace UltraCryptoFolio.Controllers
         public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
+        }
+
+        [Authorize(Policy = "RegisteredUser")]
+        public async Task<IActionResult> Index()
+        {
+            var user = await _accountService.GetUser();
+            var userViewModel = user.ToViewModel();
+            return View(userViewModel);
         }
 
         [HttpGet]
@@ -68,7 +78,11 @@ namespace UltraCryptoFolio.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            var domainModel = model.ToDomainModel(UserRole.FreeUser, UserState.Verified); // TODO: make verify functionality and verify accounts
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var domainModel = model.ToDomainModel(UserRole.FreeUser, UserState.Unverified);
             var result = await _accountService.CreateUserAsync(domainModel);
             if (result.Succeeded)
             {
@@ -76,7 +90,8 @@ namespace UltraCryptoFolio.Controllers
             }
             else
             {
-                return BadRequest(result.Errors);
+                ModelState.AddModelError("", result.Errors.First());
+                return View();
             }
         }
 
@@ -84,6 +99,21 @@ namespace UltraCryptoFolio.Controllers
         public IActionResult RegisterCompleted()
         {
             return View();
+        }
+
+        [Route("{id}")]
+        [HttpGet]
+        public async Task<IActionResult> VerifyEmail([FromRoute]Guid id)
+        {
+            var result = await _accountService.CompleteUserRegistrationAsync(id);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("AccountVerified");
+            }
+            else
+            {
+                return RedirectToAction("index", "home");
+            }
         }
     }
 }

@@ -7,5 +7,6 @@ namespace UltraCryptoFolio.Repositories
         Task UploadTextAsync(string text, string containerName, string blobName);
         Task<string> DownloadTextAsync(string containerName, string blobName);
         Task<bool> BlobExistsAsync(string containerName, string blobName);
+        Task MoveBlobAsync(string originContainerName, string originBlobName, string destinationContainerName, string destinationBlobName);
     }
 }

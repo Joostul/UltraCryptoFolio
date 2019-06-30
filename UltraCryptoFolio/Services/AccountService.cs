@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using UltraCryptoFolio.Models.DomainModels;
 using UltraCryptoFolio.Repositories;
+using UltraCryptoFolio.Extensions;
+using UltraCryptoFolio.Models.Enums;
 
 namespace UltraCryptoFolio.Services
 {
@@ -24,13 +26,24 @@ namespace UltraCryptoFolio.Services
 
         public async Task<IdentityResult> CreateUserAsync(PortfolioUser user)
         {
-            var result = new IdentityResult();
+            var result = new IdentityResult
+            {
+                Succeeded = false
+            };
 
             try
             {
-                await _userRepository.AddUserAsync(user);
+                if (await _userRepository.GetUserAsync(user.UserEmail) != null)
+                {
+                    result.Succeeded = false;
+                    result.Errors = new List<string>
+                    {
+                        "Email already registered."
+                    };
+                    return result;
+                }
+                await _userRepository.AddTempUserAsync(user);
                 result.Succeeded = true;
-                // TODO: send confimation email
             }
             catch (Exception ex)
             {
@@ -51,17 +64,18 @@ namespace UltraCryptoFolio.Services
         public async Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri)
         {
             var result = new IdentityResult();
-            var user = await _userRepository.GetUserAsync(userEmail);
+            var userDao = await _userRepository.GetUserAsync(userEmail);
+            var user = userDao.ToDomainModel();
 
             if (user != null && user.ValidatePassword(password))
             {
                 result.Succeeded = true;
 
                 var claims = new List<Claim>
-                    {
-                    new Claim(ClaimTypes.Email, userEmail),
-                    new Claim(ClaimTypes.Role, "User")
-                    };
+                {
+                new Claim(ClaimTypes.Email, userEmail),
+                new Claim(ClaimTypes.Role, "User")
+                };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -107,6 +121,46 @@ namespace UltraCryptoFolio.Services
         public string GetUserName()
         {
             return _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+        }
+
+        public async Task<PortfolioUser> GetUser()
+        {
+            var userDao = await _userRepository.GetUserAsync();
+            return userDao.ToDomainModel();
+        }
+
+        public async Task<IdentityResult> CompleteUserRegistrationAsync(Guid id)
+        {
+            var result = new IdentityResult
+            {
+                Succeeded = false
+            };
+
+            if (await _userRepository.TempUserExists(id))
+            {
+                try
+                {
+                    await _userRepository.RegisterTempUserAsync(id);
+                    result.Succeeded = true;
+                }
+                catch (Exception)
+                {
+                    result.Succeeded = false;
+                    result.Errors = new List<string>
+                    {
+                        "Something went wrong, please try again."
+                    };
+                }
+            }
+            else
+            {
+                result.Errors = new List<string>
+                {
+                    "Something went wrong, please try again."
+                };
+            }
+
+            return result;
         }
     }
 }

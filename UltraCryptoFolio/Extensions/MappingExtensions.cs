@@ -37,6 +37,14 @@ namespace UltraCryptoFolio.Extensions
             };
         }
 
+        public static PortolioUserViewModel ToViewModel(this PortfolioUser user)
+        {
+            return new PortolioUserViewModel
+            {
+                UserEmail = user.UserEmail
+            };
+        }
+
         public static Portfolio ToDomainModel(this PortfolioDao dao)
         {
             return new Portfolio

@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using UltraCryptoFolio.Extensions;
 using UltraCryptoFolio.Models.DomainModels;
+using UltraCryptoFolio.Models.Enums;
 using UltraCryptoFolio.Repositories.DataAccessObjects;
 
 namespace UltraCryptoFolio.Repositories
@@ -30,22 +31,20 @@ namespace UltraCryptoFolio.Repositories
             var userDao = user.ToDao();
             userDao.Id = Guid.NewGuid();
             var stringContent = JsonConvert.SerializeObject(userDao);
-            await _storageAccount.UploadTextAsync(stringContent, "users", user.UserEmail);
+            await _storageAccount.UploadTextAsync(stringContent, "tempusers", user.UserEmail);
         }
 
-        public async Task<PortfolioUser> GetUserAsync()
+        public async Task<PortfolioUserDao> GetUserAsync()
         {
             return await GetUserAsync(_userName);
         }
 
-        public async Task<PortfolioUser> GetUserAsync(string userName)
+        public async Task<PortfolioUserDao> GetUserAsync(string userName)
         {
             if (await _storageAccount.BlobExistsAsync("users", userName))
             {
                 var stringContent = await _storageAccount.DownloadTextAsync("users", userName);
-                var dao = JsonConvert.DeserializeObject<PortfolioUserDao>(stringContent);
-                return dao.ToDomainModel();
-
+                return JsonConvert.DeserializeObject<PortfolioUserDao>(stringContent);
             }
             else
             {
@@ -55,17 +54,60 @@ namespace UltraCryptoFolio.Repositories
 
         public Task RemoveUserAsync(PortfolioUser user)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task UpdateUsername(PortfolioUser user)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task UpdateUserPassword(PortfolioUser user)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public async Task AddTempUserAsync(PortfolioUser user)
+        {
+            var userDao = user.ToDao();
+            userDao.Id = Guid.NewGuid();
+            var stringContent = JsonConvert.SerializeObject(userDao);
+            await _storageAccount.UploadTextAsync(stringContent, "tempusers", userDao.Id.ToString());
+        }
+
+        public async Task RegisterTempUserAsync(Guid userId)
+        {
+            var tempUser = await GetTempUserAsync(userId);
+            if(tempUser != null)
+            {
+                tempUser.State = UserState.Verified;
+                await _storageAccount.MoveBlobAsync("tempusers", tempUser.Id.ToString(), "users", tempUser.UserName);
+            }
+        }
+
+        public async Task<PortfolioUserDao> GetTempUserAsync(Guid userId)
+        {
+            if (await _storageAccount.BlobExistsAsync("tempusers", userId.ToString()))
+            {
+                var stringContent = await _storageAccount.DownloadTextAsync("tempusers", userId.ToString());
+                return JsonConvert.DeserializeObject<PortfolioUserDao>(stringContent);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<bool> TempUserExists(Guid userId)
+        {
+            if(await _storageAccount.BlobExistsAsync("tempusers", userId.ToString()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

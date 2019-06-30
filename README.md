@@ -1,24 +1,14 @@
 # UltraCryptoFolio
-## Version: 0.7b
+## Version: 0.8
 
 A simple webpage for myself to play with CryptoCurrency values and API's.
 
-# Roadmap:
-
-## Features / short term:
-- An option to input your current portfolio inline instead of all transactions.
-- When entering transactions able to enter values in Satoshi or Bitcoin.
-- When entering transactions able to click "current value" for receiving currency.
-- In overview get 24h change of specific coins.
-- Use Html5 web storage instead of cookies.
-
-## Ideas / long term:
-- Support import of exchange exports.
-- Coin trends in graphs page.
-- Support fees.
-- Support exchange rate.
-
 ## Done:
+Version 0.8
+- [x] Update to ASP.NET Core 3.0.
+- [x] Add Register and Login functionality.
+- [x] Removed all portfolio functionality (to be refactored).
+
 Version 0.7b
 - [x] Fixed bug where hambuger menu wouldn't work on some browsers.
 - [x] Add legend to ValueOverTime chart.

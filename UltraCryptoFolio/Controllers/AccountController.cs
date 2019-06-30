@@ -29,16 +29,18 @@ namespace UltraCryptoFolio.Controllers
             return View(userViewModel);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            var result = await _accountService.SignInAsync(model.UserEmail, model.PassWord, model.RememberMe, HttpContext.Request.Path);
+            var result = await _accountService.SignInAsync(model.UserEmail, model.Password, model.RememberMe, HttpContext.Request.Path);
             if (result.Succeeded)
             {
                 await HttpContext.SignInAsync(
@@ -48,18 +50,20 @@ namespace UltraCryptoFolio.Controllers
             }
             else
             {
-                ModelState.AddModelError(nameof(model.PassWord), result.Errors.First());
+                ModelState.AddModelError(nameof(model.Password), result.Errors.First());
             }
 
-            return View();
+            return RedirectToAction("index", "portfolio");
         }
 
+        [Authorize(Policy = "RegisteredUser")]
         [HttpGet]
         public IActionResult SignOut()
         {
             return RedirectToAction("signoutasync");
         }
 
+        [Authorize(Policy = "RegisteredUser")]
         [HttpPost]
         public async Task<IActionResult> SignOutAsync()
         {
@@ -68,12 +72,14 @@ namespace UltraCryptoFolio.Controllers
             return RedirectToAction("index", "home");
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -94,12 +100,14 @@ namespace UltraCryptoFolio.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult RegisterCompleted()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/Account/{id}")]
         [HttpGet]
         public async Task<IActionResult> VerifyEmail([FromRoute]Guid id)

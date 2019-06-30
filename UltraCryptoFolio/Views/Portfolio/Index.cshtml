@@ -1,56 +1,30 @@
-﻿@model decimal
+﻿@model PortfolioViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Portflio</h1>
+<h1>Portfolio</h1>
 
-<p>Total current portfolio worth: @Model</p>
-
-@*<div class="container">
-    <div class="row">
-        <div class="col">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Indicator</th>
-                        <th>Value (@Model.MonetaryCurrency)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Total Crypto value:</td>
-                        <td>@Model.GetTotalCryptoValue()</td>
-                    </tr>
-                    <tr>
-                        <td>Total cash investment:</td>
-                        <td>@Model.GetTotalMonetaryInvestment()</td>
-                    </tr>
-                    <tr>
-                        <td>Total cash divestment:</td>
-                        <td>@Model.GetTotalMonetaryDivestment()</td>
-                    </tr>
-                    <tr>
-                        <td>Profit/loss:</td>
-                        @{
-                            var totalProfit = Model.GetTotalValue();
-
-                            if (totalProfit > 0)
-                            {
-                                <td style="color:green">@totalProfit</td>
-                            }
-                            else
-                            {
-                                <td style="color:darkred">@totalProfit</td>
-                            }
-                        }
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col">
-            <canvas id="doughnutContainer" class="chartjs-render-monitor"></canvas>
-        </div>
-    </div>
-</div>*@
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Indicator</th>
+            <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Total current portfolio worth</th>
+            <td>@Model.TotalWorth</td>
+        </tr>
+        <tr>
+            <th scope="row">Total invested</th>
+            <td>@Model.TotalInvested</td>
+        </tr>
+        <tr>
+            <th scope="row">Profit/Loss</th>
+            <td>@Model.TotalProfitLoss</td>
+        </tr>
+    </tbody>
+</table>

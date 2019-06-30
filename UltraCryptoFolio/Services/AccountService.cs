@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using UltraCryptoFolio.Models.DomainModels;
 using UltraCryptoFolio.Repositories;
 using UltraCryptoFolio.Extensions;
-using UltraCryptoFolio.Models.Enums;
 
 namespace UltraCryptoFolio.Services
 {

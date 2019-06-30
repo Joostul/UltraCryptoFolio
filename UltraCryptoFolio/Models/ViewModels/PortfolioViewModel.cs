@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace UltraCryptoFolio.Models.ViewModels
+﻿namespace UltraCryptoFolio.Models.ViewModels
 {
     public class PortfolioViewModel
     {
+        public decimal TotalWorth { get; set; }
+        public decimal TotalInvested { get; set; }
+        public decimal TotalProfitLoss { get { return TotalWorth - TotalInvested; } }
     }
 }

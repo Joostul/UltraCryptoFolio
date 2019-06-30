@@ -10,7 +10,7 @@ namespace UltraCryptoFolio.Models.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        public string PassWord { get; set; }
+        public string Password { get; set; }
 
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }

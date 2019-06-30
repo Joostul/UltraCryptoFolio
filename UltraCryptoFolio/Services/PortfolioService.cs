@@ -45,10 +45,29 @@ namespace UltraCryptoFolio.Services
 
             foreach (var holding in _portfolio.Holdings)
             {                
-                totalWorth += holding.Amount * await _priceRepository.GetCurrentPriceAsync(holding.Currency, holding.PriceCurrency);
+                if(holding.Currency == Currency.Euro || holding.Currency == Currency.Dollar)
+                {}
+                else
+                {
+                    totalWorth += holding.Amount * await _priceRepository.GetCurrentPriceAsync(holding.Currency, holding.PriceCurrency);
+                }
             }
 
             return totalWorth;
+        }
+        public async Task<decimal> GetTotalInvested()
+        {
+            decimal totalInvested = 0;
+
+            foreach (var holding in _portfolio.Holdings)
+            {
+                if (holding.Currency == Currency.Euro || holding.Currency == Currency.Dollar)
+                {
+                    totalInvested += holding.Amount * await _priceRepository.GetCurrentPriceAsync(holding.Currency, holding.PriceCurrency);
+                }
+            }
+
+            return -totalInvested;
         }
 
         public async Task SavePortfolio()

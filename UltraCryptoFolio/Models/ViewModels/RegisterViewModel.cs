@@ -17,6 +17,6 @@ namespace UltraCryptoFolio.Models.ViewModels
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
-        public string ConfirmPassWord { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

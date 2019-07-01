@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.WindowsAzure.Storage;
+using SendGrid;
 using System.Linq;
 using System.Security.Claims;
 using UltraCryptoFolio.Repositories;
@@ -28,6 +29,8 @@ namespace UltraCryptoFolio
         public void ConfigureServices(IServiceCollection services)
         {
             var storageAccountConnectionString = Configuration.GetValue<string>("StorageAccountConnectionString");
+            var sendGridKey = Configuration.GetValue<string>("SendGridKey");
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -43,16 +46,17 @@ namespace UltraCryptoFolio
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAzureStorageAccountRepository, AzureStorageAccountRepository>(a =>
                 new AzureStorageAccountRepository(storageAccountConnectionString));
+            services.AddTransient<ISendGridClient, SendGridClient>(s => new SendGridClient(sendGridKey));
 
             // Services
             services.AddTransient<IPortfolioService, PortfolioService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IEmailSender, EmailSender>();
 
             // Repositories
             services.AddTransient<IPortfolioRepository, StoragePortfolioRepository>();
             services.AddTransient<IUserRepository, StorageUserRepository>();
             services.AddTransient<IPriceRepository, StoragePriceRepository>();
-            //services.AddTransient<IApiPriceRepository, ApiPriceRepository>();
 
             // Authentication & Authorisation
             var registeredUserPolicy = new AuthorizationPolicyBuilder()

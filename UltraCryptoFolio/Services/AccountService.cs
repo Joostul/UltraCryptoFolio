@@ -16,43 +16,39 @@ namespace UltraCryptoFolio.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailSender _emailSender;
 
-        public AccountService(IUserRepository userRepository, IHttpContextAccessor httpContextAccessor)
+        public AccountService(
+            IUserRepository userRepository, 
+            IHttpContextAccessor httpContextAccessor,
+            IEmailSender emailSender)
         {
             _userRepository = userRepository;
             _httpContextAccessor = httpContextAccessor;
+            _emailSender = emailSender;
         }
 
-        public async Task<IdentityResult> CreateUserAsync(PortfolioUser user)
+        public async Task<bool> CreateUserAsync(PortfolioUser user)
         {
-            var result = new IdentityResult
-            {
-                Succeeded = false
-            };
-
             try
             {
                 if (await _userRepository.GetUserAsync(user.UserEmail) != null)
                 {
-                    result.Succeeded = false;
-                    result.Errors = new List<string>
-                    {
-                        "Email already registered."
-                    };
-                    return result;
+                    return false;
                 }
-                await _userRepository.AddTempUserAsync(user);
-                result.Succeeded = true;
-            }
-            catch (Exception ex)
-            {
-                result.Succeeded = false;
-                result.Errors = new List<string>
+                else
                 {
-                    ex.Message
-                };
+                    var id = await _userRepository.AddTempUserAsync(user);
+                    var returnUrlString = $"{_httpContextAccessor.HttpContext.Request.Scheme }://{_httpContextAccessor.HttpContext.Request.Host}/Account/{id}";
+                    var email = $"Please confirm your account by <a href='{returnUrlString}'>clicking here</a>.";
+                    await _emailSender.SendEmailAsync(user.UserEmail, "Registration", email);
+                    return true;
+                }
             }
-            return result;
+            catch
+            {
+                return false;
+            }
         }
 
         public Task<IdentityResult> DeleteUserAsync(PortfolioUser user)

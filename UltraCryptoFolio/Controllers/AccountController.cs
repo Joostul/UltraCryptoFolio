@@ -88,14 +88,13 @@ namespace UltraCryptoFolio.Controllers
                 return View();
             }
             var domainModel = model.ToDomainModel(UserRole.FreeUser, UserState.Unverified);
-            var result = await _accountService.CreateUserAsync(domainModel);
-            if (result.Succeeded)
+            var succeeded = await _accountService.CreateUserAsync(domainModel);
+            if (succeeded)
             {
                 return RedirectToAction("RegisterCompleted");
             }
             else
             {
-                ModelState.AddModelError("", result.Errors.First());
                 return View();
             }
         }

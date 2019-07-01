@@ -6,7 +6,7 @@ namespace UltraCryptoFolio.Services
 {
     public interface IAccountService
     {
-        Task<IdentityResult> CreateUserAsync(PortfolioUser user);
+        Task<bool> CreateUserAsync(PortfolioUser user);
         Task<IdentityResult> CompleteUserRegistrationAsync(Guid id);
         Task<IdentityResult> DeleteUserAsync(PortfolioUser user);
         Task<IdentityResult> SignInAsync(string userEmail, string password, bool isPersistent, string redirectUri);

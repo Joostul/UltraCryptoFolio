@@ -11,7 +11,7 @@ namespace UltraCryptoFolio.Repositories
         Task<PortfolioUserDao> GetUserAsync(string userName);
         Task<PortfolioUserDao> GetTempUserAsync(Guid userId);
         Task<bool> TempUserExists(Guid userId);
-        Task AddTempUserAsync(PortfolioUser user);
+        Task<Guid> AddTempUserAsync(PortfolioUser user);
         Task RegisterTempUserAsync(Guid userId);
         Task DeleteUserAsync(PortfolioUser user);
         Task UpdateUserAsync(PortfolioUser user);

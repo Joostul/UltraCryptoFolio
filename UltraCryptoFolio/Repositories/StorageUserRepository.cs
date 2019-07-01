@@ -67,12 +67,13 @@ namespace UltraCryptoFolio.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task AddTempUserAsync(PortfolioUser user)
+        public async Task<Guid> AddTempUserAsync(PortfolioUser user)
         {
             var userDao = user.ToDao();
             userDao.Id = Guid.NewGuid();
             var stringContent = JsonConvert.SerializeObject(userDao);
             await _storageAccount.UploadTextAsync(stringContent, "tempusers", userDao.Id.ToString());
+            return userDao.Id;
         }
 
         public async Task RegisterTempUserAsync(Guid userId)

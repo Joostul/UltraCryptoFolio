@@ -95,7 +95,7 @@ namespace UltraCryptoFolio.Controllers
             }
             else
             {
-                return View();
+                return RedirectToAction("Index", "Home");
             }
         }
 
@@ -118,7 +118,7 @@ namespace UltraCryptoFolio.Controllers
             }
             else
             {
-                return RedirectToAction("index", "home");
+                return RedirectToAction("AccountVerificationFailed");
             }
         }
     }

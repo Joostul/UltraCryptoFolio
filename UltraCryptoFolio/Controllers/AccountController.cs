@@ -107,6 +107,20 @@ namespace UltraCryptoFolio.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
+        public IActionResult AccountVerificationFailed()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult AccountVerified()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
         [Route("/Account/{id}")]
         [HttpGet]
         public async Task<IActionResult> VerifyEmail([FromRoute]Guid id)

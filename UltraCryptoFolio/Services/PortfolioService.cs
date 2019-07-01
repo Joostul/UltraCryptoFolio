@@ -24,6 +24,12 @@ namespace UltraCryptoFolio.Services
             _portfolio.Transactions.AddRange(transactions);
         }
 
+        public async Task<IEnumerable<Transaction>> GetTransactions()
+        {
+            await TrySetPortfolio();
+            return _portfolio.Transactions;
+        }
+
         public async Task<IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies)
         {
             await TrySetPortfolio();

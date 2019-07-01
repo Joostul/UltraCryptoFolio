@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using UltraCryptoFolio.Models.Enums;
 
-namespace UltraCryptoFolio.Models.DomainModels
+namespace UltraCryptoFolio.Models.ViewModels
 {
-    public class Transaction
+    public class TransactionViewModel
     {
-        public Guid Id { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateTime { get; set; }
         public decimal AmountSpent { get; set; }
         public decimal Fee { get; set; }

@@ -68,5 +68,20 @@ namespace UltraCryptoFolio.Extensions
                 SpentCurrencyPrice = dao.SpentCurrencyPrice
             };
         }
+
+        public static TransactionViewModel ToViewModel(this Transaction domainModel)
+        {
+            return new TransactionViewModel
+            {
+                AmountReceived = domainModel.AmountReceived,
+                AmountSpent = domainModel.AmountSpent,
+                DateTime = domainModel.DateTime,
+                Fee = domainModel.Fee,
+                ReceivedCurrency = domainModel.ReceivedCurrency,
+                ReceivedCurrencyPrice = domainModel.ReceivedCurrencyPrice,
+                SpentCurrency = domainModel.SpentCurrency,
+                SpentCurrencyPrice = domainModel.SpentCurrencyPrice
+            };
+        }
     }
 }

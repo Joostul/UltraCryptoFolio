@@ -24,6 +24,11 @@ namespace UltraCryptoFolio.Repositories
             }
         }
 
+        public async Task<bool> HasPortfolioAsync()
+        {
+            return await _storageAccount.BlobExistsAsync("portfolios", _userName);
+        }
+
         public async Task<Portfolio> GetPortfolioAsync()
         {
             if (await _storageAccount.BlobExistsAsync("portfolios", _userName))
@@ -39,9 +44,18 @@ namespace UltraCryptoFolio.Repositories
 
         public async Task SavePortfolioAsync(Portfolio portfolio)
         {
-            if (await _storageAccount.BlobExistsAsync("portfolios", _userName))
+            if (!await _storageAccount.BlobExistsAsync("portfolios", _userName))
             {
                 var stringContent = JsonConvert.SerializeObject(portfolio);
+                await _storageAccount.UploadTextAsync(stringContent, "portfolios", _userName);
+            }
+            else
+            {
+                var currentPortfolio = await GetPortfolioAsync();
+                var newTransactions = portfolio.Transactions.Where(t => !currentPortfolio.Transactions.Any(e => e.Id == t.Id));
+                currentPortfolio.Transactions.AddRange(newTransactions);
+                var dao = currentPortfolio.ToDao();
+                var stringContent = JsonConvert.SerializeObject(dao);
                 await _storageAccount.UploadTextAsync(stringContent, "portfolios", _userName);
             }
         }

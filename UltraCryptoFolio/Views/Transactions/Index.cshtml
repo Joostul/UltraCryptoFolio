@@ -6,32 +6,47 @@
 
 <h1>Transactions</h1>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>@nameof(TransactionViewModel.DateTime)</th>
-            <th>@nameof(TransactionViewModel.SpentCurrency)</th>
-            <th>@nameof(TransactionViewModel.SpentCurrencyPrice)</th>
-            <th>@nameof(TransactionViewModel.AmountSpent)</th>
-            <th>@nameof(TransactionViewModel.ReceivedCurrency)</th>
-            <th>@nameof(TransactionViewModel.ReceivedCurrencyPrice)</th>
-            <th>@nameof(TransactionViewModel.AmountReceived)</th>
-            <th>@nameof(TransactionViewModel.Fee)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var transaction in Model)
-        {
-        <tr>
-            <td>@transaction.DateTime</td>
-            <td>@transaction.SpentCurrency</td>
-            <td>@transaction.SpentCurrencyPrice</td>
-            <td>@transaction.AmountSpent</td>
-            <td>@transaction.ReceivedCurrency</td>
-            <td>@transaction.ReceivedCurrencyPrice</td>
-            <td>@transaction.AmountReceived</td>
-            <td>@transaction.Fee</td>
-        </tr>
-        }
-    </tbody>
-</table>
+<form asp-action="CreateNewTransaction">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@nameof(TransactionViewModel.DateTime)</th>
+                <th>@nameof(TransactionViewModel.SpentCurrency)</th>
+                <th>@nameof(TransactionViewModel.SpentCurrencyPrice)</th>
+                <th>@nameof(TransactionViewModel.AmountSpent)</th>
+                <th>@nameof(TransactionViewModel.ReceivedCurrency)</th>
+                <th>@nameof(TransactionViewModel.ReceivedCurrencyPrice)</th>
+                <th>@nameof(TransactionViewModel.AmountReceived)</th>
+                <th>@nameof(TransactionViewModel.Fee)</th>
+                <th>Submit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input /></td>
+                <td><input /></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><input type="submit" value="NewTransaction" /></td>
+            </tr>
+            @foreach (var transaction in Model)
+            {
+                <tr>
+                    <td>@transaction.DateTime</td>
+                    <td>@transaction.SpentCurrency</td>
+                    <td>@transaction.SpentCurrencyPrice</td>
+                    <td>@transaction.AmountSpent</td>
+                    <td>@transaction.ReceivedCurrency</td>
+                    <td>@transaction.ReceivedCurrencyPrice</td>
+                    <td>@transaction.AmountReceived</td>
+                    <td>@transaction.Fee</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

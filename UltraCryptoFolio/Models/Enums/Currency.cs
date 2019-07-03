@@ -2,6 +2,7 @@
 {
     public enum Currency
     {
+        Unknown,
         Euro,
         Dollar,
         Bitcoin,

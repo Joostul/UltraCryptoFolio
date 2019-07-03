@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UltraCryptoFolio.Models.DomainModels;
 using UltraCryptoFolio.Models.Enums;
 using UltraCryptoFolio.Models.ViewModels;
@@ -69,6 +70,38 @@ namespace UltraCryptoFolio.Extensions
             };
         }
 
+        public static Transaction ToDomainModel(this TransactionViewModel viewModel)
+        {
+            return new Transaction
+            {
+                Id = Guid.NewGuid(),
+                AmountReceived = viewModel.AmountReceived,
+                AmountSpent = viewModel.AmountSpent,
+                DateTime = viewModel.DateTime,
+                Fee = viewModel.Fee,
+                ReceivedCurrency = viewModel.ReceivedCurrency,
+                ReceivedCurrencyPrice = viewModel.ReceivedCurrencyPrice,
+                SpentCurrency = viewModel.SpentCurrency,
+                SpentCurrencyPrice = viewModel.SpentCurrencyPrice
+            };
+        }
+
+        public static TransactionDao ToDao(this Transaction domainModel)
+        {
+            return new TransactionDao
+            {
+                Id = domainModel.Id == Guid.Empty ? Guid.NewGuid() : domainModel.Id,
+                AmountReceived = domainModel.AmountReceived,
+                AmountSpent = domainModel.AmountSpent,
+                DateTime = domainModel.DateTime,
+                Fee = domainModel.Fee,
+                ReceivedCurrency = domainModel.ReceivedCurrency,
+                ReceivedCurrencyPrice = domainModel.ReceivedCurrencyPrice,
+                SpentCurrency = domainModel.SpentCurrency,
+                SpentCurrencyPrice = domainModel.SpentCurrencyPrice
+            };
+        }
+
         public static TransactionViewModel ToViewModel(this Transaction domainModel)
         {
             return new TransactionViewModel
@@ -81,6 +114,14 @@ namespace UltraCryptoFolio.Extensions
                 ReceivedCurrencyPrice = domainModel.ReceivedCurrencyPrice,
                 SpentCurrency = domainModel.SpentCurrency,
                 SpentCurrencyPrice = domainModel.SpentCurrencyPrice
+            };
+        }
+
+        public static PortfolioDao ToDao(this Portfolio domainModel)
+        {
+            return new PortfolioDao
+            {
+                Transactions = domainModel.Transactions.Select(t => t.ToDao())
             };
         }
     }

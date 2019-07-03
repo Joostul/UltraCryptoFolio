@@ -19,8 +19,9 @@ namespace UltraCryptoFolio.Services
             _priceRepository = priceRepository;
         }
 
-        public void AddTransactions(IEnumerable<Transaction> transactions)
+        public async Task AddTransactions(IEnumerable<Transaction> transactions)
         {
+            await TrySetPortfolio();
             _portfolio.Transactions.AddRange(transactions);
         }
 
@@ -63,6 +64,7 @@ namespace UltraCryptoFolio.Services
         }
         public async Task<decimal> GetTotalInvested()
         {
+            await TrySetPortfolio();
             decimal totalInvested = 0;
 
             foreach (var holding in _portfolio.Holdings)
@@ -85,7 +87,18 @@ namespace UltraCryptoFolio.Services
         {
             if(_portfolio == null)
             {
-                _portfolio = await _portfolioRepository.GetPortfolioAsync();
+                if(await _portfolioRepository.HasPortfolioAsync())
+                {
+                    _portfolio = await _portfolioRepository.GetPortfolioAsync();
+                }
+                else
+                {
+                    _portfolio = new Portfolio()
+                    {
+                        Transactions = new List<Transaction>(),
+                        Currency = Currency.Euro
+                    };
+                }
             }
         }
 

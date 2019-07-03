@@ -11,7 +11,7 @@ namespace UltraCryptoFolio.Services
         Task<decimal> GetTotalInvested();
         Task<IDictionary<Currency, decimal>> GetCurrenciesWorth(IEnumerable<Currency> currencies);
         Task<decimal> GetCurrencyWorth(Currency currency);
-        void AddTransactions(IEnumerable<Transaction> transactions);
+        Task AddTransactions(IEnumerable<Transaction> transactions);
         Task<IEnumerable<Transaction>> GetTransactions();
         Task SavePortfolio();
         void CreateExamplePortfolio();

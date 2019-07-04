@@ -12,6 +12,7 @@
     <td><input class="form-control" asp-for="Fee" type="number" /></td>
     <td><input class="btn btn-primary" type="submit" value="Submit" /></td>
 </tr>
+@if(!ViewContext.ViewData.ModelState.IsValid){
 <tr>
     <td><span class="badge badge-warning" asp-validation-for="DateTime"></span></td>
     <td><span class="badge badge-warning" asp-validation-for="SpentCurrency"></span></td>
@@ -23,3 +24,4 @@
     <td><span class="badge badge-warning" asp-validation-for="Fee"></span></td>
     <td></td>
 </tr>
+}

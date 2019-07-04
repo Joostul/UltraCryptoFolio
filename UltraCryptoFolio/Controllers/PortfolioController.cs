@@ -19,8 +19,6 @@ namespace UltraCryptoFolio.Controllers
         public async Task<IActionResult> Index()
         {
             var portfolioViewModel = new PortfolioViewModel();
-
-            _portfolioService.CreateExamplePortfolio();
             portfolioViewModel.TotalWorth = await _portfolioService.GetTotalWorth();
             portfolioViewModel.TotalInvested = await _portfolioService.GetTotalInvested();
             return View(portfolioViewModel);

@@ -35,6 +35,7 @@ namespace UltraCryptoFolio.Repositories
             {
                 var stringContent = await _storageAccount.DownloadTextAsync("portfolios", _userName);
                 var dao = JsonConvert.DeserializeObject<PortfolioDao>(stringContent);
+                dao.Transactions = dao.Transactions.OrderByDescending(t => t.DateTime);
                 return dao.ToDomainModel();
             } else
             {

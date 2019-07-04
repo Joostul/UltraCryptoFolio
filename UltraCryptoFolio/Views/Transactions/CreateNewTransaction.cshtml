@@ -1,0 +1,47 @@
+﻿@model TransactionViewModel
+@using UltraCryptoFolio.Models.Enums;
+
+@{
+    ViewData["Title"] = "Create New Transaction";
+}
+
+<h1>Create new transaction</h1>
+
+<form asp-action="CreateNewTransaction">
+    <div class="form-group">
+        <label asp-for="DateTime">Date</label>
+        <input class="form-control" asp-for="DateTime" type="datetime" />
+    </div>
+    <div class="form-group">
+        <label asp-for="SpentCurrency">Spent currency</label>
+        <select class="form-control" asp-for="SpentCurrency" asp-items="Html.GetEnumSelectList<Currency>();"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SpentCurrencyPrice">Spent currency price</label>
+        <input class="form-control" asp-for="SpentCurrencyPrice" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="AmountSpent">Amount spent</label>
+        <input class="form-control" asp-for="AmountSpent" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ReceivedCurrency">Received currency</label>
+        <select class="form-control" asp-for="ReceivedCurrency" asp-items="Html.GetEnumSelectList<Currency>();"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ReceivedCurrencyPrice">Received currency price</label>
+        <input class="form-control" asp-for="ReceivedCurrencyPrice" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="AmountReceived">Amount received</label>
+        <input class="form-control" asp-for="AmountReceived" type="number" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Fee">Fee</label>
+        <input class="form-control" asp-for="Fee" type="number" />
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="NewTransaction" class="btn btn-primary" />
+    </div>
+</form>

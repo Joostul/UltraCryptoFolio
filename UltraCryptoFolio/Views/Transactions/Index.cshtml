@@ -6,46 +6,29 @@
 
 <h1>Transactions</h1>
 
-<form asp-action="CreateNewTransaction">
+<form asp-action="Index">
     <table class="table table-hover">
         <thead>
-            <tr>
-                <th>@nameof(TransactionViewModel.DateTime)</th>
-                <th>@nameof(TransactionViewModel.SpentCurrency)</th>
-                <th>@nameof(TransactionViewModel.SpentCurrencyPrice)</th>
-                <th>@nameof(TransactionViewModel.AmountSpent)</th>
-                <th>@nameof(TransactionViewModel.ReceivedCurrency)</th>
-                <th>@nameof(TransactionViewModel.ReceivedCurrencyPrice)</th>
-                <th>@nameof(TransactionViewModel.AmountReceived)</th>
-                <th>@nameof(TransactionViewModel.Fee)</th>
-                <th>Submit</th>
-            </tr>
+            <partial name="_TransactionsTableHeadPartial" model="new TransactionViewModel()" />
         </thead>
         <tbody>
-            <tr>
-                <td><input /></td>
-                <td><input /></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><input type="submit" value="NewTransaction" /></td>
-            </tr>
-            @foreach (var transaction in Model)
+            <partial name="_CreateNewTransactionPartial" model="new TransactionViewModel()" />
+            @if (Model != null)
             {
-                <tr>
-                    <td>@transaction.DateTime</td>
-                    <td>@transaction.SpentCurrency</td>
-                    <td>@transaction.SpentCurrencyPrice</td>
-                    <td>@transaction.AmountSpent</td>
-                    <td>@transaction.ReceivedCurrency</td>
-                    <td>@transaction.ReceivedCurrencyPrice</td>
-                    <td>@transaction.AmountReceived</td>
-                    <td>@transaction.Fee</td>
-                    <td></td>
-                </tr>
+                @foreach (var transaction in Model)
+                {
+                    <tr>
+                        <td>@transaction.DateTime</td>
+                        <td>@transaction.SpentCurrency</td>
+                        <td>@transaction.SpentCurrencyPrice</td>
+                        <td>@transaction.AmountSpent</td>
+                        <td>@transaction.ReceivedCurrency</td>
+                        <td>@transaction.ReceivedCurrencyPrice</td>
+                        <td>@transaction.AmountReceived</td>
+                        <td>@transaction.Fee</td>
+                        <td></td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

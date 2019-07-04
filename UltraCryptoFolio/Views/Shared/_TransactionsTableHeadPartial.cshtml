@@ -1,0 +1,15 @@
+﻿@model TransactionViewModel
+@using UltraCryptoFolio.Models.Enums;
+
+
+    <tr>
+        <th><label asp-for="DateTime"></label></th>
+        <th><label asp-for="SpentCurrency"></label></th>
+        <th>@nameof(TransactionViewModel.SpentCurrencyPrice)</th>
+        <th>@nameof(TransactionViewModel.AmountSpent)</th>
+        <th>@nameof(TransactionViewModel.ReceivedCurrency)</th>
+        <th>@nameof(TransactionViewModel.ReceivedCurrencyPrice)</th>
+        <th>@nameof(TransactionViewModel.AmountReceived)</th>
+        <th>@nameof(TransactionViewModel.Fee)</th>
+        <th>Submit</th>
+    </tr>

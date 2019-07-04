@@ -1,0 +1,25 @@
+﻿@model TransactionViewModel
+@using UltraCryptoFolio.Models.Enums;
+
+<tr>
+    <td><input class="form-control" asp-for="DateTime" type="datetime" /></td>
+    <td><select class="form-control" asp-for="SpentCurrency" asp-items="Html.GetEnumSelectList<Currency>();"></select></td>
+    <td><input class="form-control" asp-for="SpentCurrencyPrice" type="number" /></td>
+    <td><input class="form-control" asp-for="AmountSpent" type="number" /></td>
+    <td><select class="form-control" asp-for="ReceivedCurrency" asp-items="Html.GetEnumSelectList<Currency>()"></select></td>
+    <td><input class="form-control" asp-for="ReceivedCurrencyPrice" type="number" /></td>
+    <td><input class="form-control" asp-for="AmountReceived" type="number" /></td>
+    <td><input class="form-control" asp-for="Fee" type="number" /></td>
+    <td><input class="btn btn-primary" type="submit" value="Submit" /></td>
+</tr>
+<tr>
+    <td><span class="badge badge-warning" asp-validation-for="DateTime"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="SpentCurrency"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="SpentCurrencyPrice"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="AmountSpent"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="ReceivedCurrency"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="ReceivedCurrencyPrice"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="AmountReceived"></span></td>
+    <td><span class="badge badge-warning" asp-validation-for="Fee"></span></td>
+    <td></td>
+</tr>

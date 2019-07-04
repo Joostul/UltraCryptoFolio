@@ -12,6 +12,7 @@ using UltraCryptoFolio.Services;
 
 namespace UltraCryptoFolio.Controllers
 {
+    [Controller]
     public class TransactionsController : Controller
     {
         private IPortfolioService _portfolioService { get; set; }
@@ -21,21 +22,18 @@ namespace UltraCryptoFolio.Controllers
             _portfolioService = portfolioService;
         }
 
+        [HttpGet]
         [Authorize(Policy = "RegisteredUser")]
         public async Task<IActionResult> Index()
         {
-            var transactions = await _portfolioService.GetTransactions();
-            var transactionViewModels = transactions.Select(t => t.ToViewModel());
-            return View(transactionViewModels);
+            return View((await _portfolioService.GetTransactions()).Select(t => t.ToViewModel()));
         }
-        
+
+        [HttpPost]
         [Authorize(Policy = "RegisteredUser")]
-        public async Task<IActionResult> CreateNewTransaction(TransactionViewModel transaction)
+        public async Task<IActionResult> Index(TransactionViewModel transaction)
         {
-            if (!ModelState.IsValid)
-            {
-                TempData["ModelState"] = ModelState;
-            } else
+            if (ModelState.IsValid)
             {
                 var transactions = new List<Transaction>
                 {
@@ -43,15 +41,12 @@ namespace UltraCryptoFolio.Controllers
                 };
                 await _portfolioService.AddTransactions(transactions.AsEnumerable());
                 await _portfolioService.SavePortfolio();
+                return RedirectToAction("index");
             }
-            return RedirectToAction("index");
-        }
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            if (TempData["ModelState"] != null && !ModelState.Equals(TempData["ModelState"]))
-                ModelState.Merge(TempData["ModelState"] as ModelStateDictionary);
-
-            base.OnActionExecuted(filterContext);
+            else
+            {
+                return View((await _portfolioService.GetTransactions()).Select(t => t.ToViewModel()));
+            }
         }
     }
 }

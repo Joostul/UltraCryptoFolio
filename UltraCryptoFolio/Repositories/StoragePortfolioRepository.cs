@@ -47,7 +47,8 @@ namespace UltraCryptoFolio.Repositories
         {
             if (!await _storageAccount.BlobExistsAsync("portfolios", _userName))
             {
-                var stringContent = JsonConvert.SerializeObject(portfolio);
+                var dao = portfolio.ToDao();
+                var stringContent = JsonConvert.SerializeObject(dao);
                 await _storageAccount.UploadTextAsync(stringContent, "portfolios", _userName);
             }
             else
